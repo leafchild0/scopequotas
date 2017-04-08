@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_daily"
+            android:title="@string/daily" />
+        <item
+            android:id="@+id/nav_weekly"
+            android:title="@string/weekly" />
+        <item
+            android:id="@+id/nav_monthly"
+            android:title="@string/monthly" />
+    </group>
+
+    <item android:title="@string/tools">
+        <menu>
+            <item
+                android:id="@+id/reports"
+                android:icon="@drawable/ic_reports"
+                android:title="@string/reports" />
+            <item
+                android:id="@+id/main_settings"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/settings" />
+            <item
+                android:id="@+id/about"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="@string/about" />
+        </menu>
+    </item>
+
+</menu>
