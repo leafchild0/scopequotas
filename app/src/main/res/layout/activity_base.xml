@@ -6,13 +6,57 @@
     android:layout_height="match_parent"
     tools:context="com.leafchild.scopequotas.BaseActivity">
 
-    <android.support.design.widget.FloatingActionButton
+    <!--<android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_input_add"
-        android:tint="@color/colorWhite" />
+        android:tint="@color/colorWhite" />-->
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/multiple_actions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_input_add"
+        app:menu_colorNormal="@color/blue_semi_transparent"
+        app:menu_colorPressed="@color/blue_semi_transparent_pressed"
+        android:tint="@color/colorWhite">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/new_quota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_today"
+            app:fab_label="New Quota"
+            app:fab_colorNormal="@color/blue_semi_transparent"
+            app:fab_colorPressed="@color/blue_semi_transparent_pressed"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/add_worglog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_recent_history"
+            app:fab_label="Log time"
+            app:fab_colorNormal="@color/blue_semi_transparent"
+            app:fab_colorPressed="@color/blue_semi_transparent_pressed"/>
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+    <TextView
+        android:id="@+id/no_quotas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/empty_quotas"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.design.widget.CoordinatorLayout>

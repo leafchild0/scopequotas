@@ -6,7 +6,6 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -28,10 +27,6 @@ public class Quota {
     private QuotaType quotaType;
     @DatabaseField(columnName = "description")
     private String description;
-    @DatabaseField(columnName = "startDate")
-    private Date startDate;
-    @DatabaseField(columnName = "endDate")
-    private Date endDate;
     @DatabaseField(columnName = "createdDate")
     private Date createdDate;
     @DatabaseField(columnName = "modifiedDate")
@@ -90,22 +85,6 @@ public class Quota {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
     }
 
     public Date getCreatedDate() {

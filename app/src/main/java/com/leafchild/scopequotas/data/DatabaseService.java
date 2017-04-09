@@ -97,7 +97,7 @@ public class DatabaseService {
         List<Quota> byType = new ArrayList<>();
 
         try {
-            byType = dbManager.getQuotaDao().queryForEq("quotaType", type.getValue());
+            byType = dbManager.getQuotaDao().queryForEq("quotaType", type);
         } catch(SQLException e) {
             e.printStackTrace();
         }

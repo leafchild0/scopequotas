@@ -3,7 +3,6 @@ package com.leafchild.scopequotas;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,7 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+import com.leafchild.scopequotas.common.QuotaAdapter;
 import com.leafchild.scopequotas.data.DatabaseService;
 import com.leafchild.scopequotas.data.Quota;
 import com.leafchild.scopequotas.data.QuotaType;
@@ -28,8 +33,10 @@ import static com.leafchild.scopequotas.AppContants.TYPE;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private final MainActivity self = this;
-    private TextView type;
     private DatabaseService service;
+    private ListView listView;
+
+    private ArrayAdapter<Quota> quotaAdapter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -38,24 +45,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_nav);
         service = new DatabaseService(this);
 
-        type = (TextView) findViewById(R.id.quotas_test);
-
-        loadData();
+        initComponents();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent details = new Intent(self, DetailsActivity.class);
-
-                details.putExtra(TYPE, getIntent().getIntExtra(TYPE, 1));
-                //Do not add any data
-                startActivity(details);
-            }
-        });
+        initFabMenu();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -67,13 +62,73 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void loadData() {
+    private void initFabMenu() {
+
+        FloatingActionButton newQuota = (FloatingActionButton) findViewById(R.id.new_quota);
+        FloatingActionButton logTime = (FloatingActionButton) findViewById(R.id.add_worglog);
+
+        final FloatingActionMenu menuMultipleActions = (FloatingActionMenu) findViewById(R.id.multiple_actions);
+        menuMultipleActions.setOnClickListener(view -> {
+
+            menuMultipleActions.setEnabled(!menuMultipleActions.isEnabled());
+            Intent details = new Intent(self, DetailsActivity.class);
+
+            details.putExtra(TYPE, getIntent().getIntExtra(TYPE, 1));
+            //Do not add any data
+            startActivity(details);
+        });
+
+
+        logTime.setOnClickListener((v) -> {
+                //TODO: log time functionality
+        });
+
+        newQuota.setOnClickListener((v) -> {
+                Intent details = new Intent(self, DetailsActivity.class);
+                details.putExtra(TYPE, getIntent().getIntExtra(TYPE, 1));
+                //Do not add any data
+                startActivity(details);
+            });
+    }
+
+    private void initComponents() {
+
+        TextView type = (TextView) findViewById(R.id.no_quotas);
+        listView = (ListView) findViewById(R.id.quotas_list);
+
+        List<Quota> quotas = loadData();
+
+        if(!quotas.isEmpty()) {
+            type.setVisibility(View.GONE);
+
+            quotaAdapter = new QuotaAdapter(this, quotas);
+
+            // Assign adapter to ListView
+            listView.setAdapter(quotaAdapter);
+
+            // ListView Item Click Listener
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+
+                    Quota itemValue = (Quota) listView.getItemAtPosition(position);
+
+                    Intent details = new Intent(self, DetailsActivity.class);
+                    details.putExtra(AppContants.ACTIVE_QUOTA, itemValue.getId());
+
+                    startActivity(details);
+                }
+
+            });
+        }
+    }
+
+    private List<Quota> loadData() {
         int type = getIntent().getIntExtra(TYPE, 1);
 
-        List<Quota> quotas = service.findQuotasByType(QuotaType.fromOrdinal(type));
-
-        //TODO: Add list view, display elements there
-
+        return service.findQuotasByType(QuotaType.fromOrdinal(type));
     }
 
     @Override
@@ -91,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if(id == R.id.action_settings) {
             return true;
         }
 
@@ -145,8 +200,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
-        if(intent != null) startActivity(intent);
-        else recreate();
+        if(intent != null) {
+            startActivity(intent);
+        }
+        else {
+            recreate();
+        }
 
         return true;
     }

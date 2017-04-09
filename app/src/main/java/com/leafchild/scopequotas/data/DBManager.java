@@ -19,7 +19,7 @@ import java.sql.SQLException;
 class DBManager extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME = "scope.quotas.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private Dao<Quota, Long> quotaDao = null;
     private Dao<Worklog, Long> worklogDao = null;
 

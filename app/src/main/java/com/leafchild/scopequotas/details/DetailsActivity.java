@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.data.DatabaseService;
 import com.leafchild.scopequotas.data.Quota;
@@ -24,6 +25,7 @@ public class DetailsActivity extends AppCompatActivity {
     private EditText goal;
     private TextView worklogAmount;
     private DatabaseService service;
+    private Quota editingBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         if(getQuotaId() != -1) {
             //Existing entity
-            //TODO: Load data
             loadData();
         } else {
             //New entity
@@ -52,48 +53,40 @@ public class DetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //TODO: Perform cleanup after save
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "New quota has been added", Snackbar.LENGTH_LONG)
-                    .setAction("Saved", new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            Quota newQuota = new Quota();
-                            newQuota.setQuotaType(QuotaType.fromOrdinal(type));
-                            newQuota.setName(name.getText().toString());
-                            newQuota.setDescription(goal.getText().toString());
-                            //TODO:  add datepickers and get user input
-                            newQuota.setStartDate(new Date());
-                            newQuota.setEndDate(new Date());
-
-                            service.persistQuota(newQuota);
-                        }
-                    }).show();
+        fab.setOnClickListener(view -> {
+            if(editingBean == null) {
+                editingBean = new Quota();
+                editingBean.setQuotaType(QuotaType.fromOrdinal(type));
+                editingBean.setName(name.getText().toString());
+                editingBean.setDescription(goal.getText().toString());
             }
+            service.persistQuota(editingBean);
+
+            Toast.makeText(DetailsActivity.this, "Quota " + editingBean.getName() + " was saved", Toast.LENGTH_LONG)
+                .show();
         });
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void loadData() {
 
-        int existinQuotaId = getQuotaId();
+        long existinQuotaId = getQuotaId();
         //Get item from DB
 
-        Quota quota = service.getQuota(existinQuotaId);
+        editingBean = service.getQuota(existinQuotaId);
 
         //Perform any validations, etc
         //Preset values in the fields
-        if(quota != null) {
-            name.setText(quota.getName());
-            goal.setText(quota.getDescription());
+        if(editingBean != null) {
+            name.setText(editingBean.getName());
+            goal.setText(editingBean.getDescription());
         }
     }
 
-    private int getQuotaId() {
-        return getIntent().getIntExtra(ACTIVE_QUOTA, -1);
+    private long getQuotaId() {
+        return getIntent().getLongExtra(ACTIVE_QUOTA, -1);
     }
 }
