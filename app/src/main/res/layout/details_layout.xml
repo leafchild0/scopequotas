@@ -33,12 +33,20 @@
         android:lines="3" />
 
     <TextView
-        android:id="@+id/quota_amount"
+        android:id="@+id/quota_amount_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/worklog_amount"
         android:layout_below="@+id/quota_goal"
         android:layout_alignStart="@+id/quota_goal"
         android:layout_marginTop="27dp" />
+
+    <TextView
+        android:id="@+id/quota_amount_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/quota_amount_name"
+        android:layout_marginTop="27dp"
+        android:layout_alignStart="@+id/quota_goal" />
 
 </RelativeLayout>

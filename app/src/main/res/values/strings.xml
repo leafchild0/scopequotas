@@ -179,7 +179,16 @@
     <string name="title_activity_reports">Reports</string>
     <string name="title_activity_about">About</string>
     <string name="name">Name</string>
-    <string name="amount" />
+    <string name="amount">Amount</string>
     <string name="goal">Goal</string>
     <string name="worklog_amount">Worklog amount</string>
+    <string name="add_worklog">Add worklog</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+
+    <string-array name="worklog_array">
+        <item>minutes</item>
+        <item>hours</item>
+        <item>days</item>
+    </string-array>
 </resources>

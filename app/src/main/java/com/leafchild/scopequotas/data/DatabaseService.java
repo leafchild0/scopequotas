@@ -18,6 +18,7 @@ public class DatabaseService {
     private DBManager dbManager;
 
     public DatabaseService(Context context) {
+
         dbManager = new DBManager(context);
     }
 
@@ -25,12 +26,17 @@ public class DatabaseService {
 
         if(quota.isNew()) {
             createQuota(quota);
-        } else {
+        }
+        else {
             updateQuota(quota);
         }
     }
 
-    public Quota getQuota(long id) {
+    public Quota getQuota(Long id) {
+
+        if(id == null) {
+            return null;
+        }
         Quota found = null;
 
         try {
@@ -42,7 +48,11 @@ public class DatabaseService {
         return found;
     }
 
-    public boolean deleteQuota(long id) {
+    public boolean deleteQuota(Long id) {
+
+        if(id == null) {
+            return false;
+        }
 
         boolean result = false;
 
@@ -69,6 +79,7 @@ public class DatabaseService {
     }
 
     private boolean updateQuota(Quota quota) {
+
         boolean result = false;
 
         try {
@@ -82,6 +93,7 @@ public class DatabaseService {
     }
 
     public List<Quota> findAllQuotas() {
+
         List<Quota> allQuotas = new ArrayList<>();
 
         try {
@@ -94,7 +106,11 @@ public class DatabaseService {
     }
 
     public List<Quota> findQuotasByType(QuotaType type) {
+
         List<Quota> byType = new ArrayList<>();
+        if(type == null) {
+            return byType;
+        }
 
         try {
             byType = dbManager.getQuotaDao().queryForEq("quotaType", type);
@@ -103,6 +119,32 @@ public class DatabaseService {
         }
 
         return byType;
+    }
+
+    public void addWorklog(Worklog worklog) {
+
+        try {
+            worklog.setCreatedDate(new Date());
+            dbManager.getWorklogDao().create(worklog);
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Worklog> getByQuotaId(Long quotaId) {
+
+        List<Worklog> byQuota = new ArrayList<>();
+        if(quotaId == null) {
+            return byQuota;
+        }
+
+        try {
+            dbManager.getWorklogDao().queryForEq("quota", quotaId);
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return byQuota;
     }
 
 }

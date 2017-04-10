@@ -23,10 +23,16 @@ public class Worklog {
     private Date createdDate;
     @DatabaseField(columnName = "amount", canBeNull = false)
     private Double amount;
+    @DatabaseField(columnName = "amount_type", canBeNull = false)
+    private WorklogType type;
     @DatabaseField(columnName = "quota", foreign = true, foreignAutoRefresh = true)
     private Quota quota;
 
-    public Worklog() {
+    public Worklog() {}
+
+    public Worklog(Quota quota, String amount) {
+        this.quota = quota;
+        this.amount = Double.valueOf(amount);
     }
 
     public Long getId() {
@@ -67,6 +73,7 @@ public class Worklog {
             "id=" + id +
             ", createdDate=" + createdDate +
             ", amount=" + amount +
+            ", amountType=" + type +
             '}';
     }
 
@@ -87,5 +94,15 @@ public class Worklog {
     @Override
     public int hashCode() {
         return Objects.hash(amount, createdDate, id);
+    }
+
+    public WorklogType getType() {
+
+        return type;
+    }
+
+    public void setType(WorklogType type) {
+
+        this.type = type;
     }
 }

@@ -1,5 +1,7 @@
 package com.leafchild.scopequotas.data;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -33,7 +35,7 @@ public class Quota {
     private Date modifiedDate;
 
     @ForeignCollectionField(columnName = "logged", eager = true)
-    ForeignCollection<Worklog> logged;
+    private ForeignCollection<Worklog> logged;
 
     public Quota() {
     }
@@ -124,6 +126,20 @@ public class Quota {
 
     public boolean isNew() {
         return id > -1;
+    }
+
+    public Double getWorklogAmount() {
+
+        double sum = 0;
+
+        for(Worklog w : logged) {
+            sum += w.getAmount();
+        }
+        return sum;
+    }
+
+    public void addWorklog(Worklog worklog) {
+        logged.add(worklog);
     }
 }
 

@@ -28,6 +28,10 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
         super(context, R.layout.quota_item, quotas);
     }
 
+    public QuotaAdapter(Context context, int resource, List<Quota> quotas) {
+        super(context, resource, quotas);
+    }
+
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

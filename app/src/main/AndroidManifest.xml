@@ -36,20 +36,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.leafchild.scopequotas.MainActivity" />
         </activity>
-        <activity android:name=".reports.ReportsActivity"
+        <activity
+            android:name=".reports.ReportsActivity"
             android:label="@string/title_activity_reports"
             android:parentActivityName=".MainActivity">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.leafchild.scopequotas.MainActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.leafchild.scopequotas.MainActivity" />
         </activity>
-        <activity android:name=".AboutActivity"
+        <activity
+            android:name=".AboutActivity"
             android:label="@string/title_activity_about"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.leafchild.scopequotas.MainActivity"/>
-    </activity>
+                android:value="com.leafchild.scopequotas.MainActivity" />
+        </activity>
+        <activity android:name=".worklog.WorklogActivity"></activity>
     </application>
 
 </manifest>

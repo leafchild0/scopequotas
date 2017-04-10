@@ -1,6 +1,7 @@
 package com.leafchild.scopequotas.details;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.data.DatabaseService;
 import com.leafchild.scopequotas.data.Quota;
 import com.leafchild.scopequotas.data.QuotaType;
+import com.leafchild.scopequotas.worklog.WorklogActivity;
 
 import java.util.Date;
 
@@ -32,7 +34,8 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        worklogAmount = (TextView) findViewById(R.id.quota_amount);
+        worklogAmount = (TextView) findViewById(R.id.quota_amount_value);
+        TextView worklogLabel = (TextView) findViewById(R.id.quota_amount_name);
         name = (EditText) findViewById(R.id.quota_name);
         goal = (EditText) findViewById(R.id.quota_goal);
 
@@ -43,17 +46,16 @@ public class DetailsActivity extends AppCompatActivity {
         if(getQuotaId() != -1) {
             //Existing entity
             loadData();
+            setTitle(editingBean.getName());
         } else {
             //New entity
-            worklogAmount.setVisibility(View.GONE);
+            worklogLabel.setVisibility(View.GONE);
             setTitle("Add new Quota");
-
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //TODO: Perform cleanup after save
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             if(editingBean == null) {
@@ -64,8 +66,8 @@ public class DetailsActivity extends AppCompatActivity {
             }
             service.persistQuota(editingBean);
 
-            Toast.makeText(DetailsActivity.this, "Quota " + editingBean.getName() + " was saved", Toast.LENGTH_LONG)
-                .show();
+            Toast.makeText(DetailsActivity.this, "Quota " + editingBean.getName() + " was saved", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(DetailsActivity.this::finish, 2000);
         });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -75,14 +77,17 @@ public class DetailsActivity extends AppCompatActivity {
 
         long existinQuotaId = getQuotaId();
         //Get item from DB
-
         editingBean = service.getQuota(existinQuotaId);
 
         //Perform any validations, etc
         //Preset values in the fields
         if(editingBean != null) {
             name.setText(editingBean.getName());
+            //Prevent from editing quota name once it was saved
+            name.setEnabled(false);
+
             goal.setText(editingBean.getDescription());
+            worklogAmount.setText(editingBean.getWorklogAmount().toString() + " hours");
         }
     }
 

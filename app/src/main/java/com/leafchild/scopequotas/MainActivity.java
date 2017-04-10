@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,6 +24,7 @@ import com.leafchild.scopequotas.data.QuotaType;
 import com.leafchild.scopequotas.details.DetailsActivity;
 import com.leafchild.scopequotas.reports.ReportsActivity;
 import com.leafchild.scopequotas.settings.SettingsActivity;
+import com.leafchild.scopequotas.worklog.WorklogActivity;
 
 import java.util.List;
 
@@ -71,24 +71,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         menuMultipleActions.setOnClickListener(view -> {
 
             menuMultipleActions.setEnabled(!menuMultipleActions.isEnabled());
-            Intent details = new Intent(self, DetailsActivity.class);
 
+            Intent details = new Intent(self, DetailsActivity.class);
             details.putExtra(TYPE, getIntent().getIntExtra(TYPE, 1));
-            //Do not add any data
             startActivity(details);
         });
 
 
         logTime.setOnClickListener((v) -> {
-                //TODO: log time functionality
+            Intent addWorklog = new Intent(self, WorklogActivity.class);
+            addWorklog.putExtra(TYPE, getIntent().getIntExtra(TYPE, 1));
+            //Do not add any data
+            startActivity(addWorklog);
+            menuMultipleActions.close(true);
         });
 
         newQuota.setOnClickListener((v) -> {
-                Intent details = new Intent(self, DetailsActivity.class);
-                details.putExtra(TYPE, getIntent().getIntExtra(TYPE, 1));
-                //Do not add any data
-                startActivity(details);
-            });
+            Intent details = new Intent(self, DetailsActivity.class);
+            details.putExtra(TYPE, getIntent().getIntExtra(TYPE, 1));
+            //Do not add any data
+            startActivity(details);
+            menuMultipleActions.close(true);
+        });
     }
 
     private void initComponents() {
@@ -96,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView type = (TextView) findViewById(R.id.no_quotas);
         listView = (ListView) findViewById(R.id.quotas_list);
 
-        List<Quota> quotas = loadData();
+        List<Quota> quotas = loadData(getIntent().getIntExtra(TYPE, 1));
 
         if(!quotas.isEmpty()) {
             type.setVisibility(View.GONE);
@@ -107,27 +111,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             listView.setAdapter(quotaAdapter);
 
             // ListView Item Click Listener
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            listView.setOnItemClickListener((parent, view, position, id) -> {
 
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
+                Quota itemValue = (Quota) listView.getItemAtPosition(position);
 
-                    Quota itemValue = (Quota) listView.getItemAtPosition(position);
+                Intent details = new Intent(self, DetailsActivity.class);
+                details.putExtra(AppContants.ACTIVE_QUOTA, itemValue.getId());
 
-                    Intent details = new Intent(self, DetailsActivity.class);
-                    details.putExtra(AppContants.ACTIVE_QUOTA, itemValue.getId());
-
-                    startActivity(details);
-                }
-
+                startActivity(details);
             });
         }
     }
 
-    private List<Quota> loadData() {
-        int type = getIntent().getIntExtra(TYPE, 1);
-
+    private List<Quota> loadData(int type) {
         return service.findQuotasByType(QuotaType.fromOrdinal(type));
     }
 
@@ -184,14 +180,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_daily:
                 //TODO: Re-do this and simply load data on such actions
-                intent = new Intent(self, MainActivity.class);
-                intent.putExtra(TYPE, QuotaType.DAILY.ordinal());
+                quotaAdapter.clear();
+                quotaAdapter.addAll(loadData(QuotaType.DAILY.ordinal()));
                 break;
             case R.id.nav_weekly:
-                getIntent().putExtra(TYPE, QuotaType.WEEKLY.ordinal());
+                quotaAdapter.clear();
+                quotaAdapter.addAll(loadData(QuotaType.WEEKLY.ordinal()));
                 break;
             case R.id.nav_monthly:
-                getIntent().putExtra(TYPE, QuotaType.MONTHLY.ordinal());
+                quotaAdapter.clear();
+                quotaAdapter.addAll(loadData(QuotaType.MONTHLY.ordinal()));
                 break;
             default:
 
