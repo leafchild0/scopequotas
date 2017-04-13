@@ -52,7 +52,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.leafchild.scopequotas.MainActivity" />
         </activity>
-        <activity android:name=".worklog.WorklogActivity"></activity>
+        <activity android:name=".worklog.WorklogActivity" />
+        <activity android:name=".BaseActivity" />
+
     </application>
 
 </manifest>

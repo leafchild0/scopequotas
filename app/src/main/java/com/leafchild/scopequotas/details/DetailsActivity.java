@@ -3,7 +3,6 @@ package com.leafchild.scopequotas.details;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -14,9 +13,6 @@ import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.data.DatabaseService;
 import com.leafchild.scopequotas.data.Quota;
 import com.leafchild.scopequotas.data.QuotaType;
-import com.leafchild.scopequotas.worklog.WorklogActivity;
-
-import java.util.Date;
 
 import static com.leafchild.scopequotas.AppContants.ACTIVE_QUOTA;
 import static com.leafchild.scopequotas.AppContants.TYPE;
@@ -28,6 +24,7 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView worklogAmount;
     private DatabaseService service;
     private Quota editingBean;
+    private static final String HOURS = " hours";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +84,7 @@ public class DetailsActivity extends AppCompatActivity {
             name.setEnabled(false);
 
             goal.setText(editingBean.getDescription());
-            worklogAmount.setText(editingBean.getWorklogAmount().toString() + " hours");
+            worklogAmount.setText(String.format(editingBean.getWorklogAmount().toString() +  "%s", HOURS));
         }
     }
 
