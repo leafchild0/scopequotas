@@ -10,6 +10,6 @@
         android:elevation="10dp"
         android:ems="10"
         android:padding="16dp"
-        android:text="@string/name"
+        android:text="@string/select_a_query"
         android:textAppearance="@android:style/TextAppearance.Material.Large" />
 </LinearLayout>

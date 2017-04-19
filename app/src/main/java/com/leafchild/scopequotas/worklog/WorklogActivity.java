@@ -31,10 +31,11 @@ public class WorklogActivity extends AppCompatActivity implements AdapterView.On
         service = new DatabaseService(this);
 
         Spinner dropdown = (Spinner) findViewById(R.id.quotas_list);
-        ArrayAdapter<Quota> adapter = new QuotaAdapter(this, android.R.layout.simple_spinner_dropdown_item,
-            service.findAllQuotas());
-        dropdown.setAdapter(adapter);
+        dropdown.setAdapter(new QuotaAdapter(this,
+            android.R.layout.simple_spinner_dropdown_item,
+            service.findAllQuotas()));
         dropdown.setOnItemSelectedListener(this);
+        dropdown.setPrompt("Select query");
 
         inputType = (Spinner) findViewById(R.id.worklog_amount_type);
         ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter

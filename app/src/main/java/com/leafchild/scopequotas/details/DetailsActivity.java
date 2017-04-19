@@ -9,10 +9,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.leafchild.scopequotas.R;
+import com.leafchild.scopequotas.common.Utils;
 import com.leafchild.scopequotas.data.DatabaseService;
 import com.leafchild.scopequotas.data.Quota;
 import com.leafchild.scopequotas.data.QuotaType;
+import com.leafchild.scopequotas.data.Worklog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.leafchild.scopequotas.AppContants.ACTIVE_QUOTA;
 import static com.leafchild.scopequotas.AppContants.TYPE;
@@ -52,6 +62,29 @@ public class DetailsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        BarChart chart = (BarChart) findViewById(R.id.worklog_chart);
+
+        List<BarEntry> entries = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
+        int amount = 0;
+
+        for (Worklog worklog : editingBean.getLogged()) {
+
+            // turn your data into Entry objects
+            entries.add(new BarEntry(amount++, worklog.getAmount().floatValue()));
+            labels.add(Utils.getDayMonthFormatter().format(worklog.getCreatedDate()));
+        }
+
+        BarDataSet dataSet = new BarDataSet(entries, "");
+        BarData lineData = new BarData(dataSet);
+        chart.setData(lineData);
+
+        XAxis xval = chart.getXAxis();
+        xval.setDrawLabels(true);
+        xval.setValueFormatter((value, axis) -> labels.get((int) value));
+        chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> {

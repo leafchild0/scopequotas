@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@android:drawable/ic_menu_add"
         app:menu_colorNormal="@color/blue_semi_transparent"
         app:menu_colorPressed="@color/blue_semi_transparent_pressed"
         android:tint="@color/colorWhite">
@@ -30,8 +30,9 @@
             android:id="@+id/new_quota"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_today"
+            android:src="@android:drawable/ic_menu_add"
             app:fab_label="New Quota"
+            android:tint="@color/colorWhite"
             app:fab_colorNormal="@color/blue_semi_transparent"
             app:fab_colorPressed="@color/blue_semi_transparent_pressed"/>
 
@@ -39,8 +40,9 @@
             android:id="@+id/add_worglog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_recent_history"
+            android:src="@android:drawable/ic_menu_add"
             app:fab_label="Log time"
+            android:tint="@color/colorWhite"
             app:fab_colorNormal="@color/blue_semi_transparent"
             app:fab_colorPressed="@color/blue_semi_transparent_pressed"/>
 

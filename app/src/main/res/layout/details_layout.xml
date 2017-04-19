@@ -49,4 +49,11 @@
         android:layout_marginTop="27dp"
         android:layout_alignStart="@+id/quota_goal" />
 
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/worklog_chart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="300dp"
+        android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

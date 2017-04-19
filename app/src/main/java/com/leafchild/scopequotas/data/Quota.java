@@ -40,11 +40,8 @@ public class Quota {
 
     @Override
     public String toString() {
-        return "Quota{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", quotaType=" + quotaType +
-            '}';
+        //Have to use name only for spinners
+        return name;
     }
 
     public ForeignCollection<Worklog> getLogged() {
