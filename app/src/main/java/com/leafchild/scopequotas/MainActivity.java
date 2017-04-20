@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.leafchild.scopequotas.categories.CategoryActivity;
 import com.leafchild.scopequotas.common.QuotaAdapter;
 import com.leafchild.scopequotas.data.DatabaseService;
 import com.leafchild.scopequotas.data.Quota;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ListView listView;
 
     private ArrayAdapter<Quota> quotaAdapter;
+    private QuotaType currentType;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         newQuota.setOnClickListener((v) -> {
             Intent details = new Intent(self, DetailsActivity.class);
-            details.putExtra(TYPE, getIntent().getIntExtra(TYPE, 1));
+            details.putExtra(TYPE, getIntent().getIntExtra(TYPE, currentType.ordinal()));
             //Do not add any data
             startActivity(details);
             menuMultipleActions.close(true);
@@ -101,25 +103,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listView = (ListView) findViewById(R.id.quotas_list);
 
         List<Quota> quotas = loadData(getIntent().getIntExtra(TYPE, 1));
+        quotaAdapter = new QuotaAdapter(this, quotas);
+
+        // Assign adapter to ListView
+        listView.setAdapter(quotaAdapter);
+
+        // ListView Item Click Listener
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+
+            Quota itemValue = (Quota) listView.getItemAtPosition(position);
+
+            Intent details = new Intent(self, DetailsActivity.class);
+            details.putExtra(AppContants.ACTIVE_QUOTA, itemValue.getId());
+
+            startActivity(details);
+        });
 
         if(!quotas.isEmpty()) {
             type.setVisibility(View.GONE);
-
-            quotaAdapter = new QuotaAdapter(this, quotas);
-
-            // Assign adapter to ListView
-            listView.setAdapter(quotaAdapter);
-
-            // ListView Item Click Listener
-            listView.setOnItemClickListener((parent, view, position, id) -> {
-
-                Quota itemValue = (Quota) listView.getItemAtPosition(position);
-
-                Intent details = new Intent(self, DetailsActivity.class);
-                details.putExtra(AppContants.ACTIVE_QUOTA, itemValue.getId());
-
-                startActivity(details);
-            });
         }
     }
 
@@ -169,8 +170,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = null;
 
         switch(id) {
+            case R.id.categories:
+                intent = new Intent(self, CategoryActivity.class);
+                break;
             case R.id.reports:
-                //TODO: Implement reports
                 intent = new Intent(self, ReportsActivity.class);
                 break;
             case R.id.main_settings:
@@ -180,17 +183,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 intent = new Intent(self, AboutActivity.class);
                 break;
             case R.id.nav_daily:
-                //TODO: Re-do this and simply load data on such actions
                 quotaAdapter.clear();
                 quotaAdapter.addAll(loadData(QuotaType.DAILY.ordinal()));
+                currentType = QuotaType.DAILY;
                 break;
             case R.id.nav_weekly:
                 quotaAdapter.clear();
                 quotaAdapter.addAll(loadData(QuotaType.WEEKLY.ordinal()));
+                currentType = QuotaType.WEEKLY;
                 break;
             case R.id.nav_monthly:
                 quotaAdapter.clear();
                 quotaAdapter.addAll(loadData(QuotaType.MONTHLY.ordinal()));
+                currentType = QuotaType.MONTHLY;
                 break;
             default:
 
@@ -203,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         }
         else {
-            recreate();
+            //recreate();
         }
 
         return true;

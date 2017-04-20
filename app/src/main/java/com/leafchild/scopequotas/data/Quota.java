@@ -31,11 +31,19 @@ public class Quota {
     private Date createdDate;
     @DatabaseField(columnName = "modifiedDate")
     private Date modifiedDate;
+    @DatabaseField(columnName = "category", foreign = true, foreignAutoRefresh = true)
+    private QuotaCategory category;
 
     @ForeignCollectionField(columnName = "logged", eager = true)
     private ForeignCollection<Worklog> logged;
 
     public Quota() {
+    }
+
+    public Quota(String name, String description, QuotaType type) {
+        this.name = name;
+        this.description = description;
+        this.quotaType = type;
     }
 
     @Override
@@ -135,6 +143,14 @@ public class Quota {
 
     public void addWorklog(Worklog worklog) {
         logged.add(worklog);
+    }
+
+    public QuotaCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(QuotaCategory category) {
+        this.category = category;
     }
 }
 

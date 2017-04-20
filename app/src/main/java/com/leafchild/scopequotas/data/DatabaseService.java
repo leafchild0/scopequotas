@@ -1,6 +1,7 @@
 package com.leafchild.scopequotas.data;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,12 +43,13 @@ public class DatabaseService {
         try {
             found = dbManager.getQuotaDao().queryForId(id);
         } catch(SQLException e) {
-            e.printStackTrace();
+            Log.e("DB", e.getMessage());
         }
 
         return found;
     }
 
+    //TODO: Add delete operation
     public boolean deleteQuota(Long id) {
 
         if(id == null) {
@@ -59,7 +61,7 @@ public class DatabaseService {
         try {
             result = dbManager.getQuotaDao().delete(getQuota(id)) == 1;
         } catch(SQLException e) {
-            e.printStackTrace();
+            Log.e("DB", e.getMessage());
         }
 
         return result;
@@ -74,7 +76,7 @@ public class DatabaseService {
 
             dbManager.getQuotaDao().create(quota);
         } catch(SQLException e) {
-            e.printStackTrace();
+            Log.e("DB", e.getMessage());
         }
     }
 
@@ -86,7 +88,7 @@ public class DatabaseService {
             quota.setModifiedDate(new Date());
             result = dbManager.getQuotaDao().update(quota) == 1;
         } catch(SQLException e) {
-            e.printStackTrace();
+            Log.e("DB", e.getMessage());
         }
 
         return result;
@@ -99,7 +101,7 @@ public class DatabaseService {
         try {
             allQuotas = dbManager.getQuotaDao().queryForAll();
         } catch(SQLException e) {
-            e.printStackTrace();
+            Log.e("DB", e.getMessage());
         }
 
         return allQuotas;
@@ -115,7 +117,7 @@ public class DatabaseService {
         try {
             byType = dbManager.getQuotaDao().queryForEq("quotaType", type);
         } catch(SQLException e) {
-            e.printStackTrace();
+            Log.e("DB", e.getMessage());
         }
 
         return byType;
@@ -127,7 +129,7 @@ public class DatabaseService {
             worklog.setCreatedDate(new Date());
             dbManager.getWorklogDao().create(worklog);
         } catch(SQLException e) {
-            e.printStackTrace();
+            Log.e("DB", e.getMessage());
         }
     }
 
@@ -141,10 +143,68 @@ public class DatabaseService {
         try {
             dbManager.getWorklogDao().queryForEq("quota", quotaId);
         } catch(SQLException e) {
-            e.printStackTrace();
+            Log.e("DB", e.getMessage());
         }
 
         return byQuota;
+    }
+
+    public void createCategory(QuotaCategory category) {
+
+        try {
+            Date date = new Date();
+            category.setCreatedDate(date);
+
+            dbManager.getCategoryDao().create(category);
+        } catch(SQLException e) {
+            Log.e("DB", e.getMessage());
+        }
+    }
+
+    //TODO: Add delete operation
+    public boolean deleteCategory(Long id) {
+
+        if(id == null) {
+            return false;
+        }
+        boolean result = false;
+
+        try {
+            result = dbManager.getCategoryDao().delete(getCategory(id)) == 1;
+        } catch(SQLException e) {
+            Log.e("DB", e.getMessage());
+        }
+
+        return result;
+    }
+
+    public QuotaCategory getCategory(Long id) {
+
+        if(id == null) {
+            return null;
+        }
+        QuotaCategory found = null;
+
+        try {
+            found = dbManager.getCategoryDao().queryForId(id);
+        } catch(SQLException e) {
+            Log.e("DB", e.getMessage());
+        }
+
+        return found;
+    }
+
+    public List<QuotaCategory> findAllCategories() {
+
+        List<QuotaCategory> allCategories = new ArrayList<>();
+
+        try {
+            allCategories = dbManager.getCategoryDao().queryForAll();
+        } catch(SQLException e) {
+            Log.e("DB", e.getMessage());
+        }
+
+        return allCategories;
     }
 
 }

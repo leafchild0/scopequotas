@@ -57,6 +57,8 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
         calendar.add(Calendar.MONTH, -1);
         fromDate = (Button) findViewById(R.id.reports_from);
         fromDate.setText(Utils.getDayMonthYearFormatter().format(calendar.getTime()));
+
+        refreshReports();
     }
 
     public void showFromDatePicker(View view) {

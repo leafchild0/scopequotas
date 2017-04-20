@@ -16,6 +16,10 @@
     <item android:title="@string/tools">
         <menu>
             <item
+                android:id="@+id/categories"
+                android:icon="@drawable/ic_action_name"
+                android:title="@string/categories" />
+            <item
                 android:id="@+id/reports"
                 android:icon="@drawable/ic_reports"
                 android:title="@string/reports" />

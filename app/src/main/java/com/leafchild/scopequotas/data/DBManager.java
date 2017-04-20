@@ -10,6 +10,8 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 /**
  * Created by: leafchild
  * Date: 03/04/2017
@@ -19,9 +21,10 @@ import java.sql.SQLException;
 class DBManager extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME = "scope.quotas.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
     private Dao<Quota, Long> quotaDao = null;
     private Dao<Worklog, Long> worklogDao = null;
+    private Dao<QuotaCategory, Long> categoryDao = null;
 
     DBManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,8 +35,19 @@ class DBManager extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(connectionSource, Quota.class);
             TableUtils.createTable(connectionSource, Worklog.class);
+            TableUtils.createTable(connectionSource, QuotaCategory.class);
+            addUncategorizedCategory();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void addUncategorizedCategory() {
+        try {
+            QuotaCategory uncategorized = new QuotaCategory("Uncategorized");
+            getCategoryDao().create(uncategorized);
+        } catch(SQLException e) {
+            Log.e("DB", e.getMessage());
         }
     }
 
@@ -43,40 +57,54 @@ class DBManager extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.dropTable(connectionSource, Quota.class, true);
             TableUtils.dropTable(connectionSource, Worklog.class, true);
+            TableUtils.dropTable(connectionSource, QuotaCategory.class, true);
             onCreate(db, connectionSource);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Dao<Quota, Long> getQuotaDao() {
+    Dao<Quota, Long> getQuotaDao() {
         if (quotaDao == null) {
             try {
                 quotaDao = getDao(Quota.class);
             } catch(SQLException e) {
-                Log.e("", e.getMessage());
+                Log.e("DB", e.getMessage());
             }
         }
 
         return quotaDao;
     }
 
-    public Dao<Worklog, Long> getWorklogDao() {
+    Dao<Worklog, Long> getWorklogDao() {
         if (worklogDao == null) {
             try {
                 worklogDao = getDao(Worklog.class);
             } catch(SQLException e) {
-                Log.e("", e.getMessage());
+                Log.e("DB", e.getMessage());
             }
         }
 
         return worklogDao;
     }
 
+    Dao<QuotaCategory, Long> getCategoryDao() {
+        if (categoryDao == null) {
+            try {
+                categoryDao = getDao(QuotaCategory.class);
+            } catch(SQLException e) {
+                Log.e("DB", e.getMessage());
+            }
+        }
+
+        return categoryDao;
+    }
+
     @Override
     public void close() {
         quotaDao = null;
         worklogDao = null;
+        categoryDao = null;
 
         super.close();
     }
