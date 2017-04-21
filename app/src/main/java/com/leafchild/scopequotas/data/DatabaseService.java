@@ -141,7 +141,7 @@ public class DatabaseService {
         }
 
         try {
-            dbManager.getWorklogDao().queryForEq("quota", quotaId);
+            byQuota = dbManager.getWorklogDao().queryForEq("quota", quotaId);
         } catch(SQLException e) {
             Log.e("DB", e.getMessage());
         }
@@ -207,4 +207,15 @@ public class DatabaseService {
         return allCategories;
     }
 
+    public QuotaCategory getCategoryByName(String pickedCategory) {
+        QuotaCategory found = null;
+
+        try {
+            found = dbManager.getCategoryDao().queryForEq("name", pickedCategory).get(0);
+        } catch(SQLException e) {
+            Log.e("DB", e.getMessage());
+        }
+
+        return found;
+    }
 }

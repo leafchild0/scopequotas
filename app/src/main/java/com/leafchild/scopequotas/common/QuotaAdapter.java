@@ -24,6 +24,7 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
     private static class ViewHolder {
 
         TextView name;
+        TextView amount;
     }
 
     public QuotaAdapter(Context context, List<Quota> quotas) {
@@ -45,6 +46,7 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.quota_item, parent, false);
             viewHolder.name = (TextView) convertView.findViewById(R.id.qName);
+            viewHolder.amount = (TextView) convertView.findViewById(R.id.qAmount);
             // Cache the viewHolder object inside the fresh view
             convertView.setTag(viewHolder);
         }
@@ -56,6 +58,7 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
         Quota quota = getItem(position);
         if(quota != null) {
             viewHolder.name.setText(quota.getName());
+            viewHolder.amount.setText(String.valueOf(quota.getWorklogAmount()));
         }
 
         return convertView;

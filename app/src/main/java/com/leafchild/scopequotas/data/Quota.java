@@ -27,6 +27,10 @@ public class Quota {
     private QuotaType quotaType;
     @DatabaseField(columnName = "description")
     private String description;
+    @DatabaseField(columnName = "min")
+    private Integer min;
+    @DatabaseField(columnName = "max")
+    private Integer max;
     @DatabaseField(columnName = "createdDate")
     private Date createdDate;
     @DatabaseField(columnName = "modifiedDate")
@@ -128,7 +132,7 @@ public class Quota {
     }
 
     public boolean isNew() {
-        return id > -1;
+        return id < 0;
     }
 
     public Double getWorklogAmount() {
@@ -151,6 +155,22 @@ public class Quota {
 
     public void setCategory(QuotaCategory category) {
         this.category = category;
+    }
+
+    public Integer getMax() {
+        return max;
+    }
+
+    public void setMax(Integer max) {
+        this.max = max;
+    }
+
+    public Integer getMin() {
+        return min;
+    }
+
+    public void setMin(Integer min) {
+        this.min = min;
     }
 }
 

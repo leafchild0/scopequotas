@@ -100,6 +100,8 @@
     <string name="manage_your_time_better">Manage your time better</string>
     <string name="select_a_query">[Select a Query…]</string>
     <string name="categories">Categories</string>
+    <string name="max_amount">Max</string>
+    <string name="min_amount">Min</string>
 
     <string-array name="worklog_array">
         <item>minutes</item>

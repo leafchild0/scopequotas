@@ -62,7 +62,7 @@ public class WorklogActivity extends AppCompatActivity implements AdapterView.On
         service.addWorklog(worklog);
 
         Toast.makeText(WorklogActivity.this, "Worklog was added", Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(WorklogActivity.this::finish, 2000);
+        new Handler().postDelayed(WorklogActivity.this::onBackPressed, 1000);
     }
 
     public void cancel(View view) {

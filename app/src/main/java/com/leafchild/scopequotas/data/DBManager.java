@@ -21,7 +21,7 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 class DBManager extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME = "scope.quotas.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private Dao<Quota, Long> quotaDao = null;
     private Dao<Worklog, Long> worklogDao = null;
     private Dao<QuotaCategory, Long> categoryDao = null;
