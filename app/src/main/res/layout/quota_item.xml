@@ -20,5 +20,5 @@
         android:elevation="10dp"
         android:ems="10"
         android:padding="8dp"
-        android:textAppearance="@android:style/TextAppearance.Material.Large" />
+        android:textAppearance="@android:style/TextAppearance.Material.Body1" />
 </LinearLayout>

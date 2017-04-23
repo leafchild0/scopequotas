@@ -20,7 +20,7 @@ public class WorklogActivity extends AppCompatActivity implements AdapterView.On
 
     private DatabaseService service;
     private Quota picked = null;
-    private  Spinner inputType;
+    private Spinner inputType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class WorklogActivity extends AppCompatActivity implements AdapterView.On
         Spinner dropdown = (Spinner) findViewById(R.id.quotas_list);
         dropdown.setAdapter(new QuotaAdapter(this,
             android.R.layout.simple_spinner_dropdown_item,
-            service.findAllQuotas()));
+            service.findAllQuotas(), false));
         dropdown.setOnItemSelectedListener(this);
         dropdown.setPrompt("Select query");
 

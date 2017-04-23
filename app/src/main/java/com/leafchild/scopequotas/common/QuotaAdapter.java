@@ -11,6 +11,7 @@ import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.data.Quota;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by: leafchild
@@ -19,6 +20,9 @@ import java.util.List;
  */
 
 public class QuotaAdapter extends ArrayAdapter<Quota> {
+
+    private boolean showWorklog = true;
+    private static final String HOURS = " h";
 
     // View lookup cache
     private static class ViewHolder {
@@ -31,8 +35,9 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
         super(context, R.layout.quota_item, quotas);
     }
 
-    public QuotaAdapter(Context context, int resource, List<Quota> quotas) {
+    public QuotaAdapter(Context context, int resource, List<Quota> quotas, boolean showWorklog) {
         super(context, resource, quotas);
+        this.showWorklog = showWorklog;
     }
 
     @NonNull
@@ -58,7 +63,8 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
         Quota quota = getItem(position);
         if(quota != null) {
             viewHolder.name.setText(quota.getName());
-            viewHolder.amount.setText(String.valueOf(quota.getWorklogAmount()));
+            if(showWorklog) viewHolder.amount.setText(String.format(String.valueOf(quota.getWorklogAmount())
+                + "%s", HOURS));
         }
 
         return convertView;

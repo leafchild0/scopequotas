@@ -2,11 +2,15 @@ package com.leafchild.scopequotas.data;
 
 import android.content.Context;
 import android.util.Log;
+import com.j256.ormlite.dao.ForeignCollection;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+
+import static android.R.attr.category;
 
 /**
  * Created by: leafchild
@@ -217,5 +221,73 @@ public class DatabaseService {
         }
 
         return found;
+    }
+
+    public HashMap<String, Float> getLoggedDataByCategory(Date from, Date to) {
+
+        HashMap<String, Float> grouped = new HashMap<>();
+        List<Quota> allQuotas = findAllQuotas();
+
+        for(Quota quota : allQuotas) {
+            String categoryName = quota.getCategory().getName();
+
+            if(!grouped.containsKey(categoryName)) {
+                grouped.put(categoryName, calculateAmount(quota.getLogged(), from, to));
+            }
+            else {
+                grouped.put(categoryName, grouped.get(categoryName) + quota.getWorklogAmount());
+            }
+        }
+
+        return grouped;
+    }
+
+    private Float calculateAmount(ForeignCollection<Worklog> logged, Date from, Date to) {
+
+        float result = 0f;
+
+        for(Worklog worklog : logged) {
+            if(worklog.getCreatedDate().before(to)
+                && worklog.getCreatedDate().after(from)) {
+                result += worklog.getAmount();
+            }
+        }
+
+        return result;
+    }
+
+    public HashMap<String, Float> getLoggedDataByType(Date from, Date to) {
+        HashMap<String, Float> byType = new HashMap<>();
+        List<Quota> allQuotas = findAllQuotas();
+
+        for(Quota quota : allQuotas) {
+            String type = quota.getQuotaType().getValue();
+            if(!byType.containsKey(type)) {
+                byType.put(type, calculateAmount(quota.getLogged(), from, to));
+            }
+            else {
+                byType.put(type, byType.get(type) + quota.getWorklogAmount());
+            }
+        }
+
+        return byType;
+    }
+
+    public HashMap<String,Float> getLoggedDataByName(Date from, Date to) {
+
+        HashMap<String, Float> byName = new HashMap<>();
+        List<Quota> allQuotas = findAllQuotas();
+
+        for(Quota quota : allQuotas) {
+            String name = quota.getName();
+            if(!byName.containsKey(name)) {
+                byName.put(name, calculateAmount(quota.getLogged(), from, to));
+            }
+            else {
+                byName.put(name, byName.get(name) + quota.getWorklogAmount());
+            }
+        }
+
+        return byName;
     }
 }

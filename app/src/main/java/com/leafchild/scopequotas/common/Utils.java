@@ -1,6 +1,10 @@
 package com.leafchild.scopequotas.common;
 
+import com.github.mikephil.charting.utils.ColorTemplate;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -19,5 +23,29 @@ public class Utils {
 
     public static SimpleDateFormat getDayMonthYearFormatter() {
         return dayMonthYearFormatter;
+    }
+
+    public static List<Integer> getColorsForCharts() {
+
+        ArrayList<Integer> colors = new ArrayList<>();
+
+        for(int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for(int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for(int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for(int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for(int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+
+        return colors;
     }
 }

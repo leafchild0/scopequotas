@@ -102,6 +102,8 @@
     <string name="categories">Categories</string>
     <string name="max_amount">Max</string>
     <string name="min_amount">Min</string>
+    <string name="report_by">Report by</string>
+    <string name="choose_dates">Choose dates</string>
 
     <string-array name="worklog_array">
         <item>minutes</item>

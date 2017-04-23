@@ -7,9 +7,13 @@ package com.leafchild.scopequotas.data;
  */
 
 public enum QuotaType {
-    DAILY,
-    WEEKLY,
-    MONTHLY;
+    DAILY("Daily"),
+    WEEKLY("Weekly"),
+    MONTHLY("Monthly");
+
+    QuotaType(String value) {
+        this.value = value;
+    }
 
     private String value;
 

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -169,6 +170,22 @@ public class DetailsActivity extends AppCompatActivity {
             entries.add(new BarEntry(amount++, worklog.getAmount().floatValue()));
             labels.add(Utils.getDayMonthFormatter().format(worklog.getCreatedDate()));
         }
+
+        XAxis xl = chart.getXAxis();
+        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xl.setDrawAxisLine(true);
+        xl.setDrawGridLines(false);
+        xl.setGranularity(10f);
+
+        YAxis yl = chart.getAxisLeft();
+        yl.setDrawAxisLine(true);
+        yl.setDrawGridLines(true);
+        yl.setAxisMinimum(0f);
+
+        YAxis yr = chart.getAxisRight();
+        yr.setDrawAxisLine(true);
+        yr.setDrawGridLines(false);
+        yr.setAxisMinimum(0f);
 
         BarDataSet dataSet = new BarDataSet(entries, "");
         BarData lineData = new BarData(dataSet);

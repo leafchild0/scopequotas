@@ -6,6 +6,7 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -132,17 +133,30 @@ public class Quota {
     }
 
     public boolean isNew() {
-        return id < 0;
+        return id <= 0;
     }
 
-    public Double getWorklogAmount() {
+    public Float getWorklogAmount() {
 
-        double sum = 0;
+        float sum = 0;
 
         for(Worklog w : logged) {
-            sum += w.getAmount();
+            double tempAmount = w.getAmount();
+            switch(w.getType()) {
+                case DAYS:
+                    tempAmount = tempAmount * 24;
+                    break;
+                case HOURS:
+                    break;
+                case MINUTES:
+                    tempAmount = tempAmount / 60;
+                    break;
+                default:
+            }
+
+            sum += tempAmount;
         }
-        return sum;
+        return Float.valueOf(String.format(Locale.getDefault(), "%.2f", sum));
     }
 
     public void addWorklog(Worklog worklog) {

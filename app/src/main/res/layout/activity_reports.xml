@@ -7,44 +7,88 @@
     android:layout_height="match_parent"
     tools:context="com.leafchild.scopequotas.reports.ReportsActivity">
 
+    <TextView
+        android:id="@+id/report_by_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/report_by"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textAppearance="@android:style/TextAppearance.Material.Headline" />
+
     <Spinner
         android:id="@+id/report_by"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dropdown_height"
         android:layout_margin="@dimen/activity_vertical_margin"
-        android:spinnerMode="dropdown"
-        style="@style/Widget.AppCompat.Spinner.Underlined" />
+        android:layout_below="@id/report_by_label"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:spinnerMode="dropdown" />
 
     <android.widget.RelativeLayout
         android:layout_width="match_parent"
+        android:id="@+id/controls"
         android:layout_height="wrap_content"
         android:layout_below="@+id/report_by">
 
+        <TextView
+            android:id="@+id/dates_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_dates"
+            android:padding="@dimen/activity_vertical_margin"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_below="@id/dates_label"
+            android:layout_height="wrap_content">
+
         <Button
             android:id="@+id/reports_from"
-            android:layout_width="160dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_margin="@dimen/activity_vertical_margin"
+            android:layout_weight="0.5"
             android:onClick="showFromDatePicker"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:spinnerMode="dropdown" />
 
         <Button
             android:id="@+id/reports_to"
-            android:layout_width="160dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:spinnerMode="dropdown"
-            android:layout_alignParentEnd="true"
             android:layout_margin="@dimen/activity_vertical_margin"
+            android:layout_weight="0.5"
             style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:onClick="showToDatePicker"/>
+            android:onClick="showToDatePicker" />
+        </LinearLayout>
 
     </android.widget.RelativeLayout>
 
-    <android.support.v4.widget.Space
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/category_chart"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/half_black" />
+        android:layout_height="200dp"
+        android:layout_below="@+id/controls"
+        android:layout_marginTop="16dp"
+        android:visibility="visible" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/name_chart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/controls"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentBottom="true"/>
+
+    <com.github.mikephil.charting.charts.HorizontalBarChart
+        android:id="@+id/type_chart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/controls"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentBottom="true"/>
+
 
 </android.widget.RelativeLayout>
