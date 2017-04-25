@@ -5,15 +5,6 @@
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact based on your message
-        history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
         <item>Always</item>
@@ -108,6 +99,11 @@
         Let the force be with you!
     </string>
     <string name="app_author">Developed by Victor Malyshev (aka leafchild)</string>
+    <string name="pref_quota_indicator">Show quotas indicator</string>
+    <string name="pref_description_quota_indicator">Show quotas progress indicator under each quota</string>
+    <string name="pref_quotas_quantity">Show quotas quantity</string>
+    <string name="pref_description_quotas_quantity">Show quotas quantity per each section (Daily, Weekly, Monthly)</string>
+    <string name="pref_daily_notifications">Daily Notifications</string>
 
     <string-array name="worklog_array">
         <item>minutes</item>
