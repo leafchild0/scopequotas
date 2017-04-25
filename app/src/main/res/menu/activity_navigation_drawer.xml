@@ -17,7 +17,7 @@
         <menu>
             <item
                 android:id="@+id/categories"
-                android:icon="@drawable/ic_action_name"
+                android:icon="@drawable/ic_category_black_24dp"
                 android:title="@string/categories" />
             <item
                 android:id="@+id/reports"

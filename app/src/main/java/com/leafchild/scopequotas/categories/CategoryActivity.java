@@ -15,7 +15,6 @@ import com.leafchild.scopequotas.data.QuotaCategory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -55,7 +54,7 @@ public class CategoryActivity extends AppCompatActivity {
             data.add(category.getName());
         }
 
-        catAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.category_tiem, data);
+        catAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.category_item, data);
         categories = (ListView) findViewById(R.id.categories_list);
         categories.setAdapter(catAdapter);
 

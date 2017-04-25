@@ -34,7 +34,6 @@
 
     <include layout="@layout/content_details" />
 
-    <!--TODO: Change to button from addon-->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

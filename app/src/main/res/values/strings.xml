@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Scope Quotas</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
 
@@ -74,9 +72,9 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
-    <string name="title_activity_details">Details</string>
-    <string name="title_activity_menu">Menu</string>
-    <string name="title_activity_category">Categories</string>
+    <string name="details">Details</string>
+    <string name="menu">Menu</string>
+    <string name="categories">Categories</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -88,8 +86,6 @@
     <string name="weekly">Weekly</string>
     <string name="monthly">Monthly</string>
     <string name="about">About</string>
-    <string name="title_activity_reports">Reports</string>
-    <string name="title_activity_about">About</string>
     <string name="name">Name</string>
     <string name="amount">Amount</string>
     <string name="goal">Goal</string>
@@ -99,11 +95,19 @@
     <string name="add">Add</string>
     <string name="manage_your_time_better">Manage your time better</string>
     <string name="select_a_query">[Select a Query…]</string>
-    <string name="categories">Categories</string>
     <string name="max_amount">Max</string>
     <string name="min_amount">Min</string>
     <string name="report_by">Report by</string>
     <string name="choose_dates">Choose dates</string>
+    <string name="app_about">
+        Small app that allows to track and manage time.
+        Original idea is in setting a quotas per period of time (weekly, as an example).
+        Then, allow app to notify you and log used time each day.
+        Notifications will help to stay in the loop.
+        App has Reports feature which allow to ubderstabd what may be improved.
+        Let the force be with you!
+    </string>
+    <string name="app_author">Developed by Victor Malyshev (aka leafchild)</string>
 
     <string-array name="worklog_array">
         <item>minutes</item>

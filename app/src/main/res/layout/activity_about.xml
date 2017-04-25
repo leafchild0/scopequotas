@@ -1,19 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.leafchild.scopequotas.AboutActivity">
 
-    <ScrollView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
     <TextView
-        android:layout_width="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Headline"
+        android:id="@+id/app_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ems="10"
+        android:textAlignment="center"
         android:layout_margin="@dimen/text_margin"
-        android:text="@string/about" />
-    </ScrollView>
+        android:text="@string/app_name" />
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:id="@+id/app_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_name"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/text_margin"
+        android:text="@string/app_about" />
+
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Body2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="@string/app_author"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginRight="@dimen/text_margin"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+</android.widget.RelativeLayout>
