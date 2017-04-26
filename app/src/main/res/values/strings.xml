@@ -101,8 +101,8 @@
     <string name="app_author">Developed by Victor Malyshev (aka leafchild)</string>
     <string name="pref_quota_indicator">Show quotas indicator</string>
     <string name="pref_description_quota_indicator">Show quotas progress indicator under each quota</string>
-    <string name="pref_quotas_quantity">Show quotas quantity</string>
-    <string name="pref_description_quotas_quantity">Show quotas quantity per each section (Daily, Weekly, Monthly)</string>
+    <string name="pref_quotas_quantity">Show quotas badges</string>
+    <string name="pref_description_quotas_quantity">Show quotas badges per each section (Daily, Weekly, Monthly)</string>
     <string name="pref_daily_notifications">Daily Notifications</string>
 
     <string-array name="worklog_array">

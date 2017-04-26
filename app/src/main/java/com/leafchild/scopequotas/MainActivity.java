@@ -1,15 +1,20 @@
 package com.leafchild.scopequotas;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,12 +46,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ArrayAdapter<Quota> quotaAdapter;
     private QuotaType currentType = QuotaType.WEEKLY;
 
+    private SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
         service = new DatabaseService(this);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         initComponents();
 
@@ -63,6 +71,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        boolean quota_badges = sharedPref.getBoolean(SettingsActivity.QUOTA_BADGES, true);
+
+        if(quota_badges) initMenuBadges(navigationView);
+    }
+
+    private void initMenuBadges(NavigationView navigationView) {
+        TextView weekly, daily, monthly;
+
+        daily = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_daily));
+        daily.setGravity(Gravity.CENTER_VERTICAL);
+        daily.setTypeface(null, Typeface.BOLD);
+        daily.setText(Integer.toString(service.findQuotasByType(QuotaType.DAILY).size()));
+
+        weekly = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_weekly));
+        weekly.setGravity(Gravity.CENTER_VERTICAL);
+        weekly.setTypeface(null, Typeface.BOLD);
+        weekly.setText(Integer.toString(service.findQuotasByType(QuotaType.WEEKLY).size()));
+
+        monthly = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_monthly));
+        monthly.setGravity(Gravity.CENTER_VERTICAL);
+        monthly.setTypeface(null, Typeface.BOLD);
+        monthly.setText(Integer.toString(service.findQuotasByType(QuotaType.MONTHLY).size()));
     }
 
     private void initFabMenu() {

@@ -37,6 +37,13 @@ import java.util.List;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
+    public static final String QUOTA_INDICATOR = "quota_indicator_switch";
+    public static final String QUOTA_BADGES = "quota_badges_switch";
+    public static final String DAILY_NOTIFICATIONS = "daily_notifications";
+    public static final String NOTIFICATIONS_RINGTONE = "daily_notifications_ringtone";
+    public static final String NOTIFICATIONS_VIBRATE = "daily_notifications_vibrate";
+    public static final String SYNC_FREQUENCY = "sync_frequency";
+
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -226,7 +233,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("daily_notifications_ringtone"));
+            bindPreferenceSummaryToValue(findPreference(NOTIFICATIONS_RINGTONE));
         }
 
         @Override
@@ -257,7 +264,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+            bindPreferenceSummaryToValue(findPreference(SYNC_FREQUENCY));
         }
 
         @Override
