@@ -7,7 +7,14 @@
         android:key="daily_notifications"
         android:title="@string/pref_daily_notifications" />
 
-    <!--TODO: Add time picker here-->
+    <com.leafchild.scopequotas.settings.TimePreference
+        android:key="time_notifications"
+        android:positiveButtonText="@string/set"
+        android:negativeButtonText="@string/cancel"
+        android:dialogTitle="@string/choose_time"
+        android:dependency="daily_notifications"
+        android:title="@string/notification_time">
+    </com.leafchild.scopequotas.settings.TimePreference>
 
     <!-- Allows the user to choose a ringtone in the 'notification' category. -->
     <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->

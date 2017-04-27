@@ -104,6 +104,9 @@
     <string name="pref_quotas_quantity">Show quotas badges</string>
     <string name="pref_description_quotas_quantity">Show quotas badges per each section (Daily, Weekly, Monthly)</string>
     <string name="pref_daily_notifications">Daily Notifications</string>
+    <string name="notification_time">Notifications time</string>
+    <string name="set">Set</string>
+    <string name="choose_time">Choose time</string>
 
     <string-array name="worklog_array">
         <item>minutes</item>
