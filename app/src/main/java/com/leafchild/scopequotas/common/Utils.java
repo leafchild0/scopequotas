@@ -1,11 +1,17 @@
 package com.leafchild.scopequotas.common;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.widget.EditText;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /**
  * Created by: leafchild
@@ -47,5 +53,13 @@ public class Utils {
         colors.add(ColorTemplate.getHoloBlue());
 
         return colors;
+    }
+
+    public static SharedPreferences getDefaultSharedPrefs(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    public static boolean isFieldEmpty(EditText field) {
+        return field != null && field.getText().toString().isEmpty();
     }
 }

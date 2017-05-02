@@ -95,25 +95,28 @@ public class DetailsActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            if(editingBean == null) {
-                editingBean = new Quota(
-                    name.getText().toString(),
-                    goal.getText().toString(),
-                    QuotaType.fromOrdinal(type)
-                );
-                editingBean.setCategory(service.getCategoryByName(pickedCategory));
-                editingBean.setMin(Integer.valueOf(min.getText().toString()));
-                editingBean.setMax(Integer.valueOf(max.getText().toString()));
-            } else {
-                editingBean.setCategory(service.getCategoryByName(pickedCategory));
-                editingBean.setMin(Integer.valueOf(min.getText().toString()));
-                editingBean.setMax(Integer.valueOf(max.getText().toString()));
-                editingBean.setDescription(goal.getText().toString());
-            }
-            service.persistQuota(editingBean);
+            if(isQuotaValid()) {
+                if(editingBean == null) {
+                    editingBean = new Quota(
+                        name.getText().toString(),
+                        goal.getText().toString(),
+                        QuotaType.fromOrdinal(type)
+                    );
+                    editingBean.setCategory(service.getCategoryByName(pickedCategory));
+                    editingBean.setMin(Integer.valueOf(min.getText().toString()));
+                    editingBean.setMax(Integer.valueOf(max.getText().toString()));
+                }
+                else {
+                    editingBean.setCategory(service.getCategoryByName(pickedCategory));
+                    editingBean.setMin(Integer.valueOf(min.getText().toString()));
+                    editingBean.setMax(Integer.valueOf(max.getText().toString()));
+                    editingBean.setDescription(goal.getText().toString());
+                }
+                service.persistQuota(editingBean);
 
-            Toast.makeText(DetailsActivity.this, "Quota " + editingBean.getName() + " was saved", Toast.LENGTH_SHORT).show();
-            new Handler().postDelayed(DetailsActivity.this::onBackPressed, 1000);
+                Toast.makeText(DetailsActivity.this, "Quota " + editingBean.getName() + " was saved", Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(DetailsActivity.this::onBackPressed, 1000);
+            }
         });
 
         if(getQuotaId() != -1) {
@@ -127,6 +130,32 @@ public class DetailsActivity extends AppCompatActivity {
             worklogLayout.setVisibility(View.GONE);
             setTitle("Add new Quota");
         }
+    }
+
+    private boolean isQuotaValid() {
+
+        boolean isMinMax = false;
+        boolean isAllFilled = !Utils.isFieldEmpty(name)
+            && !Utils.isFieldEmpty(goal)
+            && !Utils.isFieldEmpty(min)
+            && !Utils.isFieldEmpty(max);
+
+        if(isAllFilled) {
+            int minValue = Integer.valueOf(min.getText().toString());
+            int maxValue = Integer.valueOf(max.getText().toString());
+
+            isMinMax = Integer.compare(minValue, maxValue) < 0;
+
+            if(!isMinMax) {
+                Toast.makeText(DetailsActivity.this,
+                    "Min needs to be less then Max", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            Toast.makeText(DetailsActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
+        }
+
+        return isAllFilled && isMinMax;
     }
 
     private void loadData() {

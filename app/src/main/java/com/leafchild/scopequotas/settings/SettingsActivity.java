@@ -43,6 +43,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public static final String NOTIFICATIONS_RINGTONE = "daily_notifications_ringtone";
     public static final String NOTIFICATIONS_VIBRATE = "daily_notifications_vibrate";
     public static final String SYNC_FREQUENCY = "sync_frequency";
+    public static final String TIME_NOTIFICATIONS = "time_notifications";
 
     /**
      * A preference value change listener that updates the preference's summary

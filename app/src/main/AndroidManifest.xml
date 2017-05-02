@@ -63,6 +63,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.leafchild.scopequotas.MainActivity" />
         </activity>
+        <receiver android:name=".common.NotificationsReciever" />
     </application>
 
 </manifest>

@@ -36,7 +36,7 @@
         android:layout_marginRight="@dimen/text_margin"
         android:layout_marginTop="70dp"
         android:layout_below="@+id/quotas_list"
-        android:layout_toStartOf="@+id/button_cancel" />
+        android:layout_toStartOf="@+id/button_add" />
 
     <Spinner
         android:id="@+id/worklog_amount_type"
@@ -44,18 +44,9 @@
         android:layout_height="wrap_content"
         android:spinnerMode="dropdown"
         android:layout_alignBottom="@+id/quota_amount"
-        android:layout_alignEnd="@+id/button_cancel"
+        android:layout_alignEnd="@+id/button_add"
         android:layout_marginEnd="@dimen/text_margin"
         android:layout_marginBottom="@dimen/text_margin" />
-
-    <Button
-        android:id="@+id/button_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add"
-        android:onClick="addWorklog"
-        android:layout_alignBaseline="@+id/button_cancel"
-        android:layout_alignBottom="@+id/button_cancel" />
 
     <Button
         android:id="@+id/button_cancel"
@@ -63,8 +54,17 @@
         android:layout_height="wrap_content"
         android:text="@string/cancel"
         android:onClick="cancel"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="20dp"
+        android:layout_margin="30dp"
+        android:layout_alignBaseline="@+id/button_add"
+        android:layout_alignBottom="@+id/button_add" />
+
+    <Button
+        android:id="@+id/button_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add"
+        android:onClick="addWorklog"
+        android:layout_margin="30dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 

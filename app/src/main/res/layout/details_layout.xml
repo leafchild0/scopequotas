@@ -8,7 +8,7 @@
 
     <EditText
         android:id="@+id/quota_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -20,10 +20,8 @@
 
     <EditText
         android:id="@+id/quota_goal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/quota_name"
-        android:layout_alignStart="@+id/quota_name"
         android:layout_below="@+id/quota_name"
         android:hint="@string/goal"
         android:layout_margin="@dimen/text_margin"
@@ -65,6 +63,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/quota_values"
         android:layout_marginTop="30dp"
+        android:layout_margin="@dimen/text_margin"
         android:spinnerMode="dropdown"
         style="@style/Widget.AppCompat.Spinner.Underlined" />
 
@@ -92,8 +91,8 @@
         android:id="@+id/worklog_chart"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_margin="@dimen/text_margin"
         android:layout_below="@+id/quota_amount_name"
-        android:layout_marginTop="16dp"
         android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

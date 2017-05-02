@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
@@ -24,7 +25,9 @@ import android.widget.TextView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.leafchild.scopequotas.categories.CategoryActivity;
+import com.leafchild.scopequotas.common.NotificationsManager;
 import com.leafchild.scopequotas.common.QuotaAdapter;
+import com.leafchild.scopequotas.common.Utils;
 import com.leafchild.scopequotas.data.DatabaseService;
 import com.leafchild.scopequotas.data.Quota;
 import com.leafchild.scopequotas.data.QuotaType;
@@ -35,6 +38,7 @@ import com.leafchild.scopequotas.worklog.WorklogActivity;
 
 import java.util.List;
 
+import static android.R.attr.type;
 import static com.leafchild.scopequotas.AppContants.TYPE;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final MainActivity self = this;
     private DatabaseService service;
     private ListView listView;
+    private TextView type;
 
     private ArrayAdapter<Quota> quotaAdapter;
     private QuotaType currentType = QuotaType.WEEKLY;
@@ -54,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
         service = new DatabaseService(this);
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref = Utils.getDefaultSharedPrefs(this);
 
         initComponents();
 
@@ -73,8 +78,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         boolean quota_badges = sharedPref.getBoolean(SettingsActivity.QUOTA_BADGES, true);
-
         if(quota_badges) initMenuBadges(navigationView);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        quotaAdapter.clear();
+        quotaAdapter.addAll(loadData(currentType.ordinal()));
+
+        if(!quotaAdapter.isEmpty()) {
+            type.setVisibility(View.GONE);
+        }
     }
 
     private void initMenuBadges(NavigationView navigationView) {
@@ -131,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void initComponents() {
 
-        TextView type = (TextView) findViewById(R.id.no_quotas);
+        type = (TextView) findViewById(R.id.no_quotas);
         listView = (ListView) findViewById(R.id.quotas_list);
 
         List<Quota> quotas = loadData(getIntent().getIntExtra(TYPE, 1));
@@ -151,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(details);
         });
 
-        if(!quotas.isEmpty()) {
+        if(!quotaAdapter.isEmpty()) {
             type.setVisibility(View.GONE);
         }
     }
@@ -241,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         }
         else {
-            //recreate();
+            quotaAdapter.notifyDataSetChanged();
         }
 
         return true;
