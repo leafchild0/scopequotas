@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.EditText;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.leafchild.scopequotas.data.Quota;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,5 +62,9 @@ public class Utils {
 
     public static boolean isFieldEmpty(EditText field) {
         return field != null && field.getText().toString().isEmpty();
+    }
+
+    public static int calculateQuotaProgress(Quota quota) {
+        return (int) (quota.getWorklogAmount() * 100 / quota.getMax());
     }
 }

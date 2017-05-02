@@ -6,12 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.data.Quota;
 
 import java.util.List;
 import java.util.Locale;
+
+import static com.leafchild.scopequotas.settings.SettingsActivity.QUOTA_INDICATOR;
 
 /**
  * Created by: leafchild
@@ -22,6 +25,7 @@ import java.util.Locale;
 public class QuotaAdapter extends ArrayAdapter<Quota> {
 
     private boolean showWorklog = true;
+    private boolean showProgress = true;
     private static final String HOURS = " h";
 
     // View lookup cache
@@ -29,6 +33,7 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
 
         TextView name;
         TextView amount;
+        ProgressBar progress;
     }
 
     public QuotaAdapter(Context context, List<Quota> quotas) {
@@ -38,6 +43,7 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
     public QuotaAdapter(Context context, int resource, List<Quota> quotas, boolean showWorklog) {
         super(context, resource, quotas);
         this.showWorklog = showWorklog;
+        this.showProgress = Utils.getDefaultSharedPrefs(context).getBoolean(QUOTA_INDICATOR, true);
     }
 
     @NonNull
@@ -51,7 +57,10 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.quota_item, parent, false);
             viewHolder.name = (TextView) convertView.findViewById(R.id.qName);
-            viewHolder.amount = (TextView) convertView.findViewById(R.id.qAmount);
+
+            viewHolder.progress = (ProgressBar) convertView.findViewById(R.id.quota_progress);
+            if(showWorklog) viewHolder.amount = (TextView) convertView.findViewById(R.id.qAmount);
+            else viewHolder.progress.setVisibility(View.GONE);
             // Cache the viewHolder object inside the fresh view
             convertView.setTag(viewHolder);
         }
@@ -63,8 +72,14 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
         Quota quota = getItem(position);
         if(quota != null) {
             viewHolder.name.setText(quota.getName());
-            if(showWorklog) viewHolder.amount.setText(String.format(String.valueOf(quota.getWorklogAmount())
-                + "%s", HOURS));
+
+            if(showWorklog) {
+                viewHolder.amount.setText(String.format(String.valueOf(quota.getWorklogAmount())
+                    + "%s", HOURS));
+                if(showProgress) {
+                    viewHolder.progress.setProgress(Utils.calculateQuotaProgress(quota));
+                }
+            }
         }
 
         return convertView;

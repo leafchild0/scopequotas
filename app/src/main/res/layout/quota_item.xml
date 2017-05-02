@@ -1,4 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
+    android:id="@+id/quota_entry"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp" >
@@ -23,4 +30,14 @@
         android:maxLines="1"
         android:textAlignment="viewEnd"
         android:textAppearance="@android:style/TextAppearance.Material.Body1" />
+
 </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/quota_progress"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/quota_entry"
+        android:progressTint="@color/blue_semi_transparent"
+        style="?android:attr/progressBarStyleHorizontal" />
+</RelativeLayout>
