@@ -72,7 +72,8 @@
         android:layout_height="200dp"
         android:layout_below="@+id/controls"
         android:layout_marginTop="16dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"/>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/name_chart"

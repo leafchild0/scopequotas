@@ -2,7 +2,6 @@ package com.leafchild.scopequotas;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 
 public class AboutActivity extends AppCompatActivity {
 

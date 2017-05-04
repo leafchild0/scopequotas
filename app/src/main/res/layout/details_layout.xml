@@ -26,7 +26,7 @@
         android:hint="@string/goal"
         android:layout_margin="@dimen/text_margin"
         android:inputType="textMultiLine"
-        android:lines="3" />
+        android:lines="2" />
 
     <LinearLayout
         android:id="@+id/quota_values"
@@ -92,7 +92,37 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_margin="@dimen/text_margin"
-        android:layout_below="@+id/quota_amount_name"
-        android:layout_alignParentBottom="true"/>
+        android:layout_below="@+id/quota_amount_name" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/buttonBarStyle"
+        android:layout_below="@id/worklog_chart"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:text="@string/delete"
+            android:onClick="deleteQuota"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:textColor="@color/colorPrimary"
+            style="?android:attr/buttonBarButtonStyle"/>
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:onClick="saveQuota"
+            android:textColor="@color/colorPrimary"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            style="?android:attr/buttonBarButtonStyle"/>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -107,6 +107,8 @@
     <string name="notification_time">Notifications time</string>
     <string name="set">Set</string>
     <string name="choose_time">Choose time</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
 
     <string-array name="worklog_array">
         <item>minutes</item>

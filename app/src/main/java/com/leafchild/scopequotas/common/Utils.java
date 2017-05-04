@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /**
  * Created by: leafchild

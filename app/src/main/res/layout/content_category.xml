@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/new_item"
+        style="?android:attr/buttonBarStyle"
         android:weightSum="1" >
 
         <EditText
@@ -22,9 +23,10 @@
             android:layout_weight="0.2"/>
 
         <Button
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            style="?android:attr/buttonBarButtonStyle"
             android:text="@string/add"
             android:id="@+id/add_category"
             android:layout_weight="0.8"/>

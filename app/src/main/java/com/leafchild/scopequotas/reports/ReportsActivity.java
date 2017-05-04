@@ -55,7 +55,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
     private DatabaseService service;
 
     private static final String CATEGORY = "By Category";
-    private static final String NAME = "By Quota";
+    private static final String NAME = "By Name";
     private static final String TYPE = "By Type";
     private static final int ACCENT_COLOR = 0xFF3F51B5;
 

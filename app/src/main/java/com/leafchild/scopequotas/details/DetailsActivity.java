@@ -1,15 +1,16 @@
 package com.leafchild.scopequotas.details;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.leafchild.scopequotas.MainActivity;
 import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.common.Utils;
 import com.leafchild.scopequotas.data.DatabaseService;
@@ -32,6 +34,7 @@ import com.leafchild.scopequotas.data.Worklog;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.type;
 import static com.leafchild.scopequotas.AppContants.ACTIVE_QUOTA;
 import static com.leafchild.scopequotas.AppContants.TYPE;
 
@@ -43,11 +46,13 @@ public class DetailsActivity extends AppCompatActivity {
     private EditText max;
     private Spinner categories;
     private TextView worklogAmount;
+    private Button deleteButton;
 
     private DatabaseService service;
     private Quota editingBean;
     private String pickedCategory;
     private static final String HOURS = " hours";
+    private int type;
     private ArrayAdapter<String> catAdapter;
 
     @Override
@@ -61,8 +66,9 @@ public class DetailsActivity extends AppCompatActivity {
         goal = (EditText) findViewById(R.id.quota_goal);
         min = (EditText) findViewById(R.id.quota_min);
         max = (EditText) findViewById(R.id.quota_max);
+        deleteButton = (Button) findViewById(R.id.button_delete);
 
-        final int type = getIntent().getIntExtra(TYPE, 1);
+        type = getIntent().getIntExtra(TYPE, 1);
 
         service = new DatabaseService(this);
 
@@ -93,32 +99,6 @@ public class DetailsActivity extends AppCompatActivity {
         });
         categories.setPrompt("Select query");
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            if(isQuotaValid()) {
-                if(editingBean == null) {
-                    editingBean = new Quota(
-                        name.getText().toString(),
-                        goal.getText().toString(),
-                        QuotaType.fromOrdinal(type)
-                    );
-                    editingBean.setCategory(service.getCategoryByName(pickedCategory));
-                    editingBean.setMin(Integer.valueOf(min.getText().toString()));
-                    editingBean.setMax(Integer.valueOf(max.getText().toString()));
-                }
-                else {
-                    editingBean.setCategory(service.getCategoryByName(pickedCategory));
-                    editingBean.setMin(Integer.valueOf(min.getText().toString()));
-                    editingBean.setMax(Integer.valueOf(max.getText().toString()));
-                    editingBean.setDescription(goal.getText().toString());
-                }
-                service.persistQuota(editingBean);
-
-                Toast.makeText(DetailsActivity.this, "Quota " + editingBean.getName() + " was saved", Toast.LENGTH_SHORT).show();
-                new Handler().postDelayed(DetailsActivity.this::onBackPressed, 1000);
-            }
-        });
-
         if(getQuotaId() != -1) {
             //Existing entity
             loadData();
@@ -128,6 +108,7 @@ public class DetailsActivity extends AppCompatActivity {
         else {
             //New entity
             worklogLayout.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.GONE);
             setTitle("Add new Quota");
         }
     }
@@ -230,5 +211,57 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    public void saveQuota(View view) {
+
+        if(isQuotaValid()) {
+            if(editingBean == null) {
+                editingBean = new Quota(
+                    name.getText().toString(),
+                    goal.getText().toString(),
+                    QuotaType.fromOrdinal(type)
+                );
+                editingBean.setCategory(service.getCategoryByName(pickedCategory));
+                editingBean.setMin(Integer.valueOf(min.getText().toString()));
+                editingBean.setMax(Integer.valueOf(max.getText().toString()));
+            }
+            else {
+                editingBean.setCategory(service.getCategoryByName(pickedCategory));
+                editingBean.setMin(Integer.valueOf(min.getText().toString()));
+                editingBean.setMax(Integer.valueOf(max.getText().toString()));
+                editingBean.setDescription(goal.getText().toString());
+            }
+            service.persistQuota(editingBean);
+
+            Toast.makeText(DetailsActivity.this, "Quota " + editingBean.getName() + " was saved", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(DetailsActivity.this::onBackPressed, 1000);
+        }
+    }
+
+    public void deleteQuota(View view) {
+
+        if(getQuotaId() != -1) {
+            //Show notification?
+            new AlertDialog.Builder(this)
+                .setTitle("Confirm")
+                .setMessage("Do you really want to delete this quota?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                    //Then remove
+                    boolean result = service.deleteQuota(getQuotaId());
+                    if(result) {
+                        Toast.makeText(DetailsActivity.this, "Quota " + editingBean.getName() + " was successfully removed",
+                            Toast.LENGTH_SHORT).show();
+                        new Handler().postDelayed(DetailsActivity.this::onBackPressed, 1000);
+                    }
+                    else {
+                        Toast.makeText(DetailsActivity.this, "Something went wrong. Cannot remove quota",
+                            Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null).show();
+
+        }
     }
 }

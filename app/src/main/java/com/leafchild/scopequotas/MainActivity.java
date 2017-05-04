@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.leafchild.scopequotas.categories.CategoryActivity;
-import com.leafchild.scopequotas.common.NotificationsManager;
 import com.leafchild.scopequotas.common.QuotaAdapter;
 import com.leafchild.scopequotas.common.Utils;
 import com.leafchild.scopequotas.data.DatabaseService;
@@ -38,7 +36,6 @@ import com.leafchild.scopequotas.worklog.WorklogActivity;
 
 import java.util.List;
 
-import static android.R.attr.type;
 import static com.leafchild.scopequotas.AppContants.TYPE;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

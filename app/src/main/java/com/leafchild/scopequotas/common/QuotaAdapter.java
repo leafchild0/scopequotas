@@ -12,7 +12,6 @@ import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.data.Quota;
 
 import java.util.List;
-import java.util.Locale;
 
 import static com.leafchild.scopequotas.settings.SettingsActivity.QUOTA_INDICATOR;
 

@@ -18,54 +18,67 @@
         android:id="@+id/quotas_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/add_worklog"
         android:layout_marginTop="30dp"
         android:spinnerMode="dropdown"
         style="@style/Widget.AppCompat.Spinner.Underlined" />
 
-    <EditText
-        android:id="@+id/quota_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/amount"
-        android:inputType="number"
-        android:padding="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/text_margin"
-        android:layout_marginRight="@dimen/text_margin"
-        android:layout_marginTop="70dp"
-        android:layout_below="@+id/quotas_list"
-        android:layout_toStartOf="@+id/button_add" />
+    <LinearLayout
+        android:id="@+id/worklog_amount"
+        android:layout_below="@id/quotas_list"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/dropdown_height"
+        android:layout_height="wrap_content">
 
-    <Spinner
-        android:id="@+id/worklog_amount_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown"
-        android:layout_alignBottom="@+id/quota_amount"
-        android:layout_alignEnd="@+id/button_add"
-        android:layout_marginEnd="@dimen/text_margin"
-        android:layout_marginBottom="@dimen/text_margin" />
+        <EditText
+            android:id="@+id/quota_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginRight="@dimen/text_margin"
+            android:hint="@string/amount"
+            android:inputType="number"
+            android:padding="@dimen/activity_vertical_margin" />
 
-    <Button
-        android:id="@+id/button_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:onClick="cancel"
-        android:layout_margin="30dp"
-        android:layout_alignBaseline="@+id/button_add"
-        android:layout_alignBottom="@+id/button_add" />
+        <Spinner
+            android:id="@+id/worklog_amount_type"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dropdown_height"
+            android:layout_gravity="center|center_horizontal"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:spinnerMode="dropdown" />
 
-    <Button
-        android:id="@+id/button_add"
-        android:layout_width="wrap_content"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add"
-        android:onClick="addWorklog"
-        android:layout_margin="30dp"
+        style="?android:attr/buttonBarStyle"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:text="@string/cancel"
+            android:onClick="cancel"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:textColor="@color/colorPrimary"
+            style="?android:attr/buttonBarButtonStyle"/>
+
+        <Button
+            android:id="@+id/button_add"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:text="@string/add"
+            android:onClick="addWorklog"
+            android:textColor="@color/colorPrimary"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            style="?android:attr/buttonBarButtonStyle"/>
+    </LinearLayout>
 
 </android.widget.RelativeLayout>
