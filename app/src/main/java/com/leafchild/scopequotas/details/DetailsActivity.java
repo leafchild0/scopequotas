@@ -17,11 +17,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.leafchild.scopequotas.MainActivity;
 import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.common.Utils;
@@ -35,6 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.R.attr.type;
+import static android.R.attr.value;
+import static android.R.attr.x;
 import static com.leafchild.scopequotas.AppContants.ACTIVE_QUOTA;
 import static com.leafchild.scopequotas.AppContants.TYPE;
 
@@ -175,17 +181,25 @@ public class DetailsActivity extends AppCompatActivity {
         int amount = 0;
 
         for(Worklog worklog : editingBean.getLogged()) {
-
             // turn your data into Entry objects
             entries.add(new BarEntry(amount++, worklog.getAmount().floatValue()));
             labels.add(Utils.getDayMonthFormatter().format(worklog.getCreatedDate()));
         }
 
+        BarDataSet dataSet = new BarDataSet(entries, "");
+        BarData lineData = new BarData(dataSet);
+        chart.setData(lineData);
+        chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
+
         XAxis xl = chart.getXAxis();
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
         xl.setDrawAxisLine(true);
         xl.setDrawGridLines(false);
-        xl.setGranularity(10f);
+        xl.setGranularityEnabled(true);
+        xl.setGranularity(1f);
+        xl.setDrawLabels(true);
+        xl.setValueFormatter(new IndexAxisValueFormatter(labels));
 
         YAxis yl = chart.getAxisLeft();
         yl.setDrawAxisLine(true);
@@ -196,16 +210,6 @@ public class DetailsActivity extends AppCompatActivity {
         yr.setDrawAxisLine(true);
         yr.setDrawGridLines(false);
         yr.setAxisMinimum(0f);
-
-        BarDataSet dataSet = new BarDataSet(entries, "");
-        BarData lineData = new BarData(dataSet);
-        chart.setData(lineData);
-
-        XAxis xval = chart.getXAxis();
-        xval.setDrawLabels(true);
-        xval.setValueFormatter((value, axis) -> labels.get((int) value));
-        chart.getDescription().setEnabled(false);
-        chart.getLegend().setEnabled(false);
     }
 
     @Override

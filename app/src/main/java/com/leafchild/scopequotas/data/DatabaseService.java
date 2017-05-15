@@ -130,7 +130,7 @@ public class DatabaseService {
     public void addWorklog(Worklog worklog) {
 
         try {
-            worklog.setCreatedDate(new Date());
+            if(worklog.getCreatedDate() == null) worklog.setCreatedDate(new Date());
             dbManager.getWorklogDao().create(worklog);
         } catch(SQLException e) {
             Log.e("DB", e.getMessage());

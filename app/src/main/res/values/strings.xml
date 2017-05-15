@@ -109,6 +109,7 @@
     <string name="choose_time">Choose time</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
+    <string name="choose_date">Choose date</string>
 
     <string-array name="worklog_array">
         <item>minutes</item>

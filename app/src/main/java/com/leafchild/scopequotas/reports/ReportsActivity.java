@@ -14,7 +14,6 @@ import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -24,6 +23,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.leafchild.scopequotas.AppContants;
 import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.common.Utils;
 import com.leafchild.scopequotas.data.DatabaseService;
@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import static com.leafchild.scopequotas.AppContants.ACCENT_COLOR;
 import static com.leafchild.scopequotas.common.Utils.getColorsForCharts;
 
 public class ReportsActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -57,7 +58,6 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
     private static final String CATEGORY = "By Category";
     private static final String NAME = "By Name";
     private static final String TYPE = "By Type";
-    private static final int ACCENT_COLOR = 0xFF3F51B5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
