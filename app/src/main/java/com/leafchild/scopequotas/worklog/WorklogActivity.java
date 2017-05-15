@@ -2,6 +2,7 @@ package com.leafchild.scopequotas.worklog;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -69,15 +70,18 @@ public class WorklogActivity extends AppCompatActivity implements AdapterView.On
 
     public void addWorklog(View view) {
 
-        EditText amount = (EditText) findViewById(R.id.quota_amount);
-
-        Worklog worklog = new Worklog(picked, amount.getText().toString());
+        Worklog worklog = new Worklog(picked, getAddedAmount());
         worklog.setType(WorklogType.fromString(inputType.getSelectedItem().toString()));
         setWorklogDate(worklog);
         service.addWorklog(worklog);
 
         Toast.makeText(WorklogActivity.this, "Worklog was added", Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(WorklogActivity.this::onBackPressed, 1000);
+    }
+
+    private Double getAddedAmount() {
+        EditText amount = (EditText) findViewById(R.id.quota_amount);
+        return Double.valueOf(amount.getText().toString());
     }
 
     private void setWorklogDate(Worklog worklog) {

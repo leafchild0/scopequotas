@@ -30,9 +30,9 @@ public class Worklog {
 
     public Worklog() {}
 
-    public Worklog(Quota quota, String amount) {
+    public Worklog(Quota quota, Double amount) {
         this.quota = quota;
-        this.amount = Double.valueOf(amount);
+        this.amount = amount;
     }
 
     public Long getId() {

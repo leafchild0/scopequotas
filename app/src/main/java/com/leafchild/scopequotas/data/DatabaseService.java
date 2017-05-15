@@ -2,7 +2,6 @@ package com.leafchild.scopequotas.data;
 
 import android.content.Context;
 import android.util.Log;
-import com.j256.ormlite.dao.ForeignCollection;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import static android.R.attr.category;
+import static com.leafchild.scopequotas.common.Utils.calculateAmount;
 
 /**
  * Created by: leafchild
@@ -53,7 +52,6 @@ public class DatabaseService {
         return found;
     }
 
-    //TODO: Add delete operation
     public boolean deleteQuota(Long id) {
 
         if(id == null) {
@@ -235,26 +233,14 @@ public class DatabaseService {
                 grouped.put(categoryName, calculateAmount(quota.getLogged(), from, to));
             }
             else {
-                grouped.put(categoryName, grouped.get(categoryName) + quota.getWorklogAmount());
+                grouped.put(categoryName, grouped.get(categoryName) + quota.getAllWorklogAmount());
             }
         }
 
         return grouped;
     }
 
-    private Float calculateAmount(ForeignCollection<Worklog> logged, Date from, Date to) {
 
-        float result = 0f;
-
-        for(Worklog worklog : logged) {
-            if(worklog.getCreatedDate().before(to)
-                && worklog.getCreatedDate().after(from)) {
-                result += worklog.getAmount();
-            }
-        }
-
-        return result;
-    }
 
     public HashMap<String, Float> getLoggedDataByType(Date from, Date to) {
         HashMap<String, Float> byType = new HashMap<>();
@@ -266,7 +252,7 @@ public class DatabaseService {
                 byType.put(type, calculateAmount(quota.getLogged(), from, to));
             }
             else {
-                byType.put(type, byType.get(type) + quota.getWorklogAmount());
+                byType.put(type, byType.get(type) + quota.getAllWorklogAmount());
             }
         }
 
@@ -284,7 +270,7 @@ public class DatabaseService {
                 byName.put(name, calculateAmount(quota.getLogged(), from, to));
             }
             else {
-                byName.put(name, byName.get(name) + quota.getWorklogAmount());
+                byName.put(name, byName.get(name) + quota.getAllWorklogAmount());
             }
         }
 

@@ -80,7 +80,7 @@
     <string name="name">Name</string>
     <string name="amount">Amount</string>
     <string name="goal">Goal</string>
-    <string name="worklog_amount">Worklog amount</string>
+    <string name="worklog_amount">Worklog amount by last period</string>
     <string name="add_worklog">Add worklog</string>
     <string name="cancel">Cancel</string>
     <string name="add">Add</string>

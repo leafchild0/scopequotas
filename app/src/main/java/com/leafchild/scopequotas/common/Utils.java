@@ -5,10 +5,13 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.EditText;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.leafchild.scopequotas.data.Quota;
+import com.leafchild.scopequotas.data.Worklog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -63,7 +66,35 @@ public class Utils {
         return field != null && field.getText().toString().isEmpty();
     }
 
-    public static int calculateQuotaProgress(Quota quota) {
-        return (int) (quota.getWorklogAmount() * 100 / quota.getMax());
+    public static int calculateQuotaProgress(Float amount, Integer max) {
+        return (int) (amount * 100 / max);
+    }
+
+    public static Float calculateAmount(ForeignCollection<Worklog> logged, Date from, Date to) {
+
+        float result = 0f;
+        for(Worklog worklog : logged) {
+            if(worklog.getCreatedDate().before(to)
+                && worklog.getCreatedDate().after(from)) {
+                result += Utils.transformWorklog(worklog);
+            }
+        }
+        return result;
+    }
+
+    public static Double transformWorklog(Worklog w) {
+        double tempAmount = w.getAmount();
+        switch(w.getType()) {
+            case DAYS:
+                tempAmount = tempAmount * 24;
+                break;
+            case HOURS:
+                break;
+            case MINUTES:
+                tempAmount = tempAmount / 60;
+                break;
+            default:
+        }
+        return tempAmount;
     }
 }

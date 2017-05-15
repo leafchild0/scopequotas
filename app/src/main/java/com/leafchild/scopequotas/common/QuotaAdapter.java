@@ -73,10 +73,10 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
             viewHolder.name.setText(quota.getName());
 
             if(showWorklog) {
-                viewHolder.amount.setText(String.format(String.valueOf(quota.getWorklogAmount())
+                viewHolder.amount.setText(String.format(String.valueOf(quota.getWorkFlowByLastPeriod())
                     + "%s", HOURS));
                 if(showProgress) {
-                    viewHolder.progress.setProgress(Utils.calculateQuotaProgress(quota));
+                    viewHolder.progress.setProgress(Utils.calculateQuotaProgress(quota.getWorkFlowByLastPeriod(), quota.getMax()));
                 }
             }
         }

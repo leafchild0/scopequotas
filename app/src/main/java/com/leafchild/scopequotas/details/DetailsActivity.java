@@ -1,9 +1,7 @@
 package com.leafchild.scopequotas.details;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,16 +15,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.leafchild.scopequotas.MainActivity;
 import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.common.Utils;
 import com.leafchild.scopequotas.data.DatabaseService;
@@ -38,9 +32,6 @@ import com.leafchild.scopequotas.data.Worklog;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.type;
-import static android.R.attr.value;
-import static android.R.attr.x;
 import static com.leafchild.scopequotas.AppContants.ACTIVE_QUOTA;
 import static com.leafchild.scopequotas.AppContants.TYPE;
 
@@ -164,7 +155,7 @@ public class DetailsActivity extends AppCompatActivity {
             categories.setSelection(catAdapter.getPosition(editingBean.getCategory().getName()));
 
             goal.setText(editingBean.getDescription());
-            worklogAmount.setText(String.format(editingBean.getWorklogAmount().toString() + "%s", HOURS));
+            worklogAmount.setText(String.format(editingBean.getWorkFlowByLastPeriod().toString() + "%s", HOURS));
         }
     }
 

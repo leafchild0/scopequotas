@@ -4,10 +4,17 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.leafchild.scopequotas.common.Utils;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+
+import static android.R.attr.type;
+import static com.leafchild.scopequotas.data.QuotaType.DAILY;
+import static com.leafchild.scopequotas.data.QuotaType.MONTHLY;
+import static com.leafchild.scopequotas.data.QuotaType.WEEKLY;
 
 /**
  * Created by: leafchild
@@ -136,27 +143,40 @@ public class Quota {
         return id <= 0;
     }
 
-    public Float getWorklogAmount() {
+    public Float getAllWorklogAmount() {
 
         float sum = 0;
 
         for(Worklog w : logged) {
-            double tempAmount = w.getAmount();
-            switch(w.getType()) {
-                case DAYS:
-                    tempAmount = tempAmount * 24;
-                    break;
-                case HOURS:
-                    break;
-                case MINUTES:
-                    tempAmount = tempAmount / 60;
-                    break;
-                default:
-            }
-
-            sum += tempAmount;
+            sum += Utils.transformWorklog(w);
         }
         return Float.valueOf(String.format(Locale.getDefault(), "%.2f", sum));
+    }
+
+
+
+    public Float getWorkFlowByLastPeriod() {
+        Calendar from = Calendar.getInstance();
+        Calendar to = Calendar.getInstance();
+
+        switch(this.getQuotaType()) {
+            case DAILY:
+                from.set(Calendar.HOUR_OF_DAY, 0);
+                break;
+            case WEEKLY:
+                from.set(Calendar.HOUR_OF_DAY, 0);
+                from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                break;
+            case MONTHLY:
+                from.set(Calendar.HOUR_OF_DAY, 0);
+                from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                from.set(Calendar.MONTH, from.get(Calendar.MONTH));
+                break;
+            default:
+                return 0f;
+        }
+
+        return Utils.calculateAmount(logged, from.getTime(), to.getTime());
     }
 
     public void addWorklog(Worklog worklog) {
