@@ -18,9 +18,19 @@
     <Spinner
         android:id="@+id/report_by"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dropdown_height"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:layout_below="@id/report_by_label"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:spinnerMode="dropdown" />
+
+    <Spinner
+        android:id="@+id/report_by_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:layout_below="@id/report_by"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:spinnerMode="dropdown" />
 
@@ -28,7 +38,7 @@
         android:layout_width="match_parent"
         android:id="@+id/controls"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/report_by">
+        android:layout_below="@+id/report_by_name">
 
         <TextView
             android:id="@+id/dates_label"

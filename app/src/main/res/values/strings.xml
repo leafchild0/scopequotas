@@ -85,7 +85,7 @@
     <string name="cancel">Cancel</string>
     <string name="add">Add</string>
     <string name="manage_your_time_better">Manage your time better</string>
-    <string name="select_a_query">[Select a Query…]</string>
+    <string name="select_a_quota">All Quotas</string>
     <string name="max_amount">Max</string>
     <string name="min_amount">Min</string>
     <string name="report_by">Report by</string>

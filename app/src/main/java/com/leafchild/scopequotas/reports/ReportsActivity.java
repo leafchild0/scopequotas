@@ -14,6 +14,7 @@ import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -21,18 +22,24 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.leafchild.scopequotas.AppContants;
 import com.leafchild.scopequotas.R;
+import com.leafchild.scopequotas.common.QuotaAdapter;
+import com.leafchild.scopequotas.common.QuotasWithDefaultAdapter;
 import com.leafchild.scopequotas.common.Utils;
 import com.leafchild.scopequotas.data.DatabaseService;
+import com.leafchild.scopequotas.data.Quota;
+import com.leafchild.scopequotas.data.Worklog;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
+import static android.R.attr.entries;
 import static com.leafchild.scopequotas.AppContants.ACCENT_COLOR;
 import static com.leafchild.scopequotas.common.Utils.getColorsForCharts;
 
@@ -41,6 +48,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
     private DatePickerDialog fromD;
     private DatePickerDialog toD;
     private Spinner reportBy;
+    private Spinner quotaName;
     private Button fromDate;
     private Button toDate;
 
@@ -48,7 +56,6 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
     private BarChart byName;
     private HorizontalBarChart byType;
 
-    private Calendar calendar;
     private String type = CATEGORY;
     private Calendar from = Calendar.getInstance();
     private Calendar to = Calendar.getInstance();
@@ -67,7 +74,6 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 
         service = new DatabaseService(this);
 
-        calendar = Calendar.getInstance();
         reportBy = (Spinner) findViewById(R.id.report_by);
         ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
             .createFromResource(this, R.array.reports_category, android.R.layout.simple_spinner_item);
@@ -87,39 +93,37 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
         });
 
         toDate = (Button) findViewById(R.id.reports_to);
-        toDate.setText(Utils.getDayMonthYearFormatter().format(calendar.getTime()));
+        toDate.setText(Utils.getDayMonthYearFormatter().format(to.getTime()));
 
-        calendar.add(Calendar.MONTH, -1);
+        from.add(Calendar.MONTH, -1);
         fromDate = (Button) findViewById(R.id.reports_from);
-        fromDate.setText(Utils.getDayMonthYearFormatter().format(calendar.getTime()));
+        fromDate.setText(Utils.getDayMonthYearFormatter().format(from.getTime()));
 
         byCategory = (PieChart) findViewById(R.id.category_chart);
         byName = (BarChart) findViewById(R.id.name_chart);
         byType = (HorizontalBarChart) findViewById(R.id.type_chart);
+        quotaName = (Spinner) findViewById(R.id.report_by_name);
 
         refreshReports();
     }
 
     public void showFromDatePicker(View view) {
-        calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, -1);
         fromD = DatePickerDialog.newInstance(
             ReportsActivity.this,
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
+            from.get(Calendar.YEAR),
+            from.get(Calendar.MONTH),
+            from.get(Calendar.DAY_OF_MONTH)
         );
         fromD.setAccentColor(ACCENT_COLOR);
         fromD.show(getFragmentManager(), "Choose From Date");
     }
 
     public void showToDatePicker(View view) {
-        calendar = Calendar.getInstance();
         toD = DatePickerDialog.newInstance(
             ReportsActivity.this,
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
+            to.get(Calendar.YEAR),
+            to.get(Calendar.MONTH),
+            to.get(Calendar.DAY_OF_MONTH)
         );
 
         toD.setAccentColor(ACCENT_COLOR);
@@ -146,6 +150,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
         switch(type) {
             case CATEGORY:
                 hideCharts(byName, byType);
+                hideQuotaSelector();
                 showDataByCategory();
                 break;
             case NAME:
@@ -154,31 +159,123 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
                 break;
             case TYPE:
                 hideCharts(byCategory, byName);
+                hideQuotaSelector();
                 showDataByType();
                 break;
             default:
                 showDataByCategory();
-
         }
+    }
+
+    private void hideQuotaSelector() {
+        if(quotaName != null) quotaName.setVisibility(View.GONE);
     }
 
     private void showDataByName() {
 
+        if(quotaName.getVisibility() == View.VISIBLE
+            && quotaName.getSelectedItem() != null) {
+            refreshReportsWithQuota((Quota) quotaName.getSelectedItem());
+        }
+        else {
+            initQueryAdapterForNameReports();
+
+            byName.setDrawBarShadow(false);
+            byName.setDrawValueAboveBar(true);
+            byName.getDescription().setEnabled(false);
+            // scaling can now only be done on x- and y-axis separately
+            byName.setPinchZoom(false);
+            byName.setDrawGridBackground(false);
+
+            byName.getXAxis().setEnabled(false);
+
+            YAxis yl = byName.getAxisLeft();
+            yl.setDrawAxisLine(true);
+            yl.setDrawGridLines(true);
+            yl.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+            yl.setAxisMinimum(0f);
+
+            YAxis yr = byName.getAxisRight();
+            yr.setDrawAxisLine(true);
+            yr.setDrawGridLines(false);
+            yr.setAxisMinimum(0f);
+
+            byName.setData(getChartData(service.getLoggedDataByName(from.getTime(), to.getTime())));
+
+            byName.setFitBars(true);
+            byName.animateY(1500);
+            byName.setMaxVisibleValueCount(20);
+
+            Legend l = byName.getLegend();
+            l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+            l.setOrientation(Legend.LegendOrientation.VERTICAL);
+            l.setDrawInside(false);
+            l.setFormSize(12f);
+            l.setXEntrySpace(4f);
+        }
+
         byName.setVisibility(View.VISIBLE);
+    }
 
-        byName.setDrawBarShadow(false);
-        byName.setDrawValueAboveBar(true);
+    private void initQueryAdapterForNameReports() {
+
+        QuotaAdapter adapter = new QuotaAdapter(this, android.R.layout.simple_spinner_dropdown_item,
+            service.findAllQuotas(), false);
+        quotaName.setAdapter(new QuotasWithDefaultAdapter(adapter, R.layout.spinner_row_nothing_selected, this));
+
+        quotaName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Quota selected = (Quota) parent.getItemAtPosition(position);
+                if(selected != null) {
+                    byName.removeAllViews();
+                    refreshReportsWithQuota(selected);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                quotaName.setSelection(-1);
+            }
+        });
+
+        quotaName.setVisibility(View.VISIBLE);
+    }
+
+    private void refreshReportsWithQuota(Quota selected) {
+
+        if(selected == null) return;
+
+        List<BarEntry> entries = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
+        int amount = 0;
+
+        for(Worklog worklog : service.getLoggedDataByQuota(selected, from.getTime(), to.getTime())) {
+            // turn your data into Entry objects
+            entries.add(new BarEntry(amount++, worklog.getAmount().floatValue()));
+            labels.add(Utils.getDayMonthFormatter().format(worklog.getCreatedDate()));
+        }
+
+        BarDataSet dataSet = new BarDataSet(entries, "");
+        BarData lineData = new BarData(dataSet);
+        byName.setData(lineData);
         byName.getDescription().setEnabled(false);
-        // scaling can now only be done on x- and y-axis separately
-        byName.setPinchZoom(false);
-        byName.setDrawGridBackground(false);
+        byName.getLegend().setEnabled(false);
 
-        byName.getXAxis().setEnabled(false);
+        XAxis xl = byName.getXAxis();
+        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xl.setDrawAxisLine(true);
+        xl.setDrawGridLines(false);
+        xl.setGranularityEnabled(true);
+        xl.setGranularity(1f);
+        xl.setDrawLabels(true);
+        xl.setValueFormatter(new IndexAxisValueFormatter(labels));
 
         YAxis yl = byName.getAxisLeft();
         yl.setDrawAxisLine(true);
         yl.setDrawGridLines(true);
-        yl.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         yl.setAxisMinimum(0f);
 
         YAxis yr = byName.getAxisRight();
@@ -186,19 +283,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
         yr.setDrawGridLines(false);
         yr.setAxisMinimum(0f);
 
-        byName.setData(getChartData(service.getLoggedDataByName(from.getTime(), to.getTime())));
-
-        byName.setFitBars(true);
-        byName.animateY(1500);
-        byName.setMaxVisibleValueCount(20);
-
-        Legend l = byName.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
-        l.setFormSize(12f);
-        l.setXEntrySpace(4f);
+        byName.refreshDrawableState();
     }
 
     private void hideCharts(Chart... charts) {

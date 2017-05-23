@@ -153,8 +153,6 @@ public class Quota {
         return Float.valueOf(String.format(Locale.getDefault(), "%.2f", sum));
     }
 
-
-
     public Float getWorkFlowByLastPeriod() {
         Calendar from = Calendar.getInstance();
         Calendar to = Calendar.getInstance();

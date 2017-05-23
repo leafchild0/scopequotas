@@ -276,4 +276,17 @@ public class DatabaseService {
 
         return byName;
     }
+
+    public List<Worklog> getLoggedDataByQuota(Quota quota, Date from, Date to) {
+
+        List<Worklog> result = new ArrayList<>();
+
+        for(Worklog worklog : quota.getLogged()) {
+            if(worklog.getCreatedDate().before(to) && worklog.getCreatedDate().after(from)) {
+                result.add(worklog);
+            }
+        }
+
+        return result;
+    }
 }
