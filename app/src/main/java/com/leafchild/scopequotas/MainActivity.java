@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         quotaAdapter.clear();
         quotaAdapter.addAll(loadData(currentType.ordinal()));
+		updateAppTitle();
 
         if(!quotaAdapter.isEmpty()) {
             type.setVisibility(View.GONE);
@@ -237,16 +238,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 quotaAdapter.clear();
                 quotaAdapter.addAll(loadData(QuotaType.DAILY.ordinal()));
                 currentType = QuotaType.DAILY;
+				updateAppTitle();
                 break;
             case R.id.nav_weekly:
                 quotaAdapter.clear();
                 quotaAdapter.addAll(loadData(QuotaType.WEEKLY.ordinal()));
                 currentType = QuotaType.WEEKLY;
+				updateAppTitle();
                 break;
             case R.id.nav_monthly:
                 quotaAdapter.clear();
                 quotaAdapter.addAll(loadData(QuotaType.MONTHLY.ordinal()));
                 currentType = QuotaType.MONTHLY;
+				updateAppTitle();
                 break;
             default:
 
@@ -264,5 +268,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return true;
     }
+
+	private void updateAppTitle()
+	{
+		setTitle("Your quotas - " + currentType.getValue());
+	}
 
 }

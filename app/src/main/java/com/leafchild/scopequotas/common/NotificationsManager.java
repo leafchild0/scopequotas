@@ -46,7 +46,7 @@ public class NotificationsManager {
         boolean isVibrateEnabled = prefs.getBoolean(SettingsActivity.NOTIFICATIONS_VIBRATE, true);
         String strRingtonePreference = prefs.getString(SettingsActivity.NOTIFICATIONS_RINGTONE, "DEFAULT_SOUND");
 
-        Notification.Builder builder =  new Notification.Builder(context)
+        Notification.Builder builder = new Notification.Builder(context)
             .setContentTitle(title)
             .setContentText(text)
             .setContentIntent(pendingIntent)
