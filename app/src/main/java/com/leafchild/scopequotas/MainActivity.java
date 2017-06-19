@@ -1,11 +1,22 @@
 package com.leafchild.scopequotas;
 
+import com.leafchild.scopequotas.categories.CategoryActivity;
+import com.leafchild.scopequotas.common.QuotaAdapter;
+import com.leafchild.scopequotas.common.Utils;
+import com.leafchild.scopequotas.data.DatabaseService;
+import com.leafchild.scopequotas.data.Quota;
+import com.leafchild.scopequotas.data.QuotaType;
+import com.leafchild.scopequotas.details.DetailsActivity;
+import com.leafchild.scopequotas.reports.ReportsActivity;
+import com.leafchild.scopequotas.settings.SettingsActivity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
@@ -21,19 +32,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
-import com.leafchild.scopequotas.categories.CategoryActivity;
-import com.leafchild.scopequotas.common.QuotaAdapter;
-import com.leafchild.scopequotas.common.Utils;
-import com.leafchild.scopequotas.data.DatabaseService;
-import com.leafchild.scopequotas.data.Quota;
-import com.leafchild.scopequotas.data.QuotaType;
-import com.leafchild.scopequotas.details.DetailsActivity;
-import com.leafchild.scopequotas.reports.ReportsActivity;
-import com.leafchild.scopequotas.settings.SettingsActivity;
-import com.leafchild.scopequotas.worklog.WorklogActivity;
-
 import java.util.List;
 
 import static com.leafchild.scopequotas.AppContants.TYPE;
@@ -118,33 +116,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initFabMenu() {
 
         FloatingActionButton newQuota = (FloatingActionButton) findViewById(R.id.new_quota);
-        FloatingActionButton logTime = (FloatingActionButton) findViewById(R.id.add_worglog);
-
-        final FloatingActionMenu menuMultipleActions = (FloatingActionMenu) findViewById(R.id.multiple_actions);
-        menuMultipleActions.setOnClickListener(view -> {
-
-            menuMultipleActions.setEnabled(!menuMultipleActions.isEnabled());
-
-            Intent details = new Intent(self, DetailsActivity.class);
-            details.putExtra(TYPE, getIntent().getIntExtra(TYPE, 1));
-            startActivity(details);
-        });
-
-
-        logTime.setOnClickListener((v) -> {
-            Intent addWorklog = new Intent(self, WorklogActivity.class);
-            addWorklog.putExtra(TYPE, getIntent().getIntExtra(TYPE, 1));
-            //Do not add any data
-            startActivity(addWorklog);
-            menuMultipleActions.close(true);
-        });
+        newQuota.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         newQuota.setOnClickListener((v) -> {
             Intent details = new Intent(self, DetailsActivity.class);
             details.putExtra(TYPE, getIntent().getIntExtra(TYPE, currentType.ordinal()));
             //Do not add any data
             startActivity(details);
-            menuMultipleActions.close(true);
+            //menuMultipleActions.close(true);
         });
     }
 
@@ -196,6 +175,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.action_settings:
+            	Intent intent = new Intent(self, SettingsActivity.class);
+				startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

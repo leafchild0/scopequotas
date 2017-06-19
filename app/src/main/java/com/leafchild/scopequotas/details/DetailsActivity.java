@@ -1,19 +1,5 @@
 package com.leafchild.scopequotas.details;
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -28,7 +14,24 @@ import com.leafchild.scopequotas.data.Quota;
 import com.leafchild.scopequotas.data.QuotaCategory;
 import com.leafchild.scopequotas.data.QuotaType;
 import com.leafchild.scopequotas.data.Worklog;
+import com.leafchild.scopequotas.worklog.WorklogActivity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +75,15 @@ public class DetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		FloatingActionButton logTime = (FloatingActionButton) findViewById(R.id.add_worglog);
+
+		logTime.setOnClickListener((v) -> {
+            Intent addWorklog = new Intent(DetailsActivity.this, WorklogActivity.class);
+            addWorklog.putExtra(TYPE, getIntent().getIntExtra(TYPE, 1));
+            //Do not add any data
+            startActivity(addWorklog);
+        });
 
         ArrayList<String> existing = new ArrayList<>();
         List<QuotaCategory> categoryData = service.findAllCategories();

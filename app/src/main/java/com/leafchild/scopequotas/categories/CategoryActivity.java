@@ -1,6 +1,11 @@
 package com.leafchild.scopequotas.categories;
 
+import com.leafchild.scopequotas.R;
+import com.leafchild.scopequotas.data.DatabaseService;
+import com.leafchild.scopequotas.data.QuotaCategory;
+
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -8,11 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import com.github.clans.fab.FloatingActionButton;
-import com.leafchild.scopequotas.R;
-import com.leafchild.scopequotas.data.DatabaseService;
-import com.leafchild.scopequotas.data.QuotaCategory;
-
 import java.util.ArrayList;
 import java.util.List;
 

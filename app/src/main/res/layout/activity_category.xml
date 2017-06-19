@@ -22,15 +22,13 @@
 
     <include layout="@layout/content_category" />
 
-    <com.github.clans.fab.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/new_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/fab_add"
+        android:src="@drawable/ic_fab_add"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:tint="@color/colorWhite"
-        app:fab_colorNormal="@color/blue_semi_transparent"
-        app:fab_colorPressed="@color/blue_semi_transparent_pressed"/>
+        android:tint="@color/colorWhite"/>
 
 </android.support.design.widget.CoordinatorLayout>
