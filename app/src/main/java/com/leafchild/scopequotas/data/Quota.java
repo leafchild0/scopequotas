@@ -1,6 +1,7 @@
 package com.leafchild.scopequotas.data;
 
 import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -11,11 +12,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-import static android.R.attr.type;
-import static com.leafchild.scopequotas.data.QuotaType.DAILY;
-import static com.leafchild.scopequotas.data.QuotaType.MONTHLY;
-import static com.leafchild.scopequotas.data.QuotaType.WEEKLY;
-
 /**
  * Created by: leafchild
  * Date: 03/04/2017
@@ -25,185 +21,191 @@ import static com.leafchild.scopequotas.data.QuotaType.WEEKLY;
 @DatabaseTable(tableName = Quota.TABLE_NAME_QUOTA)
 public class Quota {
 
-    final static String TABLE_NAME_QUOTA = "quota";
+	final static String TABLE_NAME_QUOTA = "quota";
 
-    @DatabaseField(generatedId = true)
-    private long id;
-    @DatabaseField(columnName = "name", canBeNull = false, unique = true)
-    private String name;
-    @DatabaseField(columnName = "quotaType", canBeNull = false)
-    private QuotaType quotaType;
-    @DatabaseField(columnName = "description")
-    private String description;
-    @DatabaseField(columnName = "min")
-    private Integer min;
-    @DatabaseField(columnName = "max")
-    private Integer max;
-    @DatabaseField(columnName = "createdDate")
-    private Date createdDate;
-    @DatabaseField(columnName = "modifiedDate")
-    private Date modifiedDate;
-    @DatabaseField(columnName = "category", foreign = true, foreignAutoRefresh = true)
-    private QuotaCategory category;
+	@DatabaseField(generatedId = true)
+	private long id;
+	@DatabaseField(columnName = "name", canBeNull = false, unique = true)
+	private String name;
+	@DatabaseField(columnName = "quotaType", canBeNull = false)
+	private QuotaType quotaType;
+	@DatabaseField(columnName = "description")
+	private String description;
+	@DatabaseField(columnName = "min")
+	private Integer min;
+	@DatabaseField(columnName = "max")
+	private Integer max;
+	@DatabaseField(columnName = "createdDate")
+	private Date createdDate;
+	@DatabaseField(columnName = "modifiedDate")
+	private Date modifiedDate;
+	@DatabaseField(dataType = DataType.BOOLEAN_OBJ, columnName = "archieved", defaultValue = "false")
+	private Boolean archieved;
+	@DatabaseField(columnName = "category", foreign = true, foreignAutoRefresh = true)
+	private QuotaCategory category;
 
-    @ForeignCollectionField(columnName = "logged", eager = true)
-    private ForeignCollection<Worklog> logged;
+	@ForeignCollectionField(columnName = "logged", eager = true)
+	private ForeignCollection<Worklog> logged;
 
-    public Quota() {
-    }
+	public Quota() {}
 
-    public Quota(String name, String description, QuotaType type) {
-        this.name = name;
-        this.description = description;
-        this.quotaType = type;
-    }
+	public Quota(String name, String description, QuotaType type) {
+		this.name = name;
+		this.description = description;
+		this.quotaType = type;
+	}
 
-    @Override
-    public String toString() {
-        //Have to use name only for spinners
-        return name;
-    }
+	@Override
+	public String toString() {
+		//Have to use name only for spinners
+		return name;
+	}
 
-    public ForeignCollection<Worklog> getLogged() {
-        return logged;
-    }
+	public ForeignCollection<Worklog> getLogged() {
+		return logged;
+	}
 
-    public void setLogged(ForeignCollection<Worklog> logged) {
-        this.logged = logged;
-    }
+	public void setLogged(ForeignCollection<Worklog> logged) {
+		this.logged = logged;
+	}
 
-    public long getId() {
-        return id;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public QuotaType getQuotaType() {
-        return quotaType;
-    }
+	public QuotaType getQuotaType() {
+		return quotaType;
+	}
 
-    public void setQuotaType(QuotaType quotaType) {
-        this.quotaType = quotaType;
-    }
+	public void setQuotaType(QuotaType quotaType) {
+		this.quotaType = quotaType;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
+	public Date getCreatedDate() {
+		return createdDate;
+	}
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
 
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if(this == o) {
-            return true;
-        }
-        if(o == null || getClass() != o.getClass()) {
-            return false;
-        }
+	public Boolean getArchieved() {
+		return archieved;
+	}
 
-        Quota quota = (Quota) o;
-        return Objects.equals(quota, this);
+	public void setArchieved(Boolean archieved) {
+		this.archieved = archieved;
+	}
 
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, quotaType, id);
-    }
+		Quota quota = (Quota) o;
+		return quota.hashCode() == this.hashCode();
 
-    public boolean isNew() {
-        return id <= 0;
-    }
+	}
 
-    public Float getAllWorklogAmount() {
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, quotaType, id);
+	}
 
-        float sum = 0;
+	public boolean isNew() {
+		return id <= 0;
+	}
 
-        for(Worklog w : logged) {
-            sum += Utils.transformWorklog(w);
-        }
-        return Float.valueOf(String.format(Locale.getDefault(), "%.2f", sum));
-    }
+	public Float getAllWorklogAmount() {
 
-    public Float getWorkFlowByLastPeriod() {
-        Calendar from = Calendar.getInstance();
-        Calendar to = Calendar.getInstance();
+		float sum = 0;
 
-        switch(this.getQuotaType()) {
-            case DAILY:
-                from.set(Calendar.HOUR_OF_DAY, 0);
-                break;
-            case WEEKLY:
-                from.set(Calendar.HOUR_OF_DAY, 0);
-                from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                break;
-            case MONTHLY:
-                from.set(Calendar.HOUR_OF_DAY, 0);
-                from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                from.set(Calendar.MONTH, from.get(Calendar.MONTH));
-                break;
-            default:
-                return 0f;
-        }
+		for (Worklog w : logged) {
+			sum += Utils.transformWorklog(w);
+		}
+		return Float.valueOf(String.format(Locale.getDefault(), "%.2f", sum));
+	}
 
-        return Utils.calculateAmount(logged, from.getTime(), to.getTime());
-    }
+	public Float getWorkFlowByLastPeriod() {
+		Calendar from = Calendar.getInstance();
+		Calendar to = Calendar.getInstance();
 
-    public void addWorklog(Worklog worklog) {
-        logged.add(worklog);
-    }
+		switch (this.getQuotaType()) {
+			case DAILY:
+				from.set(Calendar.HOUR_OF_DAY, 0);
+				break;
+			case WEEKLY:
+				from.set(Calendar.HOUR_OF_DAY, 0);
+				from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+				break;
+			case MONTHLY:
+				from.set(Calendar.HOUR_OF_DAY, 0);
+				from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+				from.set(Calendar.MONTH, from.get(Calendar.MONTH));
+				break;
+			default:
+				from.set(Calendar.HOUR_OF_DAY, 0);
+				from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		}
 
-    public QuotaCategory getCategory() {
-        return category;
-    }
+		return Utils.calculateAmount(logged, from.getTime(), to.getTime());
+	}
 
-    public void setCategory(QuotaCategory category) {
-        this.category = category;
-    }
+	public QuotaCategory getCategory() {
+		return category;
+	}
 
-    public Integer getMax() {
-        return max;
-    }
+	public void setCategory(QuotaCategory category) {
+		this.category = category;
+	}
 
-    public void setMax(Integer max) {
-        this.max = max;
-    }
+	public Integer getMax() {
+		return max;
+	}
 
-    public Integer getMin() {
-        return min;
-    }
+	public void setMax(Integer max) {
+		this.max = max;
+	}
 
-    public void setMin(Integer min) {
-        this.min = min;
-    }
+	public Integer getMin() {
+		return min;
+	}
+
+	public void setMin(Integer min) {
+		this.min = min;
+	}
 }
 
 

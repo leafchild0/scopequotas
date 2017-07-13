@@ -108,8 +108,9 @@
     <string name="set">Set</string>
     <string name="choose_time">Choose time</string>
     <string name="save">Save</string>
-    <string name="delete">Delete</string>
+    <string name="archive">Archive</string>
     <string name="choose_date">Choose date</string>
+    <string name="show_archieved">Show archieved</string>
 
     <string-array name="worklog_array">
         <item>minutes</item>

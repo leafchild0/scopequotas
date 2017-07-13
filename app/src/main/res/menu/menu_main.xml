@@ -2,6 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.leafchild.scopequotas.MainActivity" >
+    <item
+        android:id="@+id/show_archieved"
+        android:orderInCategory="98"
+        android:checkable="true"
+        android:title="@string/show_archieved"
+        app:actionViewClass="android.widget.CheckBox"
+        app:showAsAction="withText" />
+
     <item android:id="@+id/action_settings"
         android:title="@string/settings"
         android:orderInCategory="100"

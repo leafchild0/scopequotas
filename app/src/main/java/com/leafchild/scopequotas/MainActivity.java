@@ -38,220 +38,219 @@ import static com.leafchild.scopequotas.AppContants.TYPE;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private final MainActivity self = this;
-    private DatabaseService service;
-    private ListView listView;
-    private TextView type;
+	private final MainActivity self = this;
+	private DatabaseService service;
+	private ListView listView;
+	private TextView type;
 
-    private ArrayAdapter<Quota> quotaAdapter;
-    private QuotaType currentType = QuotaType.WEEKLY;
+	private ArrayAdapter<Quota> quotaAdapter;
+	private QuotaType currentType = QuotaType.WEEKLY;
+	private boolean showArchieved = false;
 
-    private SharedPreferences sharedPref;
+	@Override
+	protected void onCreate(final Bundle savedInstanceState) {
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_nav);
+		service = new DatabaseService(this);
+		SharedPreferences sharedPref = Utils.getDefaultSharedPrefs(this);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nav);
-        service = new DatabaseService(this);
-        sharedPref = Utils.getDefaultSharedPrefs(this);
+		initComponents();
 
-        initComponents();
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+		initFabMenu();
 
-        initFabMenu();
+		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+				this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+		drawer.addDrawerListener(toggle);
+		toggle.syncState();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+		NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+		navigationView.setNavigationItemSelectedListener(this);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+		boolean quota_badges = sharedPref.getBoolean(SettingsActivity.QUOTA_BADGES, true);
+		if (quota_badges) { initMenuBadges(navigationView); }
+	}
 
-        boolean quota_badges = sharedPref.getBoolean(SettingsActivity.QUOTA_BADGES, true);
-        if(quota_badges) initMenuBadges(navigationView);
-    }
+	@Override
+	protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+	}
 
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
+	@Override
+	protected void onPostResume() {
+		super.onPostResume();
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-
-        quotaAdapter.clear();
-        quotaAdapter.addAll(loadData(currentType.ordinal()));
 		updateAppTitle();
 
-        if(!quotaAdapter.isEmpty()) {
-            type.setVisibility(View.GONE);
-        }
-    }
+		if (!quotaAdapter.isEmpty()) {
+			type.setVisibility(View.GONE);
+		}
+	}
 
-    private void initMenuBadges(NavigationView navigationView) {
-        TextView weekly, daily, monthly;
+	private void initMenuBadges(NavigationView navigationView) {
+		TextView weekly, daily, monthly;
 
-        daily = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_daily));
-        daily.setGravity(Gravity.CENTER_VERTICAL);
-        daily.setTypeface(null, Typeface.BOLD);
-        daily.setText(Integer.toString(service.findQuotasByType(QuotaType.DAILY).size()));
+		daily = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_daily));
+		daily.setGravity(Gravity.CENTER_VERTICAL);
+		daily.setTypeface(null, Typeface.BOLD);
+		daily.setText(Integer.toString(service.findQuotasByType(QuotaType.DAILY, showArchieved).size()));
 
-        weekly = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_weekly));
-        weekly.setGravity(Gravity.CENTER_VERTICAL);
-        weekly.setTypeface(null, Typeface.BOLD);
-        weekly.setText(Integer.toString(service.findQuotasByType(QuotaType.WEEKLY).size()));
+		weekly = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_weekly));
+		weekly.setGravity(Gravity.CENTER_VERTICAL);
+		weekly.setTypeface(null, Typeface.BOLD);
+		weekly.setText(Integer.toString(service.findQuotasByType(QuotaType.WEEKLY, showArchieved).size()));
 
-        monthly = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_monthly));
-        monthly.setGravity(Gravity.CENTER_VERTICAL);
-        monthly.setTypeface(null, Typeface.BOLD);
-        monthly.setText(Integer.toString(service.findQuotasByType(QuotaType.MONTHLY).size()));
-    }
+		monthly = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_monthly));
+		monthly.setGravity(Gravity.CENTER_VERTICAL);
+		monthly.setTypeface(null, Typeface.BOLD);
+		monthly.setText(Integer.toString(service.findQuotasByType(QuotaType.MONTHLY, showArchieved).size()));
+	}
 
-    private void initFabMenu() {
+	private void initFabMenu() {
 
-        FloatingActionButton newQuota = (FloatingActionButton) findViewById(R.id.new_quota);
-        newQuota.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+		FloatingActionButton newQuota = (FloatingActionButton) findViewById(R.id.new_quota);
+		newQuota.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
-        newQuota.setOnClickListener((v) -> {
-            Intent details = new Intent(self, DetailsActivity.class);
-            details.putExtra(TYPE, getIntent().getIntExtra(TYPE, currentType.ordinal()));
-            //Do not add any data
-            startActivity(details);
-            //menuMultipleActions.close(true);
-        });
-    }
+		newQuota.setOnClickListener((v) -> {
+			Intent details = new Intent(self, DetailsActivity.class);
+			details.putExtra(TYPE, getIntent().getIntExtra(TYPE, currentType.ordinal()));
+			//Do not add any data
+			startActivity(details);
+			//menuMultipleActions.close(true);
+		});
+	}
 
-    private void initComponents() {
+	private void initComponents() {
 
-        type = (TextView) findViewById(R.id.no_quotas);
-        listView = (ListView) findViewById(R.id.quotas_list);
+		type = (TextView) findViewById(R.id.no_quotas);
+		listView = (ListView) findViewById(R.id.quotas_list);
 
-        List<Quota> quotas = loadData(getIntent().getIntExtra(TYPE, 1));
-        quotaAdapter = new QuotaAdapter(this, quotas);
+		List<Quota> quotas = service.findQuotasByType(currentType, showArchieved);
+		quotaAdapter = new QuotaAdapter(this, quotas);
 
-        // Assign adapter to ListView
-        listView.setAdapter(quotaAdapter);
+		// Assign adapter to ListView
+		listView.setAdapter(quotaAdapter);
 
-        // ListView Item Click Listener
-        listView.setOnItemClickListener((parent, view, position, id) -> {
+		// ListView Item Click Listener
+		listView.setOnItemClickListener((parent, view, position, id) -> {
 
-            Quota itemValue = (Quota) listView.getItemAtPosition(position);
+			Quota itemValue = (Quota) listView.getItemAtPosition(position);
 
-            Intent details = new Intent(self, DetailsActivity.class);
-            details.putExtra(AppContants.ACTIVE_QUOTA, itemValue.getId());
+			Intent details = new Intent(self, DetailsActivity.class);
+			details.putExtra(AppContants.ACTIVE_QUOTA, itemValue.getId());
 
-            startActivity(details);
-        });
+			startActivity(details);
+		});
 
-        if(!quotaAdapter.isEmpty()) {
-            type.setVisibility(View.GONE);
-        }
-    }
+		if (!quotaAdapter.isEmpty()) {
+			type.setVisibility(View.GONE);
+		}
+	}
 
-    private List<Quota> loadData(int type) {
-        return service.findQuotasByType(QuotaType.fromOrdinal(type));
-    }
+	private void reloadData(QuotaType type) {
+		quotaAdapter.clear();
+		quotaAdapter.addAll(service.findQuotasByType(type, showArchieved));
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu_main, menu);
+		return true;
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch(item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-            case R.id.action_settings:
-            	Intent intent = new Intent(self, SettingsActivity.class);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				NavUtils.navigateUpFromSameTask(this);
+				return true;
+			case R.id.action_settings:
+				Intent intent = new Intent(self, SettingsActivity.class);
 				startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+				return true;
+			case R.id.show_archieved:
+				item.setChecked(!item.isChecked());
+				showArchieved = item.isChecked();
+				reloadData(currentType);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if(drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
-            quotaAdapter.notifyDataSetInvalidated();
-            super.onBackPressed();
-        }
-    }
+	@Override
+	public void onBackPressed() {
+		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		if (drawer.isDrawerOpen(GravityCompat.START)) {
+			drawer.closeDrawer(GravityCompat.START);
+		}
+		else {
+			quotaAdapter.notifyDataSetInvalidated();
+			super.onBackPressed();
+		}
+	}
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        Intent intent = null;
+	@SuppressWarnings("StatementWithEmptyBody")
+	@Override
+	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+		// Handle navigation view item clicks here.
+		int id = item.getItemId();
+		Intent intent = null;
 
-        switch(id) {
-            case R.id.categories:
-                intent = new Intent(self, CategoryActivity.class);
-                break;
-            case R.id.reports:
-                intent = new Intent(self, ReportsActivity.class);
-                break;
-            case R.id.main_settings:
-                intent = new Intent(self, SettingsActivity.class);
-                break;
-            case R.id.about:
-                intent = new Intent(self, AboutActivity.class);
-                break;
-            case R.id.nav_daily:
-                quotaAdapter.clear();
-                quotaAdapter.addAll(loadData(QuotaType.DAILY.ordinal()));
-                currentType = QuotaType.DAILY;
+		switch (id) {
+			case R.id.categories:
+				intent = new Intent(self, CategoryActivity.class);
+				break;
+			case R.id.reports:
+				intent = new Intent(self, ReportsActivity.class);
+				break;
+			case R.id.main_settings:
+				intent = new Intent(self, SettingsActivity.class);
+				break;
+			case R.id.about:
+				intent = new Intent(self, AboutActivity.class);
+				break;
+			case R.id.nav_daily:
+				currentType = QuotaType.DAILY;
+				reloadData(currentType);
 				updateAppTitle();
-                break;
-            case R.id.nav_weekly:
-                quotaAdapter.clear();
-                quotaAdapter.addAll(loadData(QuotaType.WEEKLY.ordinal()));
-                currentType = QuotaType.WEEKLY;
+				break;
+			case R.id.nav_weekly:
+				currentType = QuotaType.WEEKLY;
+				reloadData(currentType);
 				updateAppTitle();
-                break;
-            case R.id.nav_monthly:
-                quotaAdapter.clear();
-                quotaAdapter.addAll(loadData(QuotaType.MONTHLY.ordinal()));
-                currentType = QuotaType.MONTHLY;
+				break;
+			case R.id.nav_monthly:
+				currentType = QuotaType.MONTHLY;
+				reloadData(currentType);
 				updateAppTitle();
-                break;
-            default:
+				break;
+			default:
 
-        }
+		}
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawer.closeDrawer(GravityCompat.START);
 
-        if(intent != null) {
-            startActivity(intent);
-        }
-        else {
-            quotaAdapter.notifyDataSetChanged();
-        }
+		if (intent != null) {
+			startActivity(intent);
+		}
+		else {
+			quotaAdapter.notifyDataSetChanged();
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-	private void updateAppTitle()
-	{
+	private void updateAppTitle() {
 		setTitle("Your quotas - " + currentType.getValue());
 	}
 

@@ -114,8 +114,8 @@
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="0.5"
-                android:text="@string/delete"
-                android:onClick="deleteQuota"
+                android:text="@string/archive"
+                android:onClick="archiveQuota"
                 android:layout_margin="@dimen/activity_vertical_margin"
                 android:textColor="@color/colorPrimary"
                 style="?android:attr/buttonBarButtonStyle"/>

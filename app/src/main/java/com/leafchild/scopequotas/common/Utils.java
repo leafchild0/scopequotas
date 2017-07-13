@@ -1,14 +1,13 @@
 package com.leafchild.scopequotas.common;
 
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.j256.ormlite.dao.ForeignCollection;
+import com.leafchild.scopequotas.data.Worklog;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.EditText;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.j256.ormlite.dao.ForeignCollection;
-import com.leafchild.scopequotas.data.Quota;
-import com.leafchild.scopequotas.data.Worklog;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,7 +33,7 @@ public class Utils {
         return dayMonthYearFormatter;
     }
 
-    public static List<Integer> getColorsForCharts() {
+    public static List<Integer> getRandomColors() {
 
         ArrayList<Integer> colors = new ArrayList<>();
 

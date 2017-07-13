@@ -1,13 +1,5 @@
 package com.leafchild.scopequotas.reports;
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
@@ -34,14 +26,21 @@ import com.leafchild.scopequotas.data.Quota;
 import com.leafchild.scopequotas.data.Worklog;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-import static android.R.attr.entries;
 import static com.leafchild.scopequotas.AppContants.ACCENT_COLOR;
-import static com.leafchild.scopequotas.common.Utils.getColorsForCharts;
+import static com.leafchild.scopequotas.common.Utils.getRandomColors;
 
 public class ReportsActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -95,7 +94,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
         toDate = (Button) findViewById(R.id.reports_to);
         toDate.setText(Utils.getDayMonthYearFormatter().format(to.getTime()));
 
-        from.add(Calendar.MONTH, -1);
+        from.add(Calendar.WEEK_OF_MONTH, -1);
         fromDate = (Button) findViewById(R.id.reports_from);
         fromDate.setText(Utils.getDayMonthYearFormatter().format(from.getTime()));
 
@@ -390,7 +389,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
         dataSet.setIconsOffset(new MPPointF(0, 40));
         dataSet.setSelectionShift(5f);
 
-        dataSet.setColors(getColorsForCharts());
+        dataSet.setColors(getRandomColors());
 
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
@@ -412,7 +411,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
                 entries.add(new BarEntry(i * spaceForBar, values.get(type)));
                 BarDataSet d = new BarDataSet(entries, type);
                 d.setDrawIcons(false);
-                d.setColor(getColorsForCharts().get(i));
+                d.setColor(getRandomColors().get(i));
                 data.addDataSet(d);
                 i++;
             }
