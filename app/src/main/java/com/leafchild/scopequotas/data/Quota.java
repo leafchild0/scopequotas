@@ -169,15 +169,18 @@ public class Quota {
 			case WEEKLY:
 				from.set(Calendar.HOUR_OF_DAY, 0);
 				from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+				to.set(Calendar.HOUR_OF_DAY, 23);
+				to.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 				break;
 			case MONTHLY:
 				from.set(Calendar.HOUR_OF_DAY, 0);
-				from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-				from.set(Calendar.MONTH, from.get(Calendar.MONTH));
+				from.set(Calendar.DAY_OF_MONTH, 0);
 				break;
 			default:
 				from.set(Calendar.HOUR_OF_DAY, 0);
 				from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+				to.set(Calendar.HOUR_OF_DAY, 23);
+				to.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 		}
 
 		return Utils.calculateAmount(logged, from.getTime(), to.getTime());

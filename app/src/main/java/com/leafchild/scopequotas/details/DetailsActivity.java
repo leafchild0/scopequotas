@@ -127,7 +127,7 @@ public class DetailsActivity extends AppCompatActivity {
 	private boolean isQuotaValid() {
 
 		boolean isMinMax = false;
-		boolean isAllFilled = !Utils.isFieldEmpty(name)
+		boolean isAllFilled = (name.getVisibility() == View.VISIBLE | Utils.isFieldEmpty(name))
 				&& !Utils.isFieldEmpty(goal)
 				&& !Utils.isFieldEmpty(min)
 				&& !Utils.isFieldEmpty(max);
