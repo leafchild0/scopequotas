@@ -113,13 +113,16 @@ public class DatabaseService {
 	public List<Quota> findQuotasByType(QuotaType type, boolean showArchieved) {
 
 		List<Quota> byType = new ArrayList<>();
-		if (type == null) {
-			return byType;
-		}
+		if (type == null) return byType;
 
 		try {
-			byType = dbManager.getQuotaDao().queryBuilder().where().eq("quotaType", type)
-							  .and().eq("archieved", showArchieved).query();
+			if (showArchieved) {
+				byType = dbManager.getQuotaDao().queryForEq("quotaType", type);
+			}
+			else {
+				byType = dbManager.getQuotaDao().queryBuilder().where().eq("quotaType", type)
+								  .and().eq("archieved", false).query();
+			}
 		}
 		catch (SQLException e) {
 			Log.e("DB", e.getMessage());

@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	private ArrayAdapter<Quota> quotaAdapter;
 	private QuotaType currentType = QuotaType.WEEKLY;
 	private boolean showArchieved = false;
+	private ActionBarDrawerToggle toggle;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		initFabMenu();
 
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+		toggle = new ActionBarDrawerToggle(
 			this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 		drawer.addDrawerListener(toggle);
 		toggle.syncState();
@@ -78,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 		super.onPostResume();
 		updateAppTitle();
+		reloadData(currentType);
+		toggle.syncState();
 
 		if (!quotaAdapter.isEmpty()) type.setVisibility(View.GONE);
 
@@ -104,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	private void initFabMenu() {
 
 		FloatingActionButton newQuota = (FloatingActionButton) findViewById(R.id.new_quota);
-		newQuota.setBackgroundColor(getResources().getColor(R.color.colorPrimary, null));
 
 		newQuota.setOnClickListener(v -> {
 			Intent details = new Intent(self, DetailsActivity.class);
@@ -234,8 +236,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawer.closeDrawer(GravityCompat.START);
 
-		if (intent != null) { startActivity(intent); }
-		else { quotaAdapter.notifyDataSetChanged(); }
+		if (intent != null) startActivity(intent);
+		else quotaAdapter.notifyDataSetChanged();
+
+		toggle.syncState();
 
 		return true;
 	}

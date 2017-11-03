@@ -46,6 +46,7 @@ public class DetailsActivity extends AppCompatActivity {
 	private EditText max;
 	private Spinner categories;
 	private TextView worklogAmount;
+	private BarChart chart;
 
 	private DatabaseService service;
 	private Quota editingBean;
@@ -67,6 +68,7 @@ public class DetailsActivity extends AppCompatActivity {
 		goal = (EditText) findViewById(R.id.quota_goal);
 		min = (EditText) findViewById(R.id.quota_min);
 		max = (EditText) findViewById(R.id.quota_max);
+		chart = (BarChart) findViewById(R.id.worklog_chart);
 
 		type = getIntent().getIntExtra(TYPE, 1);
 
@@ -121,6 +123,7 @@ public class DetailsActivity extends AppCompatActivity {
 			//New entity
 			worklogLayout.setVisibility(View.GONE);
 			deleteButton.setVisibility(View.GONE);
+			chart.setVisibility(View.GONE);
 			setTitle("Add new Quota");
 		}
 	}
@@ -180,42 +183,47 @@ public class DetailsActivity extends AppCompatActivity {
 
 	private void initChart() {
 
-		BarChart chart = (BarChart) findViewById(R.id.worklog_chart);
-
 		List<BarEntry> entries = new ArrayList<>();
 		List<String> labels = new ArrayList<>();
 		int amount = 0;
 
-		for (Worklog worklog : editingBean.getLogged()) {
-			// turn your data into Entry objects
-			entries.add(new BarEntry(amount++, worklog.getAmount().floatValue()));
-			labels.add(Utils.getDayMonthFormatter().format(worklog.getCreatedDate()));
+		if (editingBean.isNew() || editingBean.getLogged().isEmpty())
+		{
+			chart.setVisibility(View.GONE);
 		}
+		else {
 
-		BarDataSet dataSet = new BarDataSet(entries, "");
-		BarData lineData = new BarData(dataSet);
-		chart.setData(lineData);
-		chart.getDescription().setEnabled(false);
-		chart.getLegend().setEnabled(false);
+			for (Worklog worklog : editingBean.getLogged()) {
+				// turn your data into Entry objects
+				entries.add(new BarEntry(amount++, worklog.getAmount().floatValue()));
+				labels.add(Utils.getDayMonthFormatter().format(worklog.getCreatedDate()));
+			}
 
-		XAxis xl = chart.getXAxis();
-		xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-		xl.setDrawAxisLine(true);
-		xl.setDrawGridLines(false);
-		xl.setGranularityEnabled(true);
-		xl.setGranularity(1f);
-		xl.setDrawLabels(true);
-		xl.setValueFormatter(new IndexAxisValueFormatter(labels));
+			BarDataSet dataSet = new BarDataSet(entries, "");
+			BarData lineData = new BarData(dataSet);
+			chart.setData(lineData);
+			chart.getDescription().setEnabled(false);
+			chart.getLegend().setEnabled(false);
 
-		YAxis yl = chart.getAxisLeft();
-		yl.setDrawAxisLine(true);
-		yl.setDrawGridLines(true);
-		yl.setAxisMinimum(0f);
+			XAxis xl = chart.getXAxis();
+			xl.setPosition(XAxis.XAxisPosition.BOTTOM);
+			xl.setDrawAxisLine(true);
+			xl.setDrawGridLines(false);
+			xl.setGranularityEnabled(true);
+			xl.setGranularity(1f);
+			xl.setDrawLabels(true);
+			xl.setValueFormatter(new IndexAxisValueFormatter(labels));
 
-		YAxis yr = chart.getAxisRight();
-		yr.setDrawAxisLine(true);
-		yr.setDrawGridLines(false);
-		yr.setAxisMinimum(0f);
+			YAxis yl = chart.getAxisLeft();
+			yl.setDrawAxisLine(true);
+			yl.setDrawGridLines(true);
+			yl.setAxisMinimum(0f);
+
+			YAxis yr = chart.getAxisRight();
+			yr.setDrawAxisLine(true);
+			yr.setDrawGridLines(false);
+			yr.setAxisMinimum(0f);
+		}
 	}
 
 	@Override
