@@ -21,7 +21,7 @@ import java.util.Objects;
 @DatabaseTable(tableName = Quota.TABLE_NAME_QUOTA)
 public class Quota {
 
-	final static String TABLE_NAME_QUOTA = "quota";
+	static final String TABLE_NAME_QUOTA = "quota";
 
 	@DatabaseField(generatedId = true)
 	private long id;
@@ -47,9 +47,12 @@ public class Quota {
 	@ForeignCollectionField(columnName = "logged", eager = true)
 	private ForeignCollection<Worklog> logged;
 
-	public Quota() {}
+	public Quota() {
+
+	}
 
 	public Quota(String name, String description, QuotaType type) {
+
 		this.name = name;
 		this.description = description;
 		this.quotaType = type;
@@ -62,71 +65,88 @@ public class Quota {
 	}
 
 	public ForeignCollection<Worklog> getLogged() {
+
 		return logged;
 	}
 
 	public void setLogged(ForeignCollection<Worklog> logged) {
+
 		this.logged = logged;
 	}
 
 	public long getId() {
+
 		return id;
 	}
 
 	public void setId(long id) {
+
 		this.id = id;
 	}
 
 	public String getName() {
+
 		return name;
 	}
 
 	public void setName(String name) {
+
 		this.name = name;
 	}
 
 	public QuotaType getQuotaType() {
+
 		return quotaType;
 	}
 
 	public void setQuotaType(QuotaType quotaType) {
+
 		this.quotaType = quotaType;
 	}
 
 	public String getDescription() {
+
 		return description;
 	}
 
 	public void setDescription(String description) {
+
 		this.description = description;
 	}
 
 	public Date getCreatedDate() {
+
 		return createdDate;
 	}
 
 	public void setCreatedDate(Date createdDate) {
+
 		this.createdDate = createdDate;
 	}
 
 	public Date getModifiedDate() {
+
 		return modifiedDate;
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
+
 		this.modifiedDate = modifiedDate;
 	}
 
 	public Boolean getArchieved() {
+
 		return archieved;
 	}
 
 	public void setArchieved(Boolean archieved) {
+
 		this.archieved = archieved;
 	}
 
 	@Override
 	public boolean equals(Object o) {
+
 		if (this == o) {
 			return true;
 		}
@@ -141,10 +161,12 @@ public class Quota {
 
 	@Override
 	public int hashCode() {
+
 		return Objects.hash(name, quotaType, id);
 	}
 
 	public boolean isNew() {
+
 		return id <= 0;
 	}
 
@@ -159,6 +181,7 @@ public class Quota {
 	}
 
 	public Float getWorkFlowByLastPeriod() {
+
 		Calendar from = Calendar.getInstance();
 		Calendar to = Calendar.getInstance();
 
@@ -187,26 +210,32 @@ public class Quota {
 	}
 
 	public QuotaCategory getCategory() {
+
 		return category;
 	}
 
 	public void setCategory(QuotaCategory category) {
+
 		this.category = category;
 	}
 
 	public Integer getMax() {
+
 		return max;
 	}
 
 	public void setMax(Integer max) {
+
 		this.max = max;
 	}
 
 	public Integer getMin() {
+
 		return min;
 	}
 
 	public void setMin(Integer min) {
+
 		this.min = min;
 	}
 }

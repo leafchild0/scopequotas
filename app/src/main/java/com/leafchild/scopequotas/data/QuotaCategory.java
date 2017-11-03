@@ -17,78 +17,89 @@ import java.util.Objects;
 @DatabaseTable(tableName = QuotaCategory.TABLE_NAME_CATEGORY)
 public class QuotaCategory {
 
-    final static String TABLE_NAME_CATEGORY = "category";
+	static final String TABLE_NAME_CATEGORY = "category";
 
-    @DatabaseField(generatedId = true)
-    private long id;
-    @DatabaseField(columnName = "name", canBeNull = false, unique = true)
-    private String name;
-    @DatabaseField(columnName = "createdDate")
-    private Date createdDate;
+	@DatabaseField(generatedId = true)
+	private long id;
+	@DatabaseField(columnName = "name", canBeNull = false, unique = true)
+	private String name;
+	@DatabaseField(columnName = "createdDate")
+	private Date createdDate;
 
-    @ForeignCollectionField(columnName = "quotas", eager = true)
-    private ForeignCollection<Quota> quotas;
+	@ForeignCollectionField(columnName = "quotas", eager = true)
+	private ForeignCollection<Quota> quotas;
 
-    public QuotaCategory() {
-    }
+	public QuotaCategory() {}
 
-    public QuotaCategory(String name) {
-        this.name = name;
-    }
+	public QuotaCategory(String name) {
 
-    public long getId() {
-        return id;
-    }
+		this.name = name;
+	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+	public long getId() {
 
-    public String getName() {
-        return name;
-    }
+		return id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setId(long id) {
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
+		this.id = id;
+	}
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
+	public String getName() {
 
-    public ForeignCollection<Quota> getQuotas() {
-        return quotas;
-    }
+		return name;
+	}
 
-    public void setQuotas(ForeignCollection<Quota> quotas) {
-        this.quotas = quotas;
-    }
+	public void setName(String name) {
 
-    @Override
-    public String toString() {
-        return name;
-    }
+		this.name = name;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if(this == o) {
-            return true;
-        }
-        if(o == null || getClass() != o.getClass()) {
-            return false;
-        }
+	public Date getCreatedDate() {
 
-        QuotaCategory that = (QuotaCategory) o;
-        return Objects.equals(that, this);
+		return createdDate;
+	}
 
-    }
+	public void setCreatedDate(Date createdDate) {
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
+		this.createdDate = createdDate;
+	}
+
+	public ForeignCollection<Quota> getQuotas() {
+
+		return quotas;
+	}
+
+	public void setQuotas(ForeignCollection<Quota> quotas) {
+
+		this.quotas = quotas;
+	}
+
+	@Override
+	public String toString() {
+
+		return name;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		QuotaCategory that = (QuotaCategory) o;
+		return Objects.equals(that, this);
+
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(id, name);
+	}
 }

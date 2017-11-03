@@ -7,30 +7,35 @@ package com.leafchild.scopequotas.data;
  */
 
 public enum QuotaType {
-    DAILY("Daily"),
-    WEEKLY("Weekly"),
-    MONTHLY("Monthly");
 
-    QuotaType(String value) {
-        this.value = value;
-    }
+	DAILY("Daily"),
+	WEEKLY("Weekly"),
+	MONTHLY("Monthly");
 
-    private String value;
+	QuotaType(String value) {
 
-    public String getValue() {
-        return value;
-    }
+		this.value = value;
+	}
 
-    public static QuotaType fromString(String text) {
-        for (QuotaType b : QuotaType.values()) {
-            if (b.value.equalsIgnoreCase(text)) {
-                return b;
-            }
-        }
-        return null;
-    }
+	private String value;
 
-    public static QuotaType fromOrdinal(int n) {
-        return values()[n];
-    }
+	public String getValue() {
+
+		return value;
+	}
+
+	public static QuotaType fromString(String text) {
+
+		for (QuotaType b : QuotaType.values()) {
+			if (b.value.equalsIgnoreCase(text)) {
+				return b;
+			}
+		}
+		return null;
+	}
+
+	public static QuotaType fromOrdinal(int n) {
+
+		return values()[n];
+	}
 }

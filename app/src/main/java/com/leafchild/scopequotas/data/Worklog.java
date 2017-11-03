@@ -15,94 +15,106 @@ import java.util.Objects;
 @DatabaseTable(tableName = Worklog.TABLE_NAME_WORKLOG)
 public class Worklog {
 
-    final static String TABLE_NAME_WORKLOG = "worklog";
+	static final String TABLE_NAME_WORKLOG = "worklog";
 
-    @DatabaseField(generatedId = true)
-    private Long id;
-    @DatabaseField(columnName = "createdDate")
-    private Date createdDate;
-    @DatabaseField(columnName = "amount", canBeNull = false)
-    private Double amount;
-    @DatabaseField(columnName = "amount_type", canBeNull = false)
-    private WorklogType type;
-    @DatabaseField(columnName = "quota", foreign = true, foreignAutoRefresh = true)
-    private Quota quota;
+	@DatabaseField(generatedId = true)
+	private Long id;
+	@DatabaseField(columnName = "createdDate")
+	private Date createdDate;
+	@DatabaseField(columnName = "amount", canBeNull = false)
+	private Double amount;
+	@DatabaseField(columnName = "amount_type", canBeNull = false)
+	private WorklogType type;
+	@DatabaseField(columnName = "quota", foreign = true, foreignAutoRefresh = true)
+	private Quota quota;
 
-    public Worklog() {}
+	public Worklog() {}
 
-    public Worklog(Quota quota, Double amount) {
-        this.quota = quota;
-        this.amount = amount;
-    }
+	public Worklog(Quota quota, Double amount) {
 
-    public Long getId() {
-        return id;
-    }
+		this.quota = quota;
+		this.amount = amount;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
+		return id;
+	}
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
+	public void setId(Long id) {
 
-    public Double getAmount() {
-        return amount;
-    }
+		this.id = id;
+	}
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
+	public Date getCreatedDate() {
 
-    public Quota getQuota() {
-        return quota;
-    }
+		return createdDate;
+	}
 
-    public void setQuota(Quota quota) {
-        this.quota = quota;
-    }
+	public void setCreatedDate(Date createdDate) {
 
-    @Override
-    public String toString() {
-        return "Worklog{" +
-            "id=" + id +
-            ", createdDate=" + createdDate +
-            ", amount=" + amount +
-            ", amountType=" + type +
-            '}';
-    }
+		this.createdDate = createdDate;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if(this == o) {
-            return true;
-        }
-        if(o == null || getClass() != o.getClass()) {
-            return false;
-        }
+	public Double getAmount() {
 
-        Worklog worklog = (Worklog) o;
-        return Objects.equals(worklog, this);
+		return amount;
+	}
 
-    }
+	public void setAmount(Double amount) {
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(amount, createdDate, id);
-    }
+		this.amount = amount;
+	}
 
-    public WorklogType getType() {
+	public Quota getQuota() {
 
-        return type;
-    }
+		return quota;
+	}
 
-    public void setType(WorklogType type) {
+	public void setQuota(Quota quota) {
 
-        this.type = type;
-    }
+		this.quota = quota;
+	}
+
+	@Override
+	public String toString() {
+
+		return "Worklog{" +
+			"id=" + id +
+			", createdDate=" + createdDate +
+			", amount=" + amount +
+			", amountType=" + type +
+			'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		Worklog worklog = (Worklog) o;
+		return Objects.equals(worklog, this);
+
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(amount, createdDate, id);
+	}
+
+	public WorklogType getType() {
+
+		return type;
+	}
+
+	public void setType(WorklogType type) {
+
+		this.type = type;
+	}
 }

@@ -70,7 +70,7 @@ public class WorklogActivity extends AppCompatActivity
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
-
+	 	// Do not do anything
 	}
 
 	public void addWorklog(View view) {

@@ -1,8 +1,5 @@
 package com.leafchild.scopequotas.common;
 
-import com.leafchild.scopequotas.R;
-import com.leafchild.scopequotas.data.Quota;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
@@ -12,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import com.leafchild.scopequotas.R;
+import com.leafchild.scopequotas.data.Quota;
+
 import java.util.List;
 import java.util.Random;
 
@@ -40,10 +40,12 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
 	}
 
 	public QuotaAdapter(Context context, List<Quota> quotas) {
+
 		super(context, R.layout.quota_item, quotas);
 	}
 
 	public QuotaAdapter(Context context, int resource, List<Quota> quotas, boolean showWorklog) {
+
 		super(context, resource, quotas);
 		this.showWorklog = showWorklog;
 		this.showProgress = Utils.getDefaultSharedPrefs(context).getBoolean(QUOTA_INDICATOR, true);
@@ -84,12 +86,12 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
 
 				viewHolder.name.setText(quota.getName() + " [" + quota.getMin() + "-" + quota.getMax() + "]");
 				viewHolder.amount.setText(String.format(String.valueOf(quota.getWorkFlowByLastPeriod())
-						+ "%s", HOURS));
+					+ "%s", HOURS));
 				if (showProgress) {
 					viewHolder.progress
-							.setProgress(Utils.calculateQuotaProgress(quota.getWorkFlowByLastPeriod(), quota.getMax()));
+						.setProgress(Utils.calculateQuotaProgress(quota.getWorkFlowByLastPeriod(), quota.getMax()));
 					viewHolder.progress.setProgressTintList(ColorStateList.valueOf(
-							colors.get(random.nextInt(colors.size()))));
+						colors.get(random.nextInt(colors.size()))));
 				}
 			}
 		}

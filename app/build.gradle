@@ -2,17 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion "27.0.0"
     defaultConfig {
         applicationId "com.leafchild.scopequotas"
-        minSdkVersion 21
+        minSdkVersion 25
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        jackOptions {
-            enabled true
-        }
     }
     buildTypes {
         release {
@@ -31,10 +28,10 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:25.2.0'
-    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.android.support:design:25.4.0'
+    compile 'com.android.support:support-v4:25.4.0'
     compile 'com.j256.ormlite:ormlite-android:4.48'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.wdullaer:materialdatetimepicker:3.1.3'

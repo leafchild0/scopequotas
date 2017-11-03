@@ -15,81 +15,87 @@ import java.util.GregorianCalendar;
 
 /**
  * @author leafchild
- * Date 27/04/2017
- * Project ScopeQuotas
+ *         Date 27/04/2017
+ *         Project ScopeQuotas
  */
 
 public class TimePreference extends DialogPreference {
 
-    private TimePicker picker = null;
-    private Calendar calendar;
+	private TimePicker picker = null;
+	private Calendar calendar;
 
-    public TimePreference(Context ctxt, AttributeSet attrs) {
-        super(ctxt, attrs);
-        calendar = new GregorianCalendar();
+	public TimePreference(Context ctxt, AttributeSet attrs) {
 
-    }
+		super(ctxt, attrs);
+		calendar = new GregorianCalendar();
+	}
 
-    @Override
-    protected View onCreateDialogView() {
-        picker = new TimePicker(getContext());
-        picker.setIs24HourView(true);
+	@Override
+	protected View onCreateDialogView() {
 
-        return (picker);
-    }
+		picker = new TimePicker(getContext());
+		picker.setIs24HourView(true);
 
-    @Override
-    protected void onBindDialogView(View v) {
-        super.onBindDialogView(v);
+		return (picker);
+	}
 
-        picker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
-        picker.setCurrentMinute(calendar.get(Calendar.MINUTE));
-    }
+	@Override
+	protected void onBindDialogView(View v) {
 
-    @Override
-    protected void onDialogClosed(boolean positiveResult) {
-        super.onDialogClosed(positiveResult);
+		super.onBindDialogView(v);
 
-        if(positiveResult) {
-            calendar.set(Calendar.HOUR_OF_DAY, picker.getCurrentHour());
-            calendar.set(Calendar.MINUTE, picker.getCurrentMinute());
+		picker.setHour(calendar.get(Calendar.HOUR_OF_DAY));
+		picker.setMinute(calendar.get(Calendar.MINUTE));
+	}
 
-            if (callChangeListener(calendar.getTimeInMillis())) {
-                persistLong(calendar.getTimeInMillis());
-                notifyChanged();
-            }
+	@Override
+	protected void onDialogClosed(boolean positiveResult) {
 
-            setSummary(getSummary());
-            NotificationsManager.getInstance().scheduleNotification(getContext(), calendar.getTimeInMillis());
-        }
-    }
+		super.onDialogClosed(positiveResult);
 
-    @Override
-    protected Object onGetDefaultValue(TypedArray a, int index) {
-        return (a.getString(index));
-    }
+		if (positiveResult) {
+			calendar.set(Calendar.HOUR_OF_DAY, picker.getHour());
+			calendar.set(Calendar.MINUTE, picker.getMinute());
 
-    @Override
-    protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
+			if (callChangeListener(calendar.getTimeInMillis())) {
+				persistLong(calendar.getTimeInMillis());
+				notifyChanged();
+			}
 
-        if (restoreValue) {
-            calendar.setTimeInMillis(getPersistedLong(System.currentTimeMillis()));
-        } else {
-            if (defaultValue == null) {
-                calendar.setTimeInMillis(System.currentTimeMillis());
-            } else {
-                calendar.setTimeInMillis(Long.parseLong((String) defaultValue));
-            }
-        }
-        setSummary(getSummary());
-    }
+			setSummary(getSummary());
+			NotificationsManager.getInstance().scheduleNotification(getContext(), calendar.getTimeInMillis());
+		}
+	}
 
-    @Override
-    public CharSequence getSummary() {
-        if (calendar == null) {
-            return null;
-        }
-        return DateFormat.getTimeFormat(getContext()).format(new Date(calendar.getTimeInMillis()));
-    }
+	@Override
+	protected Object onGetDefaultValue(TypedArray a, int index) {
+
+		return (a.getString(index));
+	}
+
+	@Override
+	protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
+
+		if (restoreValue) {
+			calendar.setTimeInMillis(getPersistedLong(System.currentTimeMillis()));
+		}
+		else {
+			if (defaultValue == null) {
+				calendar.setTimeInMillis(System.currentTimeMillis());
+			}
+			else {
+				calendar.setTimeInMillis(Long.parseLong((String) defaultValue));
+			}
+		}
+		setSummary(getSummary());
+	}
+
+	@Override
+	public CharSequence getSummary() {
+
+		if (calendar == null) return null;
+
+		return DateFormat.getTimeFormat(getContext()).format(new Date(calendar.getTimeInMillis()));
+	}
 
 }

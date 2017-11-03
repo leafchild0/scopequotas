@@ -22,69 +22,72 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class NotificationsManager {
 
-    private static NotificationsManager instance;
-    private static AlarmManager alarmManager;
-    private static SharedPreferences prefs;
-    private final static AtomicInteger N_COUNT = new AtomicInteger(0);
+	private static NotificationsManager instance;
+	private static final AtomicInteger N_COUNT = new AtomicInteger(0);
 
-    public static NotificationsManager getInstance() {
-        if(instance == null) {
-            instance = new NotificationsManager();
-        }
+	public static NotificationsManager getInstance() {
 
-        return instance;
-    }
+		if (instance == null) {
+			instance = new NotificationsManager();
+		}
 
-    void sendImmediateNotification(Context context, Notification n, int id) {
-        getSystemNotificationManager(context).notify(id, n);
-    }
+		return instance;
+	}
 
-    Notification getSimpleNotification(Context context, PendingIntent pendingIntent, String title, String text) {
+	void sendImmediateNotification(Context context, Notification n, int id) {
 
-        prefs = Utils.getDefaultSharedPrefs(context);
-        boolean isNotifEnabled = prefs.getBoolean(SettingsActivity.DAILY_NOTIFICATIONS, true);
-        boolean isVibrateEnabled = prefs.getBoolean(SettingsActivity.NOTIFICATIONS_VIBRATE, true);
-        String strRingtonePreference = prefs.getString(SettingsActivity.NOTIFICATIONS_RINGTONE, "DEFAULT_SOUND");
+		getSystemNotificationManager(context).notify(id, n);
+	}
 
-        Notification.Builder builder = new Notification.Builder(context)
-            .setContentTitle(title)
-            .setContentText(text)
-            .setContentIntent(pendingIntent)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setAutoCancel(true);
+	Notification getSimpleNotification(Context context, PendingIntent pendingIntent, String title, String text) {
 
-        if(isNotifEnabled) {
-            if(isVibrateEnabled) builder.setVibrate(new long[]{1000, 1000});
-            builder.setSound(Uri.parse(strRingtonePreference));
-        }
+		SharedPreferences prefs = Utils.getDefaultSharedPrefs(context);
+		boolean isNotifEnabled = prefs.getBoolean(SettingsActivity.DAILY_NOTIFICATIONS, true);
+		boolean isVibrateEnabled = prefs.getBoolean(SettingsActivity.NOTIFICATIONS_VIBRATE, true);
+		String strRingtonePreference = prefs.getString(SettingsActivity.NOTIFICATIONS_RINGTONE, "DEFAULT_SOUND");
 
-        return builder.build();
-    }
+		Notification.Builder builder = new Notification.Builder(context)
+			.setContentTitle(title)
+			.setContentText(text)
+			.setContentIntent(pendingIntent)
+			.setSmallIcon(R.mipmap.ic_launcher)
+			.setAutoCancel(true);
 
-    public void scheduleNotification(Context context, long delay) {
+		if (isNotifEnabled) {
+			if (isVibrateEnabled) builder.setVibrate(new long[] {1000, 1000});
+			builder.setSound(Uri.parse(strRingtonePreference));
+		}
 
-        alarmManager = getSystemAlarmManager(context);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(delay);
+		return builder.build();
+	}
 
-        Intent intent = new Intent(context, NotificationsReciever.class);
-        PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) System.currentTimeMillis(), intent,
-            PendingIntent.FLAG_UPDATE_CURRENT);
+	public void scheduleNotification(Context context, long delay) {
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-            AlarmManager.INTERVAL_DAY, pIntent);
-    }
+		AlarmManager alarmManager = getSystemAlarmManager(context);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(delay);
 
-    private NotificationManager getSystemNotificationManager(Context context) {
-        return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-    }
+		Intent intent = new Intent(context, NotificationsReciever.class);
+		PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) System.currentTimeMillis(), intent,
+			PendingIntent.FLAG_UPDATE_CURRENT);
 
-    private AlarmManager getSystemAlarmManager(Context context) {
-        return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-    }
+		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+			AlarmManager.INTERVAL_DAY, pIntent);
+	}
 
-    static int getNotificationId() {
-        return N_COUNT.incrementAndGet();
-    }
+	private NotificationManager getSystemNotificationManager(Context context) {
+
+		return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+	}
+
+	private AlarmManager getSystemAlarmManager(Context context) {
+
+		return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+	}
+
+	static int getNotificationId() {
+
+		return N_COUNT.incrementAndGet();
+	}
 
 }

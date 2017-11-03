@@ -7,30 +7,35 @@ package com.leafchild.scopequotas.data;
  */
 
 public enum WorklogType {
-    MINUTES("Minutes"),
-    HOURS("Hours"),
-    DAYS("Days");
 
-    private String value;
+	MINUTES("Minutes"),
+	HOURS("Hours"),
+	DAYS("Days");
 
-    WorklogType(String value) {
-        this.value = value;
-    }
+	private String value;
 
-    public String getValue() {
-        return value;
-    }
+	WorklogType(String value) {
 
-    public static WorklogType fromString(String text) {
-        for (WorklogType b : WorklogType.values()) {
-            if (b.value.equalsIgnoreCase(text)) {
-                return b;
-            }
-        }
-        return null;
-    }
+		this.value = value;
+	}
 
-    public static WorklogType fromOrdinal(int n) {
-        return values()[n];
-    }
+	public String getValue() {
+
+		return value;
+	}
+
+	public static WorklogType fromString(String text) {
+
+		for (WorklogType b : WorklogType.values()) {
+			if (b.value.equalsIgnoreCase(text)) {
+				return b;
+			}
+		}
+		return null;
+	}
+
+	public static WorklogType fromOrdinal(int n) {
+
+		return values()[n];
+	}
 }

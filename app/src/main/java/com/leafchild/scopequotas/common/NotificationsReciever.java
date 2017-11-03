@@ -15,7 +15,7 @@ import com.leafchild.scopequotas.MainActivity;
 
 public class NotificationsReciever extends BroadcastReceiver {
 
-    public NotificationsReciever(){}
+    private NotificationsReciever(){}
 
     @Override
     public void onReceive(Context context, Intent intent) {

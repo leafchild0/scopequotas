@@ -1,21 +1,5 @@
 package com.leafchild.scopequotas.details;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.leafchild.scopequotas.R;
-import com.leafchild.scopequotas.common.Utils;
-import com.leafchild.scopequotas.data.DatabaseService;
-import com.leafchild.scopequotas.data.Quota;
-import com.leafchild.scopequotas.data.QuotaCategory;
-import com.leafchild.scopequotas.data.QuotaType;
-import com.leafchild.scopequotas.data.Worklog;
-import com.leafchild.scopequotas.worklog.WorklogActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +16,22 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.leafchild.scopequotas.R;
+import com.leafchild.scopequotas.common.Utils;
+import com.leafchild.scopequotas.data.DatabaseService;
+import com.leafchild.scopequotas.data.Quota;
+import com.leafchild.scopequotas.data.QuotaCategory;
+import com.leafchild.scopequotas.data.QuotaType;
+import com.leafchild.scopequotas.data.Worklog;
+import com.leafchild.scopequotas.worklog.WorklogActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +46,6 @@ public class DetailsActivity extends AppCompatActivity {
 	private EditText max;
 	private Spinner categories;
 	private TextView worklogAmount;
-	private Button deleteButton;
 
 	private DatabaseService service;
 	private Quota editingBean;
@@ -57,16 +56,17 @@ public class DetailsActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_details);
 
 		worklogAmount = (TextView) findViewById(R.id.quota_amount_value);
 		LinearLayout worklogLayout = (LinearLayout) findViewById(R.id.quota_amount_name);
+		Button deleteButton = (Button) findViewById(R.id.button_delete);
 		name = (EditText) findViewById(R.id.quota_name);
 		goal = (EditText) findViewById(R.id.quota_goal);
 		min = (EditText) findViewById(R.id.quota_min);
 		max = (EditText) findViewById(R.id.quota_max);
-		deleteButton = (Button) findViewById(R.id.button_delete);
 
 		type = getIntent().getIntExtra(TYPE, 1);
 
@@ -100,12 +100,13 @@ public class DetailsActivity extends AppCompatActivity {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
 				pickedCategory = (String) parent.getItemAtPosition(position);
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
-
+				// Do not do anything
 			}
 		});
 		categories.setPrompt("Select query");
@@ -128,9 +129,9 @@ public class DetailsActivity extends AppCompatActivity {
 
 		boolean isMinMax = false;
 		boolean isAllFilled = (name.getVisibility() == View.VISIBLE | Utils.isFieldEmpty(name))
-				&& !Utils.isFieldEmpty(goal)
-				&& !Utils.isFieldEmpty(min)
-				&& !Utils.isFieldEmpty(max);
+			&& !Utils.isFieldEmpty(goal)
+			&& !Utils.isFieldEmpty(min)
+			&& !Utils.isFieldEmpty(max);
 
 		if (isAllFilled) {
 			int minValue = Integer.valueOf(min.getText().toString());
@@ -140,7 +141,7 @@ public class DetailsActivity extends AppCompatActivity {
 
 			if (!isMinMax) {
 				Toast.makeText(DetailsActivity.this,
-						"Min needs to be less then Max", Toast.LENGTH_SHORT).show();
+					"Min needs to be less then Max", Toast.LENGTH_SHORT).show();
 			}
 		}
 		else {
@@ -159,9 +160,7 @@ public class DetailsActivity extends AppCompatActivity {
 		//Perform any validations, etc
 		//Preset values in the fields
 		if (editingBean != null) {
-			//name.setText(editingBean.getName());
 			//Prevent from editing quota name once it was saved
-			//name.setEnabled(false);
 			name.setVisibility(View.GONE);
 
 			min.setText(String.valueOf(editingBean.getMin()));
@@ -175,6 +174,7 @@ public class DetailsActivity extends AppCompatActivity {
 	}
 
 	private long getQuotaId() {
+
 		return getIntent().getLongExtra(ACTIVE_QUOTA, -1);
 	}
 
@@ -220,6 +220,7 @@ public class DetailsActivity extends AppCompatActivity {
 
 	@Override
 	public void onBackPressed() {
+
 		finish();
 	}
 
@@ -228,9 +229,9 @@ public class DetailsActivity extends AppCompatActivity {
 		if (isQuotaValid()) {
 			if (editingBean == null) {
 				editingBean = new Quota(
-						name.getText().toString(),
-						goal.getText().toString(),
-						QuotaType.fromOrdinal(type)
+					name.getText().toString(),
+					goal.getText().toString(),
+					QuotaType.fromOrdinal(type)
 				);
 				editingBean.setCategory(service.getCategoryByName(pickedCategory));
 				editingBean.setMin(Integer.valueOf(min.getText().toString()));
@@ -245,7 +246,7 @@ public class DetailsActivity extends AppCompatActivity {
 			service.persistQuota(editingBean);
 
 			Toast.makeText(DetailsActivity.this, "Quota " + editingBean.getName() + " was saved", Toast.LENGTH_SHORT)
-					.show();
+				 .show();
 			new Handler().postDelayed(DetailsActivity.this::onBackPressed, 1000);
 		}
 	}
@@ -255,24 +256,24 @@ public class DetailsActivity extends AppCompatActivity {
 		if (getQuotaId() != -1) {
 			//Show notification?
 			new AlertDialog.Builder(this)
-					.setTitle("Confirm")
-					.setMessage("Do you really want to archive this quota?")
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
-						//Then remove
-						boolean result = service.archiveQuota(getQuotaId());
-						if (result) {
-							Toast.makeText(DetailsActivity.this, "Quota " + editingBean.getName() + " was successfully "
-											+ "archieved",
-									Toast.LENGTH_SHORT).show();
-							new Handler().postDelayed(DetailsActivity.this::onBackPressed, 1000);
-						}
-						else {
-							Toast.makeText(DetailsActivity.this, "Something went wrong. Cannot remove quota",
-									Toast.LENGTH_SHORT).show();
-						}
-					})
-					.setNegativeButton(android.R.string.no, null).show();
+				.setTitle("Confirm")
+				.setMessage("Do you really want to archive this quota?")
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+					//Then remove
+					boolean result = service.archiveQuota(getQuotaId());
+					if (result) {
+						Toast.makeText(DetailsActivity.this, "Quota " + editingBean.getName() + " was successfully "
+								+ "archieved",
+							Toast.LENGTH_SHORT).show();
+						new Handler().postDelayed(DetailsActivity.this::onBackPressed, 1000);
+					}
+					else {
+						Toast.makeText(DetailsActivity.this, "Something went wrong. Cannot remove quota",
+							Toast.LENGTH_SHORT).show();
+					}
+				})
+				.setNegativeButton(android.R.string.no, null).show();
 
 		}
 	}

@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatDelegate;
@@ -18,92 +19,109 @@ import android.view.ViewGroup;
  */
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
 
-    private AppCompatDelegate mDelegate;
+	private AppCompatDelegate mDelegate;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        getDelegate().installViewFactory();
-        getDelegate().onCreate(savedInstanceState);
-        super.onCreate(savedInstanceState);
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        getDelegate().onStop();
-    }
+		getDelegate().installViewFactory();
+		getDelegate().onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
+	}
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        getDelegate().onDestroy();
-    }
+	@Override
+	protected void onStop() {
 
-    private AppCompatDelegate getDelegate() {
-        if(mDelegate == null) {
-            mDelegate = AppCompatDelegate.create(this, null);
-        }
-        return mDelegate;
-    }
+		super.onStop();
+		getDelegate().onStop();
+	}
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        getDelegate().onPostCreate(savedInstanceState);
-    }
+	@Override
+	protected void onDestroy() {
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        getDelegate().onPostResume();
-    }
+		super.onDestroy();
+		getDelegate().onDestroy();
+	}
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        getDelegate().onConfigurationChanged(newConfig);
-    }
+	private AppCompatDelegate getDelegate() {
 
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        getDelegate().setContentView(layoutResID);
-    }
+		if (mDelegate == null) {
+			mDelegate = AppCompatDelegate.create(this, null);
+		}
+		return mDelegate;
+	}
 
-    @Override
-    public void setContentView(View view) {
-        getDelegate().setContentView(view);
-    }
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
 
-    @Override
-    public void setContentView(View view, ViewGroup.LayoutParams params) {
-        getDelegate().setContentView(view, params);
-    }
+		super.onPostCreate(savedInstanceState);
+		getDelegate().onPostCreate(savedInstanceState);
+	}
 
-    @Override
-    public void addContentView(View view, ViewGroup.LayoutParams params) {
-        getDelegate().addContentView(view, params);
-    }
+	@Override
+	protected void onPostResume() {
 
-    public void invalidateOptionsMenu() {
-        getDelegate().invalidateOptionsMenu();
-    }
+		super.onPostResume();
+		getDelegate().onPostResume();
+	}
 
-    @Override
-    public MenuInflater getMenuInflater() {
-        return getDelegate().getMenuInflater();
-    }
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
 
-    @Override
-    protected void onTitleChanged(CharSequence title, int color) {
-        super.onTitleChanged(title, color);
-        getDelegate().setTitle(title);
-    }
+		super.onConfigurationChanged(newConfig);
+		getDelegate().onConfigurationChanged(newConfig);
+	}
 
-    public ActionBar getSupportActionBar() {
-        return getDelegate().getSupportActionBar();
-    }
+	@Override
+	public void setContentView(@LayoutRes int layoutResID) {
 
-    public void setSupportActionBar(@Nullable Toolbar toolbar) {
-        getDelegate().setSupportActionBar(toolbar);
-    }
+		getDelegate().setContentView(layoutResID);
+	}
+
+	@Override
+	public void setContentView(View view) {
+
+		getDelegate().setContentView(view);
+	}
+
+	@Override
+	public void setContentView(View view, ViewGroup.LayoutParams params) {
+
+		getDelegate().setContentView(view, params);
+	}
+
+	@Override
+	public void addContentView(View view, ViewGroup.LayoutParams params) {
+
+		getDelegate().addContentView(view, params);
+	}
+
+	public void invalidateOptionsMenu() {
+
+		getDelegate().invalidateOptionsMenu();
+	}
+
+	@NonNull
+	@Override
+	public MenuInflater getMenuInflater() {
+
+		return getDelegate().getMenuInflater();
+	}
+
+	@Override
+	protected void onTitleChanged(CharSequence title, int color) {
+
+		super.onTitleChanged(title, color);
+		getDelegate().setTitle(title);
+	}
+
+	public ActionBar getSupportActionBar() {
+
+		return getDelegate().getSupportActionBar();
+	}
+
+	public void setSupportActionBar(@Nullable Toolbar toolbar) {
+
+		getDelegate().setSupportActionBar(toolbar);
+	}
 }

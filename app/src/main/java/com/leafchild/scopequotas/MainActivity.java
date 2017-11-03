@@ -1,21 +1,10 @@
 package com.leafchild.scopequotas;
 
-import com.leafchild.scopequotas.categories.CategoryActivity;
-import com.leafchild.scopequotas.common.QuotaAdapter;
-import com.leafchild.scopequotas.common.Utils;
-import com.leafchild.scopequotas.data.DatabaseService;
-import com.leafchild.scopequotas.data.Quota;
-import com.leafchild.scopequotas.data.QuotaType;
-import com.leafchild.scopequotas.details.DetailsActivity;
-import com.leafchild.scopequotas.reports.ReportsActivity;
-import com.leafchild.scopequotas.settings.SettingsActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
@@ -32,6 +21,16 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.leafchild.scopequotas.categories.CategoryActivity;
+import com.leafchild.scopequotas.common.QuotaAdapter;
+import com.leafchild.scopequotas.common.Utils;
+import com.leafchild.scopequotas.data.DatabaseService;
+import com.leafchild.scopequotas.data.Quota;
+import com.leafchild.scopequotas.data.QuotaType;
+import com.leafchild.scopequotas.details.DetailsActivity;
+import com.leafchild.scopequotas.reports.ReportsActivity;
+import com.leafchild.scopequotas.settings.SettingsActivity;
+
 import java.util.List;
 
 import static com.leafchild.scopequotas.AppContants.TYPE;
@@ -40,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 	private final MainActivity self = this;
 	private DatabaseService service;
-	private ListView listView;
 	private TextView type;
 
 	private ArrayAdapter<Quota> quotaAdapter;
@@ -64,47 +62,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-				this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+			this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 		drawer.addDrawerListener(toggle);
 		toggle.syncState();
 
 		NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
 
-		boolean quota_badges = sharedPref.getBoolean(SettingsActivity.QUOTA_BADGES, true);
-		if (quota_badges) { initMenuBadges(navigationView); }
-	}
-
-	@Override
-	protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
+		boolean quotaBadges = sharedPref.getBoolean(SettingsActivity.QUOTA_BADGES, true);
+		if (quotaBadges) initMenuBadges(navigationView);
 	}
 
 	@Override
 	protected void onPostResume() {
-		super.onPostResume();
 
+		super.onPostResume();
 		updateAppTitle();
 
-		if (!quotaAdapter.isEmpty()) {
-			type.setVisibility(View.GONE);
-		}
+		if (!quotaAdapter.isEmpty()) type.setVisibility(View.GONE);
+
 	}
 
 	private void initMenuBadges(NavigationView navigationView) {
-		TextView weekly, daily, monthly;
 
-		daily = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_daily));
+		TextView daily = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_daily));
 		daily.setGravity(Gravity.CENTER_VERTICAL);
 		daily.setTypeface(null, Typeface.BOLD);
 		daily.setText(Integer.toString(service.findQuotasByType(QuotaType.DAILY, showArchieved).size()));
 
-		weekly = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_weekly));
+		TextView weekly = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_weekly));
 		weekly.setGravity(Gravity.CENTER_VERTICAL);
 		weekly.setTypeface(null, Typeface.BOLD);
 		weekly.setText(Integer.toString(service.findQuotasByType(QuotaType.WEEKLY, showArchieved).size()));
 
-		monthly = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_monthly));
+		TextView monthly = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_monthly));
 		monthly.setGravity(Gravity.CENTER_VERTICAL);
 		monthly.setTypeface(null, Typeface.BOLD);
 		monthly.setText(Integer.toString(service.findQuotasByType(QuotaType.MONTHLY, showArchieved).size()));
@@ -113,21 +104,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	private void initFabMenu() {
 
 		FloatingActionButton newQuota = (FloatingActionButton) findViewById(R.id.new_quota);
-		newQuota.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+		newQuota.setBackgroundColor(getResources().getColor(R.color.colorPrimary, null));
 
-		newQuota.setOnClickListener((v) -> {
+		newQuota.setOnClickListener(v -> {
 			Intent details = new Intent(self, DetailsActivity.class);
 			details.putExtra(TYPE, getIntent().getIntExtra(TYPE, currentType.ordinal()));
 			//Do not add any data
 			startActivity(details);
-			//menuMultipleActions.close(true);
 		});
 	}
 
 	private void initComponents() {
 
 		type = (TextView) findViewById(R.id.no_quotas);
-		listView = (ListView) findViewById(R.id.quotas_list);
+		ListView listView = (ListView) findViewById(R.id.quotas_list);
 
 		List<Quota> quotas = service.findQuotasByType(currentType, showArchieved);
 		quotaAdapter = new QuotaAdapter(this, quotas);
@@ -137,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 		// ListView Item Click Listener
 		listView.setOnItemClickListener((parent, view, position, id) -> {
-
 			Quota itemValue = (Quota) listView.getItemAtPosition(position);
 
 			Intent details = new Intent(self, DetailsActivity.class);
@@ -152,12 +141,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	}
 
 	private void reloadData(QuotaType type) {
+
 		quotaAdapter.clear();
 		quotaAdapter.addAll(service.findQuotasByType(type, showArchieved));
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		return true;
@@ -165,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
@@ -188,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 	@Override
 	public void onBackPressed() {
+
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		if (drawer.isDrawerOpen(GravityCompat.START)) {
 			drawer.closeDrawer(GravityCompat.START);
@@ -201,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	@SuppressWarnings("StatementWithEmptyBody")
 	@Override
 	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
 		// Handle navigation view item clicks here.
 		int id = item.getItemId();
 		Intent intent = null;
@@ -240,12 +234,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawer.closeDrawer(GravityCompat.START);
 
-		if (intent != null) {
-			startActivity(intent);
-		}
-		else {
-			quotaAdapter.notifyDataSetChanged();
-		}
+		if (intent != null) { startActivity(intent); }
+		else { quotaAdapter.notifyDataSetChanged(); }
 
 		return true;
 	}

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.leafchild.scopequotas.common.Utils.calculateAmount;
 
@@ -28,12 +29,8 @@ public class DatabaseService {
 
 	public void persistQuota(Quota quota) {
 
-		if (quota.isNew()) {
-			createQuota(quota);
-		}
-		else {
-			updateQuota(quota);
-		}
+		if (quota.isNew()) { createQuota(quota); }
+		else { updateQuota(quota); }
 	}
 
 	public Quota getQuota(Long id) {
@@ -55,7 +52,7 @@ public class DatabaseService {
 
 	public boolean archiveQuota(Long id) {
 
-		if (id == null) { return false; }
+		if (id == null) return false;
 		boolean result = false;
 
 		try {
@@ -122,7 +119,7 @@ public class DatabaseService {
 
 		try {
 			byType = dbManager.getQuotaDao().queryBuilder().where().eq("quotaType", type)
-					.and().eq("archieved", showArchieved).query();
+							  .and().eq("archieved", showArchieved).query();
 		}
 		catch (SQLException e) {
 			Log.e("DB", e.getMessage());
@@ -174,9 +171,7 @@ public class DatabaseService {
 
 	public boolean deleteCategory(Long id) {
 
-		if (id == null) {
-			return false;
-		}
+		if (id == null) return false;
 		boolean result = false;
 
 		try {
@@ -221,6 +216,7 @@ public class DatabaseService {
 	}
 
 	public QuotaCategory getCategoryByName(String pickedCategory) {
+
 		QuotaCategory found = null;
 
 		try {
@@ -233,7 +229,7 @@ public class DatabaseService {
 		return found;
 	}
 
-	public HashMap<String, Float> getLoggedDataByCategory(Date from, Date to) {
+	public Map<String, Float> getLoggedDataByCategory(Date from, Date to) {
 
 		HashMap<String, Float> grouped = new HashMap<>();
 		List<Quota> allQuotas = findAllQuotas();
@@ -252,7 +248,8 @@ public class DatabaseService {
 		return grouped;
 	}
 
-	public HashMap<String, Float> getLoggedDataByType(Date from, Date to) {
+	public Map<String, Float> getLoggedDataByType(Date from, Date to) {
+
 		HashMap<String, Float> byType = new HashMap<>();
 		List<Quota> allQuotas = findAllQuotas();
 
@@ -269,7 +266,7 @@ public class DatabaseService {
 		return byType;
 	}
 
-	public HashMap<String, Float> getLoggedDataByName(Date from, Date to) {
+	public Map<String, Float> getLoggedDataByName(Date from, Date to) {
 
 		HashMap<String, Float> byName = new HashMap<>();
 		List<Quota> allQuotas = findAllQuotas();

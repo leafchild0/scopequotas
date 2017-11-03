@@ -8,8 +8,11 @@ package com.leafchild.scopequotas;
 
 public abstract class AppContants {
 
-    public static final String TYPE = "com.leafchild.scopequotas.type";
-    public static final String ACTIVE_QUOTA = "com.leafchild.scopequotas.quota";
-    public static final int ACCENT_COLOR = 0xFF3F51B5;
+	private AppContants() {
+	}
+
+	public static final String TYPE = "com.leafchild.scopequotas.type";
+	public static final String ACTIVE_QUOTA = "com.leafchild.scopequotas.quota";
+	public static final int ACCENT_COLOR = 0xFF3F51B5;
 
 }

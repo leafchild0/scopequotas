@@ -1,13 +1,14 @@
 package com.leafchild.scopequotas.data;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.AndroidRuntimeException;
+import android.util.Log;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import java.sql.SQLException;
 
 /**
@@ -25,11 +26,13 @@ class DBManager extends OrmLiteSqliteOpenHelper {
 	private Dao<QuotaCategory, Long> categoryDao = null;
 
 	DBManager(Context context) {
+
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
+
 		try {
 			TableUtils.createTable(connectionSource, Quota.class);
 			TableUtils.createTable(connectionSource, Worklog.class);
@@ -37,11 +40,12 @@ class DBManager extends OrmLiteSqliteOpenHelper {
 			addUncategorizedCategory();
 		}
 		catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new AndroidRuntimeException(e);
 		}
 	}
 
 	private void addUncategorizedCategory() {
+
 		try {
 			QuotaCategory uncategorized = new QuotaCategory("Uncategorized");
 			getCategoryDao().create(uncategorized);
@@ -53,7 +57,8 @@ class DBManager extends OrmLiteSqliteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource,
-			int oldVersion, int newVersion) {
+		int oldVersion, int newVersion) {
+
 		try {
 			TableUtils.dropTable(connectionSource, Quota.class, true);
 			TableUtils.dropTable(connectionSource, Worklog.class, true);
@@ -61,11 +66,12 @@ class DBManager extends OrmLiteSqliteOpenHelper {
 			onCreate(db, connectionSource);
 		}
 		catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new AndroidRuntimeException(e);
 		}
 	}
 
 	Dao<Quota, Long> getQuotaDao() {
+
 		if (quotaDao == null) {
 			try {
 				quotaDao = getDao(Quota.class);
@@ -79,6 +85,7 @@ class DBManager extends OrmLiteSqliteOpenHelper {
 	}
 
 	Dao<Worklog, Long> getWorklogDao() {
+
 		if (worklogDao == null) {
 			try {
 				worklogDao = getDao(Worklog.class);
@@ -92,6 +99,7 @@ class DBManager extends OrmLiteSqliteOpenHelper {
 	}
 
 	Dao<QuotaCategory, Long> getCategoryDao() {
+
 		if (categoryDao == null) {
 			try {
 				categoryDao = getDao(QuotaCategory.class);
@@ -106,6 +114,7 @@ class DBManager extends OrmLiteSqliteOpenHelper {
 
 	@Override
 	public void close() {
+
 		quotaDao = null;
 		worklogDao = null;
 		categoryDao = null;
