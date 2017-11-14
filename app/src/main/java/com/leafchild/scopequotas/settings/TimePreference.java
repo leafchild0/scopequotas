@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
 import com.leafchild.scopequotas.common.NotificationsManager;
+import com.leafchild.scopequotas.common.NotificationsReciever;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -63,7 +64,8 @@ public class TimePreference extends DialogPreference {
 			}
 
 			setSummary(getSummary());
-			NotificationsManager.getInstance().scheduleNotification(getContext(), calendar.getTimeInMillis());
+			NotificationsManager.getInstance().scheduleNotification(getContext(), NotificationsReciever.class, calendar
+				.getTimeInMillis());
 		}
 	}
 

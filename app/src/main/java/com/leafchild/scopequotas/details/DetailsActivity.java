@@ -78,7 +78,7 @@ public class DetailsActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		FloatingActionButton logTime = (FloatingActionButton) findViewById(R.id.add_worglog);
+		FloatingActionButton logTime = (FloatingActionButton) findViewById(R.id.add_worklog);
 		if (getQuotaId() == -1) { logTime.setVisibility(View.GONE); }
 
 		logTime.setOnClickListener((v) -> {

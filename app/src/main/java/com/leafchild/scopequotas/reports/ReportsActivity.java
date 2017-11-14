@@ -19,18 +19,22 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.common.QuotaAdapter;
 import com.leafchild.scopequotas.common.QuotasWithDefaultAdapter;
 import com.leafchild.scopequotas.common.Utils;
 import com.leafchild.scopequotas.data.DatabaseService;
 import com.leafchild.scopequotas.data.Quota;
+import com.leafchild.scopequotas.data.QuotaType;
 import com.leafchild.scopequotas.data.Worklog;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -40,12 +44,14 @@ import java.util.List;
 import java.util.Map;
 
 import static com.leafchild.scopequotas.AppContants.ACCENT_COLOR;
+import static com.leafchild.scopequotas.AppContants.TYPE;
 import static com.leafchild.scopequotas.common.Utils.getRandomColors;
 
 public class ReportsActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
 	private DatePickerDialog fromD;
 	private Spinner quotaName;
+	private Spinner typeName;
 	private Button fromDate;
 	private Button toDate;
 
@@ -56,6 +62,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 	private String type = BY_CATEGORY;
 	private Calendar from = Calendar.getInstance();
 	private Calendar to = Calendar.getInstance();
+	private QuotaType passedType;
 
 	private DatabaseService service;
 
@@ -87,8 +94,6 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
-
-				type = BY_CATEGORY;
 			}
 		});
 
@@ -103,8 +108,21 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 		byName = (BarChart) findViewById(R.id.name_chart);
 		byType = (HorizontalBarChart) findViewById(R.id.type_chart);
 		quotaName = (Spinner) findViewById(R.id.report_by_name);
+		typeName = (Spinner) findViewById(R.id.report_by_type);
+
+		getPassedType(reportBy);
 
 		refreshReports();
+	}
+
+	private void getPassedType(Spinner reportBy) {
+
+		String passed = getIntent().getStringExtra(TYPE);
+		if (passed != null) {
+			reportBy.setSelection(2);
+			type = BY_TYPE;
+			passedType = QuotaType.fromString(passed);
+		}
 	}
 
 	public void showFromDatePicker(View view) {
@@ -155,11 +173,13 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 			case BY_CATEGORY:
 				hideCharts(byName, byType);
 				hideQuotaSelector();
+				hideTypeSelector();
 				showDataByCategory();
 				break;
 			case BY_NAME:
 				hideCharts(byCategory, byType);
 				showDataByName();
+				hideTypeSelector();
 				break;
 			case BY_TYPE:
 				hideCharts(byCategory, byName);
@@ -174,6 +194,11 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 	private void hideQuotaSelector() {
 
 		if (quotaName != null) { quotaName.setVisibility(View.GONE); }
+	}
+
+	private void hideTypeSelector() {
+
+		if (typeName != null) { typeName.setVisibility(View.GONE); }
 	}
 
 	private void showDataByName() {
@@ -251,44 +276,61 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 		quotaName.setVisibility(View.VISIBLE);
 	}
 
+	private void initTypeAdapterForNameReports() {
+
+		ArrayAdapter<QuotaType> staticAdapter = new ArrayAdapter<>(this, android.R.layout
+			.simple_spinner_dropdown_item);
+		staticAdapter.add(QuotaType.DAILY);
+		staticAdapter.add(QuotaType.WEEKLY);
+		staticAdapter.add(QuotaType.MONTHLY);
+		typeName.setAdapter(staticAdapter);
+
+		if(passedType != null) typeName.setSelection(passedType.ordinal());
+
+		typeName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+				QuotaType selected = (QuotaType) parent.getItemAtPosition(position);
+				if (selected != null) {
+					byType.removeAllViews();
+					refreshReportsForType(selected);
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+				typeName.setSelection(-1);
+			}
+		});
+
+		typeName.setVisibility(View.VISIBLE);
+	}
+
+	private void refreshReportsForType(QuotaType selected) {
+
+		if (selected == null) { return; }
+		byType.setData(getChartData(service.getLoggedDataByType(selected, from.getTime(), to.getTime())));
+		byName.refreshDrawableState();
+
+	}
+
 	private void refreshReportsWithQuota(Quota selected) {
 
 		if (selected == null) { return; }
 
 		List<BarEntry> entries = new ArrayList<>();
-		List<String> labels = new ArrayList<>();
 		int amount = 0;
 
 		for (Worklog worklog : service.getLoggedDataByQuota(selected, from.getTime(), to.getTime())) {
 			// turn your data into Entry objects
 			entries.add(new BarEntry(amount++, worklog.getAmount().floatValue()));
-			labels.add(Utils.getDayMonthFormatter().format(worklog.getCreatedDate()));
 		}
 
 		BarDataSet dataSet = new BarDataSet(entries, "");
-		BarData lineData = new BarData(dataSet);
-		byName.setData(lineData);
-		byName.getDescription().setEnabled(false);
-		byName.getLegend().setEnabled(false);
-
-		XAxis xl = byName.getXAxis();
-		xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-		xl.setDrawAxisLine(true);
-		xl.setDrawGridLines(false);
-		xl.setGranularityEnabled(true);
-		xl.setGranularity(1f);
-		xl.setDrawLabels(true);
-		xl.setValueFormatter(new IndexAxisValueFormatter(labels));
-
-		YAxis yl = byName.getAxisLeft();
-		yl.setDrawAxisLine(true);
-		yl.setDrawGridLines(true);
-		yl.setAxisMinimum(0f);
-
-		YAxis yr = byName.getAxisRight();
-		yr.setDrawAxisLine(true);
-		yr.setDrawGridLines(false);
-		yr.setAxisMinimum(0f);
+		byName.setData(new BarData(dataSet));
 
 		byName.refreshDrawableState();
 	}
@@ -302,40 +344,49 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 
 	private void showDataByType() {
 
-		byType.setVisibility(View.VISIBLE);
+		if (typeName.getVisibility() == View.VISIBLE
+			&& typeName.getSelectedItem() != null) {
+			refreshReportsForType((QuotaType) typeName.getSelectedItem());
+		}
+		else {
 
-		byType.setDrawBarShadow(false);
-		byType.setDrawValueAboveBar(true);
-		byType.getDescription().setEnabled(false);
-		// scaling can now only be done on x- and y-axis separately
-		byType.setPinchZoom(false);
-		byType.setDrawGridBackground(false);
+			initTypeAdapterForNameReports();
 
-		byType.getXAxis().setEnabled(false);
+			byType.setVisibility(View.VISIBLE);
 
-		YAxis yl = byType.getAxisLeft();
-		yl.setDrawAxisLine(true);
-		yl.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-		yl.setDrawGridLines(true);
-		yl.setAxisMinimum(0f);
+			byType.setDrawBarShadow(false);
+			byType.setDrawValueAboveBar(true);
+			byType.getDescription().setEnabled(false);
+			// scaling can now only be done on x- and y-axis separately
+			byType.setPinchZoom(false);
+			byType.setDrawGridBackground(false);
 
-		YAxis yr = byType.getAxisRight();
-		yr.setDrawAxisLine(true);
-		yr.setDrawGridLines(false);
-		yr.setAxisMinimum(0f);
+			byType.getXAxis().setEnabled(false);
 
-		byType.setData(getChartData(service.getLoggedDataByType(from.getTime(), to.getTime())));
+			YAxis yl = byType.getAxisLeft();
+			yl.setDrawAxisLine(true);
+			yl.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+			yl.setDrawGridLines(true);
+			yl.setAxisMinimum(0f);
 
-		byType.setFitBars(true);
-		byType.animateY(1500);
+			YAxis yr = byType.getAxisRight();
+			yr.setDrawAxisLine(true);
+			yr.setDrawGridLines(false);
+			yr.setAxisMinimum(0f);
 
-		Legend l = byType.getLegend();
-		l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-		l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-		l.setOrientation(Legend.LegendOrientation.VERTICAL);
-		l.setDrawInside(false);
-		l.setFormSize(12f);
-		l.setXEntrySpace(4f);
+			byType.setData(getChartData(service.getAllLoggedDataByType(from.getTime(), to.getTime())));
+
+			byType.setFitBars(true);
+			byType.animateY(1500);
+
+			Legend l = byType.getLegend();
+			l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+			l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+			l.setOrientation(Legend.LegendOrientation.VERTICAL);
+			l.setDrawInside(false);
+			l.setFormSize(12f);
+			l.setXEntrySpace(4f);
+		}
 	}
 
 	private void showDataByCategory() {
@@ -407,7 +458,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 		return data;
 	}
 
-	public BarData getChartData(Map<String, Float> values) {
+	private BarData getChartData(Map<String, Float> values) {
 
 		ArrayList<BarEntry> entries;
 		BarData data = new BarData();

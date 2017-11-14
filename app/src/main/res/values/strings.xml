@@ -111,8 +111,9 @@
     <string name="archive">Archive</string>
     <string name="choose_date">Choose date</string>
     <string name="show_archieved">Show archieved</string>
+  <string name="show_report">Show report</string>
 
-    <string-array name="worklog_array">
+  <string-array name="worklog_array">
         <item>minutes</item>
         <item>hours</item>
         <item>days</item>

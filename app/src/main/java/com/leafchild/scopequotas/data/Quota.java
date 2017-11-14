@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 /**
  * Created by: leafchild
@@ -182,28 +183,24 @@ public class Quota {
 
 	public Float getWorkFlowByLastPeriod() {
 
-		Calendar from = Calendar.getInstance();
-		Calendar to = Calendar.getInstance();
+		Calendar from = Calendar.getInstance(TimeZone.getDefault());
+		Calendar to = Calendar.getInstance(TimeZone.getDefault());
 
 		switch (this.getQuotaType()) {
 			case DAILY:
 				from.set(Calendar.HOUR_OF_DAY, 0);
 				break;
 			case WEEKLY:
+				default:
 				from.set(Calendar.HOUR_OF_DAY, 0);
-				from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+				from.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 				to.set(Calendar.HOUR_OF_DAY, 23);
-				to.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+				to.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
 				break;
 			case MONTHLY:
 				from.set(Calendar.HOUR_OF_DAY, 0);
 				from.set(Calendar.DAY_OF_MONTH, 0);
 				break;
-			default:
-				from.set(Calendar.HOUR_OF_DAY, 0);
-				from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-				to.set(Calendar.HOUR_OF_DAY, 23);
-				to.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 		}
 
 		return Utils.calculateAmount(logged, from.getTime(), to.getTime());

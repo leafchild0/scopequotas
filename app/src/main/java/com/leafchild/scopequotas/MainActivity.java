@@ -62,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		initFabMenu();
 
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawer.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+			if (!quotaAdapter.isEmpty()) type.setVisibility(View.GONE);
+			else type.setVisibility(View.VISIBLE);
+		});
 		toggle = new ActionBarDrawerToggle(
 			this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 		drawer.addDrawerListener(toggle);
@@ -81,9 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		updateAppTitle();
 		reloadData(currentType);
 		toggle.syncState();
-
-		if (!quotaAdapter.isEmpty()) type.setVisibility(View.GONE);
-
 	}
 
 	private void initMenuBadges(NavigationView navigationView) {
@@ -169,6 +170,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 			case R.id.action_settings:
 				Intent intent = new Intent(self, SettingsActivity.class);
 				startActivity(intent);
+				return true;
+			case R.id.show_report:
+				Intent showReport = new Intent(self, ReportsActivity.class);
+				showReport.putExtra(TYPE, currentType.getValue());
+				startActivity(showReport);
 				return true;
 			case R.id.show_archieved:
 				item.setChecked(!item.isChecked());

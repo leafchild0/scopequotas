@@ -251,7 +251,7 @@ public class DatabaseService {
 		return grouped;
 	}
 
-	public Map<String, Float> getLoggedDataByType(Date from, Date to) {
+	public Map<String, Float> getAllLoggedDataByType(Date from, Date to) {
 
 		HashMap<String, Float> byType = new HashMap<>();
 		List<Quota> allQuotas = findAllQuotas();
@@ -264,6 +264,18 @@ public class DatabaseService {
 			else {
 				byType.put(type, byType.get(type) + quota.getAllWorklogAmount());
 			}
+		}
+
+		return byType;
+	}
+
+	public Map<String, Float> getLoggedDataByType(QuotaType type, Date from, Date to) {
+
+		HashMap<String, Float> byType = new HashMap<>();
+		List<Quota> allQuotas = findQuotasByType(type, true);
+
+		for (Quota quota : allQuotas) {
+			byType.put(quota.getName(), calculateAmount(quota.getLogged(), from, to));
 		}
 
 		return byType;
