@@ -14,20 +14,15 @@ import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.common.QuotaAdapter;
 import com.leafchild.scopequotas.common.QuotasWithDefaultAdapter;
@@ -79,7 +74,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 
 		service = new DatabaseService(this);
 
-		Spinner reportBy = (Spinner) findViewById(R.id.report_by);
+		Spinner reportBy = findViewById(R.id.report_by);
 		ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
 			.createFromResource(this, R.array.reports_category, android.R.layout.simple_spinner_item);
 		reportBy.setAdapter(staticAdapter);
@@ -97,18 +92,18 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 			}
 		});
 
-		toDate = (Button) findViewById(R.id.reports_to);
+		toDate = findViewById(R.id.reports_to);
 		toDate.setText(Utils.getDayMonthYearFormatter().format(to.getTime()));
 
 		from.add(Calendar.WEEK_OF_MONTH, -1);
-		fromDate = (Button) findViewById(R.id.reports_from);
+		fromDate = findViewById(R.id.reports_from);
 		fromDate.setText(Utils.getDayMonthYearFormatter().format(from.getTime()));
 
-		byCategory = (PieChart) findViewById(R.id.category_chart);
-		byName = (BarChart) findViewById(R.id.name_chart);
-		byType = (HorizontalBarChart) findViewById(R.id.type_chart);
-		quotaName = (Spinner) findViewById(R.id.report_by_name);
-		typeName = (Spinner) findViewById(R.id.report_by_type);
+		byCategory = findViewById(R.id.category_chart);
+		byName = findViewById(R.id.name_chart);
+		byType = findViewById(R.id.type_chart);
+		quotaName = findViewById(R.id.report_by_name);
+		typeName = findViewById(R.id.report_by_type);
 
 		getPassedType(reportBy);
 

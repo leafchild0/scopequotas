@@ -6,10 +6,9 @@ package com.leafchild.scopequotas;
  * Project: ScopeQuotas
  */
 
-public abstract class AppContants {
+public final class AppContants {
 
-	private AppContants() {
-	}
+	private AppContants() {}
 
 	public static final String TYPE = "com.leafchild.scopequotas.type";
 	public static final String ACTIVE_QUOTA = "com.leafchild.scopequotas.quota";

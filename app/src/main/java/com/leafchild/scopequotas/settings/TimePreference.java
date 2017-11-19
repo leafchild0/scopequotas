@@ -12,7 +12,7 @@ import com.leafchild.scopequotas.common.NotificationsReciever;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * @author leafchild
@@ -28,7 +28,7 @@ public class TimePreference extends DialogPreference {
 	public TimePreference(Context ctxt, AttributeSet attrs) {
 
 		super(ctxt, attrs);
-		calendar = new GregorianCalendar();
+		calendar = Calendar.getInstance(TimeZone.getDefault());
 	}
 
 	@Override
@@ -54,6 +54,8 @@ public class TimePreference extends DialogPreference {
 
 		super.onDialogClosed(positiveResult);
 
+		calendar = Calendar.getInstance(TimeZone.getDefault());
+
 		if (positiveResult) {
 			calendar.set(Calendar.HOUR_OF_DAY, picker.getHour());
 			calendar.set(Calendar.MINUTE, picker.getMinute());
@@ -64,8 +66,8 @@ public class TimePreference extends DialogPreference {
 			}
 
 			setSummary(getSummary());
-			NotificationsManager.getInstance().scheduleNotification(getContext(), NotificationsReciever.class, calendar
-				.getTimeInMillis());
+			NotificationsManager.getInstance().scheduleReminder(getContext(),
+				NotificationsReciever.class, calendar.getTimeInMillis());
 		}
 	}
 

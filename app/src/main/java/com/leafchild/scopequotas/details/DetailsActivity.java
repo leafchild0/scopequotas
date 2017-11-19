@@ -61,24 +61,24 @@ public class DetailsActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_details);
 
-		worklogAmount = (TextView) findViewById(R.id.quota_amount_value);
-		LinearLayout worklogLayout = (LinearLayout) findViewById(R.id.quota_amount_name);
-		Button deleteButton = (Button) findViewById(R.id.button_delete);
-		name = (EditText) findViewById(R.id.quota_name);
-		goal = (EditText) findViewById(R.id.quota_goal);
-		min = (EditText) findViewById(R.id.quota_min);
-		max = (EditText) findViewById(R.id.quota_max);
-		chart = (BarChart) findViewById(R.id.worklog_chart);
+		worklogAmount = findViewById(R.id.quota_amount_value);
+		LinearLayout worklogLayout = findViewById(R.id.quota_amount_name);
+		Button deleteButton = findViewById(R.id.button_delete);
+		name = findViewById(R.id.quota_name);
+		goal = findViewById(R.id.quota_goal);
+		min = findViewById(R.id.quota_min);
+		max = findViewById(R.id.quota_max);
+		chart = findViewById(R.id.worklog_chart);
 
 		type = getIntent().getIntExtra(TYPE, 1);
 
 		service = new DatabaseService(this);
 
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		FloatingActionButton logTime = (FloatingActionButton) findViewById(R.id.add_worklog);
+		FloatingActionButton logTime = findViewById(R.id.add_worklog);
 		if (getQuotaId() == -1) { logTime.setVisibility(View.GONE); }
 
 		logTime.setOnClickListener((v) -> {
@@ -95,7 +95,7 @@ public class DetailsActivity extends AppCompatActivity {
 			existing.add(category.getName());
 		}
 
-		categories = (Spinner) findViewById(R.id.category_list);
+		categories = findViewById(R.id.category_list);
 		catAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, existing);
 		categories.setAdapter(catAdapter);
 		categories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

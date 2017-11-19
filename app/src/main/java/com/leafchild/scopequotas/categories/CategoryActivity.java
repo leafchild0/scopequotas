@@ -28,14 +28,14 @@ public class CategoryActivity extends AppCompatActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_category);
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		DatabaseService service = new DatabaseService(this);
 
-		categoryName = (EditText) findViewById(R.id.category_name);
-		addCategory = (Button) findViewById(R.id.add_category);
+		categoryName = findViewById(R.id.category_name);
+		addCategory = findViewById(R.id.add_category);
 		addCategory.setOnClickListener(v -> {
 			if (categoryName.getText().length() > 0) {
 				String toAdd = categoryName.getText().toString();
@@ -53,10 +53,10 @@ public class CategoryActivity extends AppCompatActivity {
 		}
 
 		catAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.category_item, data);
-		ListView categories = (ListView) findViewById(R.id.categories_list);
+		ListView categories = findViewById(R.id.categories_list);
 		categories.setAdapter(catAdapter);
 
-		newCategory = (FloatingActionButton) findViewById(R.id.new_category);
+		newCategory = findViewById(R.id.new_category);
 		newCategory.setOnClickListener(view -> toggleCategoryButtons(true));
 
 		toggleCategoryButtons(false);

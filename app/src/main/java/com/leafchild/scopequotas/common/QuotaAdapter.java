@@ -61,10 +61,10 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
 			viewHolder = new ViewHolder();
 			LayoutInflater inflater = LayoutInflater.from(getContext());
 			convertView = inflater.inflate(R.layout.quota_item, parent, false);
-			viewHolder.name = (TextView) convertView.findViewById(R.id.qName);
+			viewHolder.name = convertView.findViewById(R.id.qName);
 
-			viewHolder.progress = (ProgressBar) convertView.findViewById(R.id.quota_progress);
-			if (showWorklog) { viewHolder.amount = (TextView) convertView.findViewById(R.id.qAmount); }
+			viewHolder.progress = convertView.findViewById(R.id.quota_progress);
+			if (showWorklog) { viewHolder.amount = convertView.findViewById(R.id.qAmount); }
 			else { viewHolder.progress.setVisibility(View.GONE); }
 			// Cache the viewHolder object inside the fresh view
 			convertView.setTag(viewHolder);

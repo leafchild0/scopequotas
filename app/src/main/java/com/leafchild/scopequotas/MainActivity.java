@@ -1,5 +1,8 @@
 package com.leafchild.scopequotas;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -22,6 +25,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.leafchild.scopequotas.categories.CategoryActivity;
+import com.leafchild.scopequotas.common.NotificationsManager;
+import com.leafchild.scopequotas.common.NotificationsReciever;
 import com.leafchild.scopequotas.common.QuotaAdapter;
 import com.leafchild.scopequotas.common.Utils;
 import com.leafchild.scopequotas.data.DatabaseService;
@@ -35,7 +40,8 @@ import java.util.List;
 
 import static com.leafchild.scopequotas.AppContants.TYPE;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity
+	implements NavigationView.OnNavigationItemSelectedListener {
 
 	private final MainActivity self = this;
 	private DatabaseService service;
@@ -56,12 +62,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 		initComponents();
 
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
 		initFabMenu();
 
-		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		DrawerLayout drawer = findViewById(R.id.drawer_layout);
 		drawer.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
 			if (!quotaAdapter.isEmpty()) type.setVisibility(View.GONE);
 			else type.setVisibility(View.VISIBLE);
@@ -71,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		drawer.addDrawerListener(toggle);
 		toggle.syncState();
 
-		NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
 
 		boolean quotaBadges = sharedPref.getBoolean(SettingsActivity.QUOTA_BADGES, true);
@@ -107,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 	private void initFabMenu() {
 
-		FloatingActionButton newQuota = (FloatingActionButton) findViewById(R.id.new_quota);
+		FloatingActionButton newQuota = findViewById(R.id.new_quota);
 
 		newQuota.setOnClickListener(v -> {
 			Intent details = new Intent(self, DetailsActivity.class);
@@ -119,8 +125,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 	private void initComponents() {
 
-		type = (TextView) findViewById(R.id.no_quotas);
-		ListView listView = (ListView) findViewById(R.id.quotas_list);
+		type = findViewById(R.id.no_quotas);
+		ListView listView = findViewById(R.id.quotas_list);
 
 		List<Quota> quotas = service.findQuotasByType(currentType, showArchieved);
 		quotaAdapter = new QuotaAdapter(this, quotas);
@@ -189,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	@Override
 	public void onBackPressed() {
 
-		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		DrawerLayout drawer = findViewById(R.id.drawer_layout);
 		if (drawer.isDrawerOpen(GravityCompat.START)) {
 			drawer.closeDrawer(GravityCompat.START);
 		}
@@ -239,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 		}
 
-		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+		DrawerLayout drawer = findViewById(R.id.drawer_layout);
 		drawer.closeDrawer(GravityCompat.START);
 
 		if (intent != null) startActivity(intent);

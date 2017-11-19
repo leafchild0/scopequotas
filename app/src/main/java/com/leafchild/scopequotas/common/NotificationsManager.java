@@ -5,17 +5,13 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
-import com.leafchild.scopequotas.MainActivity;
 import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.settings.SettingsActivity;
-
-import java.util.Calendar;
 
 /**
  * @author leafchild
@@ -64,6 +60,7 @@ public class NotificationsManager {
 			.setContentText(text)
 			.setContentIntent(pendingIntent)
 			.setSmallIcon(R.mipmap.ic_launcher)
+			.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
 			.setAutoCancel(true);
 
 		if (isNotifEnabled) {
@@ -74,20 +71,7 @@ public class NotificationsManager {
 		return builder.build();
 	}
 
-	public void scheduleNotification(Context context, Class<?> cls, long delay) {
-
-		AlarmManager alarmManager = getSystemAlarmManager(context);
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(delay);
-
-		// Enable a receiver
-
-		ComponentName receiver = new ComponentName(context, cls);
-		PackageManager pm = context.getPackageManager();
-
-		pm.setComponentEnabledSetting(receiver,
-			PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-			PackageManager.DONT_KILL_APP);
+	public void scheduleReminder(Context context, Class<?> cls, long when) {
 
 		cancelReminder(context, cls);
 
@@ -95,22 +79,14 @@ public class NotificationsManager {
 		PendingIntent pIntent = PendingIntent.getBroadcast(context, DAILY_NOTIF_ID, intent,
 			PendingIntent.FLAG_UPDATE_CURRENT);
 
-		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-			AlarmManager.INTERVAL_DAY, pIntent);
+		getSystemAlarmManager(context).setRepeating(AlarmManager.RTC_WAKEUP, when,
+			60000L, pIntent);
 	}
 
 	private void cancelReminder(Context context, Class<?> cls) {
 
-		ComponentName receiver = new ComponentName(context, cls);
-		PackageManager pm = context.getPackageManager();
-
-		pm.setComponentEnabledSetting(receiver,
-			PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-			PackageManager.DONT_KILL_APP);
-
-		Intent intent1 = new Intent(context, cls);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_NOTIF_ID, intent1, PendingIntent
-			.FLAG_UPDATE_CURRENT);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_NOTIF_ID,
+			new Intent(context, cls), PendingIntent.FLAG_UPDATE_CURRENT);
 		getSystemAlarmManager(context).cancel(pendingIntent);
 		pendingIntent.cancel();
 	}

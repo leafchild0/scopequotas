@@ -41,12 +41,12 @@ public class WorklogActivity extends AppCompatActivity
 
 		service = new DatabaseService(this);
 
-		inputType = (Spinner) findViewById(R.id.worklog_amount_type);
+		inputType = findViewById(R.id.worklog_amount_type);
 		ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
 			.createFromResource(this, R.array.worklog_array, android.R.layout.simple_spinner_item);
 		inputType.setAdapter(staticAdapter);
 
-		worklogDate = (Button) findViewById(R.id.worklog_date);
+		worklogDate = findViewById(R.id.worklog_date);
 		worklogDate.setText("Today");
 	}
 
@@ -65,7 +65,7 @@ public class WorklogActivity extends AppCompatActivity
 
 	private Double getAddedAmount() {
 
-		EditText amount = (EditText) findViewById(R.id.quota_amount);
+		EditText amount = findViewById(R.id.quota_amount);
 		return Double.valueOf(amount.getText().toString());
 	}
 
