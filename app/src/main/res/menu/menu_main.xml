@@ -16,8 +16,14 @@
 		  android:title="@string/show_report"
 		  app:showAsAction="never"/>
 
+  <item
+		  android:id="@+id/export_data"
+		  android:orderInCategory="100"
+		  android:title="@string/export_data"
+		  app:showAsAction="never"/>
+
   <item android:id="@+id/action_settings"
 		android:title="@string/settings"
-		android:orderInCategory="100"
+		android:orderInCategory="101"
 		app:showAsAction="never"/>
 </menu>

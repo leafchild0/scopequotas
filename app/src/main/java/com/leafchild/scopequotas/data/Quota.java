@@ -7,8 +7,11 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.leafchild.scopequotas.common.Utils;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -40,8 +43,8 @@ public class Quota {
 	private Date createdDate;
 	@DatabaseField(columnName = "modifiedDate")
 	private Date modifiedDate;
-	@DatabaseField(dataType = DataType.BOOLEAN_OBJ, columnName = "archieved", defaultValue = "false")
-	private Boolean archieved;
+	@DatabaseField(dataType = DataType.BOOLEAN_OBJ, columnName = "archived", defaultValue = "false")
+	private Boolean archived;
 	@DatabaseField(columnName = "category", foreign = true, foreignAutoRefresh = true)
 	private QuotaCategory category;
 
@@ -135,14 +138,14 @@ public class Quota {
 		this.modifiedDate = modifiedDate;
 	}
 
-	public Boolean getArchieved() {
+	public Boolean getArchived() {
 
-		return archieved;
+		return archived;
 	}
 
-	public void setArchieved(Boolean archieved) {
+	public void setArchived(Boolean archived) {
 
-		this.archieved = archieved;
+		this.archived = archived;
 	}
 
 	@Override
@@ -234,6 +237,22 @@ public class Quota {
 	public void setMin(Integer min) {
 
 		this.min = min;
+	}
+
+	public String[] toExportString() {
+
+		List<String> forExport = new ArrayList<>();
+		forExport.add(String.valueOf(id));
+		forExport.add(name);
+		forExport.add(description);
+		forExport.add(String.valueOf(min));
+		forExport.add(String.valueOf(max));
+		forExport.add(new SimpleDateFormat("dd-MM-yyyy", Locale.US).format(modifiedDate));
+		forExport.add(category.getName());
+		forExport.add(String.valueOf(getAllWorklogAmount()));
+		forExport.add(archived.toString().toUpperCase());
+
+		return forExport.toArray(new String[0]);
 	}
 }
 

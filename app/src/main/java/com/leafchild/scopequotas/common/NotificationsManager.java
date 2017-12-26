@@ -22,7 +22,7 @@ import com.leafchild.scopequotas.settings.SettingsActivity;
 public class NotificationsManager {
 
 	private static NotificationsManager instance;
-	static final int DAILY_NOTIF_ID = 1234;
+	static final int DAILY_NOTIF_ID = 96764556;
 
 	public static NotificationsManager getInstance() {
 
@@ -59,12 +59,12 @@ public class NotificationsManager {
 			.setContentTitle(title)
 			.setContentText(text)
 			.setContentIntent(pendingIntent)
-			.setSmallIcon(R.mipmap.ic_launcher)
-			.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+			.setSmallIcon(R.drawable.ic_add_worklog)
+			.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_foreground))
 			.setAutoCancel(true);
 
 		if (isNotifEnabled) {
-			if (isVibrateEnabled) builder.setVibrate(new long[] {1000, 1000});
+			if (isVibrateEnabled) builder.setVibrate(new long[] {1000, 1000, 1000});
 			builder.setSound(Uri.parse(strRingtonePreference));
 		}
 
@@ -75,20 +75,22 @@ public class NotificationsManager {
 
 		cancelReminder(context, cls);
 
-		Intent intent = new Intent(context, cls);
-		PendingIntent pIntent = PendingIntent.getBroadcast(context, DAILY_NOTIF_ID, intent,
+		PendingIntent pIntent = PendingIntent.getBroadcast(context, DAILY_NOTIF_ID, new Intent(context, cls),
 			PendingIntent.FLAG_UPDATE_CURRENT);
 
 		getSystemAlarmManager(context).setRepeating(AlarmManager.RTC_WAKEUP, when,
-			60000L, pIntent);
+			AlarmManager.INTERVAL_DAY, pIntent);
 	}
 
 	private void cancelReminder(Context context, Class<?> cls) {
 
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_NOTIF_ID,
 			new Intent(context, cls), PendingIntent.FLAG_UPDATE_CURRENT);
-		getSystemAlarmManager(context).cancel(pendingIntent);
-		pendingIntent.cancel();
+		
+		if (pendingIntent != null) {
+			getSystemAlarmManager(context).cancel(pendingIntent);
+			pendingIntent.cancel();
+		}
 	}
 
 	private NotificationManager getSystemNotificationManager(Context context) {

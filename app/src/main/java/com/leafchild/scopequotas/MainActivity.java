@@ -1,22 +1,24 @@
 package com.leafchild.scopequotas;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v13.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,9 +26,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.leafchild.scopequotas.categories.CategoryActivity;
-import com.leafchild.scopequotas.common.NotificationsManager;
-import com.leafchild.scopequotas.common.NotificationsReciever;
+import com.leafchild.scopequotas.common.ExportUtils;
 import com.leafchild.scopequotas.common.QuotaAdapter;
 import com.leafchild.scopequotas.common.Utils;
 import com.leafchild.scopequotas.data.DatabaseService;
@@ -36,12 +38,14 @@ import com.leafchild.scopequotas.details.DetailsActivity;
 import com.leafchild.scopequotas.reports.ReportsActivity;
 import com.leafchild.scopequotas.settings.SettingsActivity;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.leafchild.scopequotas.AppContants.TYPE;
 
 public class MainActivity extends AppCompatActivity
-	implements NavigationView.OnNavigationItemSelectedListener {
+	implements NavigationView.OnNavigationItemSelectedListener
+{
 
 	private final MainActivity self = this;
 	private DatabaseService service;
@@ -51,6 +55,10 @@ public class MainActivity extends AppCompatActivity
 	private QuotaType currentType = QuotaType.WEEKLY;
 	private boolean showArchieved = false;
 	private ActionBarDrawerToggle toggle;
+
+	private final String[] exportHeaders = {"Id", "Name", "Description", "Min", "Max", "Last modified", "Category",
+		"Logged", "Archived"};
+	public static final int REQUEST_WRITE_STORAGE = 112;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -69,8 +77,8 @@ public class MainActivity extends AppCompatActivity
 
 		DrawerLayout drawer = findViewById(R.id.drawer_layout);
 		drawer.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-			if (!quotaAdapter.isEmpty()) type.setVisibility(View.GONE);
-			else type.setVisibility(View.VISIBLE);
+			if (!quotaAdapter.isEmpty()) { type.setVisibility(View.GONE); }
+			else { type.setVisibility(View.VISIBLE); }
 		});
 		toggle = new ActionBarDrawerToggle(
 			this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -95,17 +103,17 @@ public class MainActivity extends AppCompatActivity
 
 	private void initMenuBadges(NavigationView navigationView) {
 
-		TextView daily = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_daily));
+		TextView daily = (TextView) navigationView.getMenu().findItem(R.id.nav_daily).getActionView();
 		daily.setGravity(Gravity.CENTER_VERTICAL);
 		daily.setTypeface(null, Typeface.BOLD);
 		daily.setText(Integer.toString(service.findQuotasByType(QuotaType.DAILY, showArchieved).size()));
 
-		TextView weekly = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_weekly));
+		TextView weekly = (TextView) navigationView.getMenu().findItem(R.id.nav_weekly).getActionView();
 		weekly.setGravity(Gravity.CENTER_VERTICAL);
 		weekly.setTypeface(null, Typeface.BOLD);
 		weekly.setText(Integer.toString(service.findQuotasByType(QuotaType.WEEKLY, showArchieved).size()));
 
-		TextView monthly = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_monthly));
+		TextView monthly = (TextView) navigationView.getMenu().findItem(R.id.nav_monthly).getActionView();
 		monthly.setGravity(Gravity.CENTER_VERTICAL);
 		monthly.setTypeface(null, Typeface.BOLD);
 		monthly.setText(Integer.toString(service.findQuotasByType(QuotaType.MONTHLY, showArchieved).size()));
@@ -182,6 +190,9 @@ public class MainActivity extends AppCompatActivity
 				showReport.putExtra(TYPE, currentType.getValue());
 				startActivity(showReport);
 				return true;
+			case R.id.export_data:
+				requestPermission(this);
+				return true;
 			case R.id.show_archieved:
 				item.setChecked(!item.isChecked());
 				showArchieved = item.isChecked();
@@ -248,8 +259,8 @@ public class MainActivity extends AppCompatActivity
 		DrawerLayout drawer = findViewById(R.id.drawer_layout);
 		drawer.closeDrawer(GravityCompat.START);
 
-		if (intent != null) startActivity(intent);
-		else quotaAdapter.notifyDataSetChanged();
+		if (intent != null) { startActivity(intent); }
+		else { quotaAdapter.notifyDataSetChanged(); }
 
 		toggle.syncState();
 
@@ -257,7 +268,59 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	private void updateAppTitle() {
+
 		setTitle("Your quotas - " + currentType.getValue());
 	}
 
+	private void requestPermission(Activity context) {
+
+		boolean hasPermission = (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+			== PackageManager.PERMISSION_GRANTED);
+		if (!hasPermission) {
+			ActivityCompat.requestPermissions(context,
+				new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+				REQUEST_WRITE_STORAGE);
+		}
+		else {
+			exportQuotas();
+		}
+	}
+
+	private void exportQuotas() {
+
+		// You are allowed to write external storage:
+		boolean exported = false;
+		try {
+			exported = ExportUtils.exportData(exportHeaders, service.findQuotasByType(currentType, true));
+		}
+		catch (IOException e) {
+			Log.e("Main Activity", "Exporting Data");
+		}
+		String message = exported ? "Data has been seccessfully exported" : "Something wrong happended during "
+			+ "exporting";
+
+		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+		@NonNull int[] grantResults) {
+
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+		switch (requestCode) {
+			case REQUEST_WRITE_STORAGE: {
+				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+					Toast.makeText(this, "The app was allowed to write to your storage!", Toast.LENGTH_LONG).show();
+					// Reload the activity with permission granted or use the features what required the permission
+					exportQuotas();
+				}
+				else {
+					Toast.makeText(this,
+						"The app was not allowed to write to your storage. Hence, it cannot function properly. Please consider granting it this permission",
+						Toast.LENGTH_LONG).show();
+				}
+			}
+		}
+	}
 }

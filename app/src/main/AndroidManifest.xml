@@ -2,13 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 		  package="com.leafchild.scopequotas">
 
+  <uses-permission android:name="android.permission.VIBRATE"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
   <application
 		  android:allowBackup="true"
-		  android:icon="@mipmap/ic_launcher"
+		  android:icon="@mipmap/ic_launcher_round"
 		  android:label="@string/app_name"
 		  android:supportsRtl="true"
 		  android:theme="@style/AppTheme">
-	<receiver android:name=".common.NotificationsReciever"/>
 	<activity
 			android:name=".MainActivity"
 			android:label="@string/app_name"
@@ -64,6 +66,8 @@
 			  android:name="android.support.PARENT_ACTIVITY"
 			  android:value="com.leafchild.scopequotas.MainActivity"/>
 	</activity>
+
+	<receiver android:name="com.leafchild.scopequotas.common.NotificationsReciever"/>
   </application>
 
 </manifest>

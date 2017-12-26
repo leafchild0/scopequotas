@@ -20,7 +20,6 @@ public class NotificationsReciever extends BroadcastReceiver {
 		Notification n = NotificationsManager.getInstance().getSimpleNotification(context,
 			MainActivity.class, "Don't forget to log you quotas for today", "Click to open the app");
 
-		NotificationsManager.getInstance()
-							.sendImmediateNotification(context, n, NotificationsManager.DAILY_NOTIF_ID);
+		NotificationsManager.getInstance().sendImmediateNotification(context, n, NotificationsManager.DAILY_NOTIF_ID);
 	}
 }

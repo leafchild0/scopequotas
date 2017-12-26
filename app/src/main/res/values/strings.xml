@@ -110,8 +110,9 @@
     <string name="save">Save</string>
     <string name="archive">Archive</string>
     <string name="choose_date">Choose date</string>
-    <string name="show_archieved">Show archieved</string>
+    <string name="show_archieved">Show archived</string>
   <string name="show_report">Show report</string>
+  <string name="export_data">Export Data</string>
 
   <string-array name="worklog_array">
         <item>minutes</item>

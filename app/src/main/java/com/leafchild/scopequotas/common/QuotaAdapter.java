@@ -78,7 +78,7 @@ public class QuotaAdapter extends ArrayAdapter<Quota> {
 		if (quota != null) {
 			viewHolder.name.setText(quota.getName());
 
-			if (quota.getArchieved()) {
+			if (quota.getArchived()) {
 				convertView.setBackgroundColor(convertView.getResources().getColor(R.color.light_grey));
 			}
 

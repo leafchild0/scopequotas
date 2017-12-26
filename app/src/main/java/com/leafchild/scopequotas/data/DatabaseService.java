@@ -57,7 +57,7 @@ public class DatabaseService {
 
 		try {
 			Quota q = getQuota(id);
-			q.setArchieved(true);
+			q.setArchived(true);
 			result = dbManager.getQuotaDao().update(q) == 1;
 		}
 		catch (SQLException e) {
