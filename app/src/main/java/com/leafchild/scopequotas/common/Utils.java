@@ -10,9 +10,11 @@ import com.leafchild.scopequotas.data.Worklog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by: leafchild
@@ -104,5 +106,17 @@ public class Utils {
 			default:
 		}
 		return tempAmount;
+	}
+
+	public static long getWeeklyReminderTime() {
+
+		Calendar c = Calendar.getInstance();
+		// Weekly at Sat, 11 AM
+		c.set(Calendar.HOUR_OF_DAY, 11);
+		c.set(Calendar.MINUTE, 0);
+		// Because of the locale
+		c.set(Calendar.DAY_OF_WEEK, 7);
+
+		return c.getTimeInMillis();
 	}
 }

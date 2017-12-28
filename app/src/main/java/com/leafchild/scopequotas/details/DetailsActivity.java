@@ -272,7 +272,7 @@ public class DetailsActivity extends AppCompatActivity {
 					boolean result = service.archiveQuota(getQuotaId());
 					if (result) {
 						Toast.makeText(DetailsActivity.this, "Quota " + editingBean.getName() + " was successfully "
-								+ "archieved",
+								+ "archived",
 							Toast.LENGTH_SHORT).show();
 						new Handler().postDelayed(DetailsActivity.this::onBackPressed, 1000);
 					}

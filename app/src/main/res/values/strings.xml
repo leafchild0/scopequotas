@@ -113,6 +113,8 @@
     <string name="show_archieved">Show archived</string>
   <string name="show_report">Show report</string>
   <string name="export_data">Export Data</string>
+  <string name="pref_weekly_notifications">Weekly Notifications</string>
+  <string name="weekly_notifications_summary">Recieve Weekly notifications each Sat 11.00</string>
 
   <string-array name="worklog_array">
         <item>minutes</item>

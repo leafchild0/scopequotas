@@ -1,5 +1,6 @@
 package com.leafchild.scopequotas.reports;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -49,6 +50,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 	private Spinner typeName;
 	private Button fromDate;
 	private Button toDate;
+	private Spinner reportBy;
 
 	private PieChart byCategory;
 	private BarChart byName;
@@ -74,7 +76,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 
 		service = new DatabaseService(this);
 
-		Spinner reportBy = findViewById(R.id.report_by);
+		reportBy = findViewById(R.id.report_by);
 		ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
 			.createFromResource(this, R.array.reports_category, android.R.layout.simple_spinner_item);
 		reportBy.setAdapter(staticAdapter);
@@ -105,12 +107,19 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 		quotaName = findViewById(R.id.report_by_name);
 		typeName = findViewById(R.id.report_by_type);
 
-		getPassedType(reportBy);
-
+		getPassedType();
 		refreshReports();
 	}
 
-	private void getPassedType(Spinner reportBy) {
+	@Override
+	protected void onNewIntent(Intent intent) {
+
+		super.onNewIntent(intent);
+		getPassedType();
+		refreshReports();
+	}
+
+	private void getPassedType() {
 
 		String passed = getIntent().getStringExtra(TYPE);
 		if (passed != null) {

@@ -22,7 +22,8 @@ import com.leafchild.scopequotas.settings.SettingsActivity;
 public class NotificationsManager {
 
 	private static NotificationsManager instance;
-	static final int DAILY_NOTIF_ID = 96764556;
+	public static final int DAILY_NOTIF_ID = 96764556;
+	public static final int WEEKLY_NOTIF_ID = 1234567906;
 
 	public static NotificationsManager getInstance() {
 
@@ -38,22 +39,12 @@ public class NotificationsManager {
 		getSystemNotificationManager(context).notify(id, n);
 	}
 
-	Notification getSimpleNotification(Context context, Class<?> cls, String title, String text) {
+	Notification getSimpleNotification(Context context, PendingIntent pendingIntent, String title, String text) {
 
 		SharedPreferences prefs = Utils.getDefaultSharedPrefs(context);
 		boolean isNotifEnabled = prefs.getBoolean(SettingsActivity.DAILY_NOTIFICATIONS, true);
 		boolean isVibrateEnabled = prefs.getBoolean(SettingsActivity.NOTIFICATIONS_VIBRATE, true);
 		String strRingtonePreference = prefs.getString(SettingsActivity.NOTIFICATIONS_RINGTONE, "DEFAULT_SOUND");
-
-		Intent notificationIntent = new Intent(context, cls);
-		notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-		stackBuilder.addParentStack(cls);
-		stackBuilder.addNextIntent(notificationIntent);
-
-		PendingIntent pendingIntent = stackBuilder.getPendingIntent(
-			DAILY_NOTIF_ID, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		Notification.Builder builder = new Notification.Builder(context)
 			.setContentTitle(title)
@@ -71,21 +62,30 @@ public class NotificationsManager {
 		return builder.build();
 	}
 
-	public void scheduleReminder(Context context, Class<?> cls, long when) {
+	public void scheduleDailyReminder(Context context, long when, int notificationId) {
 
-		cancelReminder(context, cls);
-
-		PendingIntent pIntent = PendingIntent.getBroadcast(context, DAILY_NOTIF_ID, new Intent(context, cls),
-			PendingIntent.FLAG_UPDATE_CURRENT);
-
-		getSystemAlarmManager(context).setRepeating(AlarmManager.RTC_WAKEUP, when,
-			AlarmManager.INTERVAL_DAY, pIntent);
+		scheduleReminderInternal(context, when, notificationId, AlarmManager.INTERVAL_DAY);
 	}
 
-	private void cancelReminder(Context context, Class<?> cls) {
+	public void scheduleWeeklyReminder(Context context, long when, int notificationId) {
 
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_NOTIF_ID,
-			new Intent(context, cls), PendingIntent.FLAG_UPDATE_CURRENT);
+		scheduleReminderInternal(context, when, notificationId, AlarmManager.INTERVAL_DAY * 7);
+	}
+
+	private void scheduleReminderInternal(Context context, long when, int notificationId, long interval) {
+
+		cancelReminder(context, notificationId);
+		Intent intent = new Intent(context, NotificationsReciever.class);
+		intent.putExtra("notificationId", notificationId);
+		PendingIntent pIntent = PendingIntent.getBroadcast(context, notificationId, intent,
+			PendingIntent.FLAG_UPDATE_CURRENT);
+		getSystemAlarmManager(context).setRepeating(AlarmManager.RTC_WAKEUP, when, interval, pIntent);
+	}
+
+	public void cancelReminder(Context context, int notificationId) {
+
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId,
+			new Intent(context, NotificationsReciever.class), PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		if (pendingIntent != null) {
 			getSystemAlarmManager(context).cancel(pendingIntent);

@@ -121,7 +121,7 @@ public class DatabaseService {
 			}
 			else {
 				byType = dbManager.getQuotaDao().queryBuilder().where().eq("quotaType", type)
-								  .and().eq("archieved", false).query();
+								  .and().eq("archived", false).query();
 			}
 		}
 		catch (SQLException e) {

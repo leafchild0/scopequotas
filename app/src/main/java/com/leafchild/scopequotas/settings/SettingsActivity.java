@@ -15,13 +15,18 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.preference.SwitchPreference;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import com.leafchild.scopequotas.R;
+import com.leafchild.scopequotas.common.NotificationsManager;
+import com.leafchild.scopequotas.common.Utils;
 
 import java.util.List;
+
+import static com.leafchild.scopequotas.common.NotificationsManager.WEEKLY_NOTIF_ID;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -42,7 +47,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	public static final String NOTIFICATIONS_RINGTONE = "daily_notifications_ringtone";
 	public static final String NOTIFICATIONS_VIBRATE = "daily_notifications_vibrate";
 	public static final String SYNC_FREQUENCY = "sync_frequency";
-	public static final String TIME_NOTIFICATIONS = "time_notifications";
+	public static final String WEEKLY_NOTIFICATIONS = "weekly_notifications";
 
 	/**
 	 * A preference value change listener that updates the preference's summary
@@ -237,6 +242,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			// updated to reflect the new value, per the Android Design
 			// guidelines.
 			bindPreferenceSummaryToValue(findPreference(NOTIFICATIONS_RINGTONE));
+
+			final SwitchPreference weeklyReminder = (SwitchPreference) findPreference(WEEKLY_NOTIFICATIONS);
+
+			weeklyReminder.setOnPreferenceChangeListener((preference, o) -> {
+				if(!weeklyReminder.isChecked()) {
+					NotificationsManager.getInstance().scheduleWeeklyReminder(getContext(), Utils.getWeeklyReminderTime(), WEEKLY_NOTIF_ID);
+				} else {
+					NotificationsManager.getInstance().cancelReminder(getContext(), WEEKLY_NOTIF_ID);
+				}
+				return true;
+			});
 		}
 
 		@Override
