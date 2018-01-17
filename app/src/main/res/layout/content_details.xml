@@ -72,7 +72,7 @@
             android:layout_marginTop="30dp"
             android:layout_margin="@dimen/text_margin"
             android:spinnerMode="dropdown"
-            style="@style/Widget.AppCompat.Spinner.Underlined" />
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
 
         <LinearLayout
             android:id="@+id/quota_amount_name"

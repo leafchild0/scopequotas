@@ -196,6 +196,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			|| NotificationPreferenceFragment.class.getName().equals(fragmentName);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if (item.getItemId() == android.R.id.home) {
+			onBackPressed();
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * This fragment shows general preferences only. It is used when the
 	 * activity is showing a two-pane settings UI.

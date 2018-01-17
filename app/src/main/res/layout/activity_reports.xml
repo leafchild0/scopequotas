@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:layout_below="@id/report_by_label"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         android:spinnerMode="dropdown" />
 
     <Spinner
@@ -31,7 +31,7 @@
             android:visibility="gone"
             android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_below="@id/report_by"
-            style="@style/Widget.AppCompat.Spinner.Underlined"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:spinnerMode="dropdown" />
 
     <Spinner
@@ -41,7 +41,7 @@
         android:visibility="gone"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:layout_below="@id/report_by_type"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         android:spinnerMode="dropdown" />
 
     <android.widget.RelativeLayout
@@ -70,7 +70,7 @@
             android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_weight="0.5"
             android:onClick="showFromDatePicker"
-            style="@style/Widget.AppCompat.Spinner.Underlined"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:spinnerMode="dropdown" />
 
         <Button
@@ -80,7 +80,7 @@
             android:spinnerMode="dropdown"
             android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_weight="0.5"
-            style="@style/Widget.AppCompat.Spinner.Underlined"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:onClick="showToDatePicker" />
         </LinearLayout>
 

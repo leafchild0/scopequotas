@@ -91,6 +91,7 @@ public class WorklogActivity extends AppCompatActivity
 			calendar.get(Calendar.DAY_OF_MONTH)
 		);
 
+		pickerDialog.setFirstDayOfWeek(Calendar.MONDAY);
 		pickerDialog.setAccentColor(ACCENT_COLOR);
 		pickerDialog.show(getFragmentManager(), "Change Date");
 	}

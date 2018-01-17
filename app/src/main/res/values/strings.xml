@@ -95,7 +95,7 @@
         Original idea is in setting a quotas per period of time (weekly, as an example).
         Then, allow app to notify you and log used time each day.
         Notifications will help to stay in the loop.
-        App has Reports feature which allow to ubderstabd what may be improved.
+        App has Reports feature which allow to understand what may be improved.
         Let the force be with you!
     </string>
     <string name="app_author">Developed by Victor Malyshev (aka leafchild)</string>
@@ -114,12 +114,12 @@
   <string name="show_report">Show report</string>
   <string name="export_data">Export Data</string>
   <string name="pref_weekly_notifications">Weekly Notifications</string>
-  <string name="weekly_notifications_summary">Recieve Weekly notifications each Sat 11.00</string>
+  <string name="weekly_notifications_summary">Receive Weekly notifications each Sat 11.00</string>
 
   <string-array name="worklog_array">
-        <item>minutes</item>
         <item>hours</item>
         <item>days</item>
+        <item>minutes</item>
     </string-array>
 
     <string-array name="reports_category">

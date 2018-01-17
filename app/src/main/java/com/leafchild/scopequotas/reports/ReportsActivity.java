@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -137,6 +138,8 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 			from.get(Calendar.MONTH),
 			from.get(Calendar.DAY_OF_MONTH)
 		);
+
+		fromD.setFirstDayOfWeek(Calendar.MONDAY);
 		fromD.setAccentColor(ACCENT_COLOR);
 		fromD.show(getFragmentManager(), "Choose From Date");
 	}
@@ -150,6 +153,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 			to.get(Calendar.DAY_OF_MONTH)
 		);
 
+		toD.setFirstDayOfWeek(Calendar.MONDAY);
 		toD.setAccentColor(ACCENT_COLOR);
 		toD.show(getFragmentManager(), "Choose To Date");
 	}
@@ -250,6 +254,16 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 		}
 
 		byName.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if (item.getItemId() == android.R.id.home) {
+			onBackPressed();
+			return true;
+		}
+		return false;
 	}
 
 	private void initQueryAdapterForNameReports() {

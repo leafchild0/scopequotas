@@ -186,8 +186,8 @@ public class Quota {
 
 	public Float getWorkFlowByLastPeriod() {
 
-		Calendar from = Calendar.getInstance(TimeZone.getDefault());
-		Calendar to = Calendar.getInstance(TimeZone.getDefault());
+		Calendar from = Calendar.getInstance(Locale.UK);
+		Calendar to = Calendar.getInstance(Locale.UK);
 
 		switch (this.getQuotaType()) {
 			case DAILY:
@@ -196,9 +196,9 @@ public class Quota {
 			case WEEKLY:
 				default:
 				from.set(Calendar.HOUR_OF_DAY, 0);
-				from.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+				from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 				to.set(Calendar.HOUR_OF_DAY, 23);
-				to.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+				to.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 				break;
 			case MONTHLY:
 				from.set(Calendar.HOUR_OF_DAY, 0);
