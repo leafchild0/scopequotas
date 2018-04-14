@@ -23,22 +23,14 @@
 
         <EditText
             android:id="@+id/quota_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:ems="10"
             android:layout_marginLeft="@dimen/text_margin"
             android:layout_marginRight="@dimen/text_margin"
             android:hint="@string/amount"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:padding="@dimen/activity_vertical_margin" />
-
-        <Spinner
-            android:id="@+id/worklog_amount_type"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center|center_horizontal"
-            android:spinnerMode="dropdown" />
 
     </LinearLayout>
 
@@ -55,13 +47,13 @@
             android:textAppearance="@android:style/TextAppearance.Material.Body1"/>
 
         <Button
-            android:id="@+id/worklog_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dropdown"
-            android:layout_margin="@dimen/activity_vertical_margin"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-            android:onClick="showWorklogDatePicker" />
+                android:id="@+id/worklog_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                style="@style/Base.Widget.AppCompat.Spinner"
+                android:onClick="showWorklogDatePicker"/>
     </LinearLayout>
 
     <LinearLayout

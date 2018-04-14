@@ -78,7 +78,7 @@
     <string name="monthly">Monthly</string>
     <string name="about">About</string>
     <string name="name">Name</string>
-    <string name="amount">Amount</string>
+    <string name="amount">Amount in hours</string>
     <string name="goal">Goal</string>
     <string name="worklog_amount">Worklog amount by last period</string>
     <string name="add_worklog">Add worklog</string>

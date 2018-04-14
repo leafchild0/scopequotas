@@ -14,8 +14,8 @@ import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.data.DatabaseService;
 import com.leafchild.scopequotas.data.QuotaCategory;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -45,13 +45,12 @@ public class CategoryActivity extends AppCompatActivity {
 
 				catAdapter.add(toAdd);
 				toggleCategoryButtons(false);
+				categoryName.setText("");
 			}
 		});
-		ArrayList<String> data = new ArrayList<>();
-		List<QuotaCategory> existing = service.findAllCategories();
-		for (QuotaCategory category : existing) {
-			data.add(category.getName());
-		}
+		List<String> data = service
+			.findAllCategories()
+			.stream().map(QuotaCategory::getName).collect(Collectors.toList());
 
 		catAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.category_item, data);
 		ListView categories = findViewById(R.id.categories_list);
