@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.leafchild.scopequotas.AppContants;
 import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.common.Utils;
 import com.leafchild.scopequotas.data.DatabaseService;
@@ -16,9 +17,6 @@ import com.leafchild.scopequotas.data.WorklogType;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.Calendar;
-
-import static com.leafchild.scopequotas.AppContants.ACCENT_COLOR;
-import static com.leafchild.scopequotas.AppContants.ACTIVE_QUOTA;
 
 public class WorklogActivity extends AppCompatActivity
 	implements DatePickerDialog.OnDateSetListener
@@ -83,7 +81,7 @@ public class WorklogActivity extends AppCompatActivity
 		);
 
 		pickerDialog.setFirstDayOfWeek(Calendar.MONDAY);
-		pickerDialog.setAccentColor(ACCENT_COLOR);
+		pickerDialog.setAccentColor(AppContants.ACCENT_COLOR);
 		pickerDialog.show(getFragmentManager(), "Change Date");
 	}
 
@@ -96,7 +94,7 @@ public class WorklogActivity extends AppCompatActivity
 
 	public void initQuota() {
 
-		long activeQuota = getIntent().getLongExtra(ACTIVE_QUOTA, -1);
+		long activeQuota = getIntent().getLongExtra(AppContants.ACTIVE_QUOTA, -1);
 		picked = service.getQuota(activeQuota);
 	}
 }

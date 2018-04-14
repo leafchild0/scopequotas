@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.leafchild.scopequotas.AppContants;
 import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.common.Utils;
 import com.leafchild.scopequotas.data.DatabaseService;
@@ -35,9 +36,6 @@ import com.leafchild.scopequotas.worklog.WorklogActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.leafchild.scopequotas.AppContants.ACTIVE_QUOTA;
-import static com.leafchild.scopequotas.AppContants.TYPE;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -71,7 +69,7 @@ public class DetailsActivity extends AppCompatActivity {
 		max = findViewById(R.id.quota_max);
 		chart = findViewById(R.id.worklog_chart);
 
-		type = getIntent().getIntExtra(TYPE, 1);
+		type = getIntent().getIntExtra(AppContants.TYPE, 1);
 
 		service = new DatabaseService(this);
 
@@ -84,8 +82,8 @@ public class DetailsActivity extends AppCompatActivity {
 
 		logTime.setOnClickListener((v) -> {
 			Intent addWorklog = new Intent(DetailsActivity.this, WorklogActivity.class);
-			addWorklog.putExtra(TYPE, getIntent().getIntExtra(TYPE, 1));
-			addWorklog.putExtra(ACTIVE_QUOTA, getQuotaId());
+			addWorklog.putExtra(AppContants.TYPE, getIntent().getIntExtra(AppContants.TYPE, 1));
+			addWorklog.putExtra(AppContants.ACTIVE_QUOTA, getQuotaId());
 			//Do not add any data
 			startActivity(addWorklog);
 		});
@@ -179,7 +177,7 @@ public class DetailsActivity extends AppCompatActivity {
 
 	private long getQuotaId() {
 
-		return getIntent().getLongExtra(ACTIVE_QUOTA, -1);
+		return getIntent().getLongExtra(AppContants.ACTIVE_QUOTA, -1);
 	}
 
 	private void initChart() {
@@ -251,7 +249,7 @@ public class DetailsActivity extends AppCompatActivity {
 				editingBean = new Quota(
 					name.getText().toString(),
 					goal.getText().toString(),
-					QuotaType.fromOrdinal(type)
+					QuotaType.Companion.fromOrdinal(type)
 				);
 				editingBean.setCategory(service.getCategoryByName(pickedCategory));
 				editingBean.setMin(Integer.valueOf(min.getText().toString()));

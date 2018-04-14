@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v13.app.ActivityCompat;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -40,8 +40,6 @@ import com.leafchild.scopequotas.settings.SettingsActivity;
 
 import java.io.IOException;
 import java.util.List;
-
-import static com.leafchild.scopequotas.AppContants.TYPE;
 
 public class MainActivity extends AppCompatActivity
 	implements NavigationView.OnNavigationItemSelectedListener
@@ -125,7 +123,7 @@ public class MainActivity extends AppCompatActivity
 
 		newQuota.setOnClickListener(v -> {
 			Intent details = new Intent(self, DetailsActivity.class);
-			details.putExtra(TYPE, getIntent().getIntExtra(TYPE, currentType.ordinal()));
+			details.putExtra(AppContants.TYPE, getIntent().getIntExtra(AppContants.TYPE, currentType.ordinal()));
 			//Do not add any data
 			startActivity(details);
 		});
@@ -187,7 +185,7 @@ public class MainActivity extends AppCompatActivity
 				return true;
 			case R.id.show_report:
 				Intent showReport = new Intent(self, ReportsActivity.class);
-				showReport.putExtra(TYPE, currentType.getValue());
+				showReport.putExtra(AppContants.TYPE, currentType.getValue());
 				startActivity(showReport);
 				return true;
 			case R.id.export_data:

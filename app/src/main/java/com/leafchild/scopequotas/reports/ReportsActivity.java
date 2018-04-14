@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.leafchild.scopequotas.AppContants;
 import com.leafchild.scopequotas.R;
 import com.leafchild.scopequotas.common.QuotaAdapter;
 import com.leafchild.scopequotas.common.QuotasWithDefaultAdapter;
@@ -40,8 +41,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-import static com.leafchild.scopequotas.AppContants.ACCENT_COLOR;
-import static com.leafchild.scopequotas.AppContants.TYPE;
 import static com.leafchild.scopequotas.common.Utils.getRandomColors;
 
 public class ReportsActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -122,11 +121,11 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 
 	private void getPassedType() {
 
-		String passed = getIntent().getStringExtra(TYPE);
+		String passed = getIntent().getStringExtra(AppContants.TYPE);
 		if (passed != null) {
 			reportBy.setSelection(2);
 			type = BY_TYPE;
-			passedType = QuotaType.fromString(passed);
+			passedType = QuotaType.Companion.fromString(passed);
 		}
 	}
 
@@ -140,7 +139,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 		);
 
 		fromD.setFirstDayOfWeek(Calendar.MONDAY);
-		fromD.setAccentColor(ACCENT_COLOR);
+		fromD.setAccentColor(AppContants.ACCENT_COLOR);
 		fromD.show(getFragmentManager(), "Choose From Date");
 	}
 
@@ -154,7 +153,7 @@ public class ReportsActivity extends AppCompatActivity implements DatePickerDial
 		);
 
 		toD.setFirstDayOfWeek(Calendar.MONDAY);
-		toD.setAccentColor(ACCENT_COLOR);
+		toD.setAccentColor(AppContants.ACCENT_COLOR);
 		toD.show(getFragmentManager(), "Choose To Date");
 	}
 

@@ -7,11 +7,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import com.leafchild.scopequotas.AppContants;
 import com.leafchild.scopequotas.MainActivity;
 import com.leafchild.scopequotas.data.QuotaType;
 import com.leafchild.scopequotas.reports.ReportsActivity;
 
-import static com.leafchild.scopequotas.AppContants.TYPE;
 import static com.leafchild.scopequotas.common.NotificationsManager.DAILY_NOTIF_ID;
 
 /**
@@ -43,7 +43,7 @@ public class NotificationsReciever extends BroadcastReceiver {
 			Intent notificationIntent = new Intent(context, ReportsActivity.class);
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			// By default show logged for Week, then you can switch to Day or month
-			notificationIntent.putExtra(TYPE, QuotaType.WEEKLY);
+			notificationIntent.putExtra(AppContants.TYPE, QuotaType.WEEKLY);
 
 			n = NotificationsManager.getInstance().getSimpleNotification(context,
 				getPendingIntent(context, notificationIntent, notificationId, ReportsActivity.class),
