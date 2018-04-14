@@ -1,4 +1,4 @@
-package com.leafchild.scopequotas
+package com.leafchild.scopequotas.activity
 
 import android.Manifest
 import android.app.Activity
@@ -25,15 +25,14 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
-import com.leafchild.scopequotas.categories.CategoryActivity
+import com.leafchild.scopequotas.AppContants
+import com.leafchild.scopequotas.R
 import com.leafchild.scopequotas.common.ExportUtils
 import com.leafchild.scopequotas.common.QuotaAdapter
 import com.leafchild.scopequotas.common.Utils
 import com.leafchild.scopequotas.data.DatabaseService
 import com.leafchild.scopequotas.data.Quota
 import com.leafchild.scopequotas.data.QuotaType
-import com.leafchild.scopequotas.details.DetailsActivity
-import com.leafchild.scopequotas.reports.ReportsActivity
 import com.leafchild.scopequotas.settings.SettingsActivity
 import java.io.IOException
 

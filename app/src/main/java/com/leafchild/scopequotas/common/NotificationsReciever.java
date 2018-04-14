@@ -8,9 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import com.leafchild.scopequotas.AppContants;
-import com.leafchild.scopequotas.MainActivity;
+import com.leafchild.scopequotas.activity.MainActivity;
 import com.leafchild.scopequotas.data.QuotaType;
-import com.leafchild.scopequotas.reports.ReportsActivity;
+import com.leafchild.scopequotas.activity.ReportsActivity;
 
 import static com.leafchild.scopequotas.common.NotificationsManager.DAILY_NOTIF_ID;
 

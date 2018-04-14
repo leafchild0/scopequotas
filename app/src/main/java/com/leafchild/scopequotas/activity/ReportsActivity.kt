@@ -1,4 +1,4 @@
-package com.leafchild.scopequotas.reports
+package com.leafchild.scopequotas.activity
 
 import android.content.Intent
 import android.graphics.Color

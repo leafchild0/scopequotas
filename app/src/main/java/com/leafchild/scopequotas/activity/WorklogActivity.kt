@@ -1,4 +1,4 @@
-package com.leafchild.scopequotas.worklog
+package com.leafchild.scopequotas.activity
 
 import android.os.Bundle
 import android.os.Handler

@@ -1,4 +1,4 @@
-package com.leafchild.scopequotas.categories
+package com.leafchild.scopequotas.activity
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton

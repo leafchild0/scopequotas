@@ -4,7 +4,7 @@
     android:id="@+id/reports"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.leafchild.scopequotas.reports.ReportsActivity">
+    tools:context="com.leafchild.scopequotas.activity.ReportsActivity">
 
     <TextView
         android:id="@+id/report_by_label"

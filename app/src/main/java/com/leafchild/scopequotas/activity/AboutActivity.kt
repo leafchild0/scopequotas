@@ -1,8 +1,9 @@
-package com.leafchild.scopequotas
+package com.leafchild.scopequotas.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.leafchild.scopequotas.R
 
 class AboutActivity : AppCompatActivity() {
 

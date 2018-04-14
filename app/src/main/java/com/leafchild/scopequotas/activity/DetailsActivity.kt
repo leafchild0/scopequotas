@@ -1,4 +1,4 @@
-package com.leafchild.scopequotas.details
+package com.leafchild.scopequotas.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -29,7 +29,6 @@ import com.leafchild.scopequotas.common.Utils
 import com.leafchild.scopequotas.data.DatabaseService
 import com.leafchild.scopequotas.data.Quota
 import com.leafchild.scopequotas.data.QuotaType
-import com.leafchild.scopequotas.worklog.WorklogActivity
 
 import java.util.ArrayList
 import java.util.stream.Collectors
