@@ -257,7 +257,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 			weeklyReminder.setOnPreferenceChangeListener((preference, o) -> {
 				if(!weeklyReminder.isChecked()) {
-					NotificationsManager.getInstance().scheduleWeeklyReminder(getContext(), Utils.getWeeklyReminderTime(), WEEKLY_NOTIF_ID);
+					NotificationsManager.getInstance().scheduleWeeklyReminder(getContext(), Utils.INSTANCE.getWeeklyReminderTime(), WEEKLY_NOTIF_ID);
 				} else {
 					NotificationsManager.getInstance().cancelReminder(getContext(), WEEKLY_NOTIF_ID);
 				}

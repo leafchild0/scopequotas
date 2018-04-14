@@ -99,16 +99,16 @@ class Quota {
         return name!!
     }
 
-    override fun equals(o: Any?): Boolean {
+    override fun equals(other: Any?): Boolean {
 
-        if (this === o) {
+        if (this === other) {
             return true
         }
-        if (o == null || javaClass != o.javaClass) {
+        if (other == null || javaClass != other.javaClass) {
             return false
         }
 
-        val quota = o as Quota?
+        val quota = other as Quota?
         return quota!!.hashCode() == this.hashCode()
 
     }

@@ -41,7 +41,7 @@ public class NotificationsManager {
 
 	Notification getSimpleNotification(Context context, PendingIntent pendingIntent, String title, String text) {
 
-		SharedPreferences prefs = Utils.getDefaultSharedPrefs(context);
+		SharedPreferences prefs = Utils.INSTANCE.getDefaultSharedPrefs(context);
 		boolean isNotifEnabled = prefs.getBoolean(SettingsActivity.DAILY_NOTIFICATIONS, true);
 		boolean isVibrateEnabled = prefs.getBoolean(SettingsActivity.NOTIFICATIONS_VIBRATE, true);
 		String strRingtonePreference = prefs.getString(SettingsActivity.NOTIFICATIONS_RINGTONE, "DEFAULT_SOUND");
