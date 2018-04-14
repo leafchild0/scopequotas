@@ -20,8 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:layout_below="@id/report_by_label"
-        android:spinnerMode="dropdown"
-        style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+        style="@style/Base.Widget.AppCompat.Spinner"
+        android:spinnerMode="dropdown" />
 
     <Spinner
             android:id="@+id/report_by_type"
@@ -30,8 +30,8 @@
             android:visibility="gone"
             android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_below="@id/report_by"
-            android:spinnerMode="dropdown"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+            style="@style/Base.Widget.AppCompat.Spinner"
+            android:spinnerMode="dropdown" />
 
     <Spinner
         android:id="@+id/report_by_name"
@@ -40,8 +40,8 @@
         android:visibility="gone"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:layout_below="@id/report_by_type"
-        android:spinnerMode="dropdown"
-        style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+        style="@style/Base.Widget.AppCompat.Spinner"
+        android:spinnerMode="dropdown" />
 
     <android.widget.RelativeLayout
         android:layout_width="match_parent"
@@ -69,17 +69,18 @@
             android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_weight="0.5"
             android:onClick="showFromDatePicker"
-            android:spinnerMode="dropdown"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+            style="@style/Base.Widget.AppCompat.Spinner"
+            android:spinnerMode="dropdown" />
 
         <Button
             android:id="@+id/reports_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
             android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_weight="0.5"
-            android:spinnerMode="dropdown"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+            style="@style/Base.Widget.AppCompat.Spinner"
+            android:onClick="showToDatePicker" />
         </LinearLayout>
 
     </android.widget.RelativeLayout>

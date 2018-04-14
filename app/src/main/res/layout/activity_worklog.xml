@@ -50,10 +50,10 @@
                 android:id="@+id/worklog_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_vertical_margin"
-                android:onClick="showWorklogDatePicker"
                 android:spinnerMode="dropdown"
-                style="@style/Base.Widget.AppCompat.Spinner.Underlined"/>
+                android:layout_margin="@dimen/activity_vertical_margin"
+                style="@style/Base.Widget.AppCompat.Spinner"
+                android:onClick="showWorklogDatePicker"/>
     </LinearLayout>
 
     <LinearLayout
