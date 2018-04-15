@@ -63,7 +63,7 @@ class WorklogActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         }
     }
 
-    fun cancel() {
+    fun cancel(view: View?) {
 
         onBackPressed()
     }

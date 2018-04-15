@@ -47,7 +47,7 @@ open class QuotasWithDefaultAdapter
             spinnerAdapter: SpinnerAdapter, nothingSelectedLayout: Int, context: Context)
             : this(spinnerAdapter, nothingSelectedLayout, -1, context)
 
-    override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         // This provides the View for the Selected Item in the Spinner, not
         // the dropdown (unless dropdownView is not set).
         return if (position == 0) getNothingSelectedView(parent)
@@ -66,7 +66,7 @@ open class QuotasWithDefaultAdapter
         return layoutInflater.inflate(nothingSelectedLayout, parent, false)
     }
 
-    override fun getDropDownView(position: Int, convertView: View, parent: ViewGroup): View {
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         // Android BUG! http://code.google.com/p/android/issues/detail?id=17128 -
         // Spinner does not support multiple view types
         return if (position == 0) {

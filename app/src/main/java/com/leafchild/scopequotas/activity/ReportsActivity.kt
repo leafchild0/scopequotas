@@ -102,7 +102,7 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         reportBy!!.adapter = staticAdapter
         reportBy!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
 
                 type = parent.getItemAtPosition(position) as String
                 refreshReports()
@@ -194,16 +194,19 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
             BY_CATEGORY -> {
                 hideCharts(byName, byType)
                 hideSelector(quotaName)
+                hideSelector(typeName)
                 showDataByCategory()
             }
             BY_NAME -> {
                 hideCharts(byCategory, byType)
-                showDataByName()
                 hideSelector(typeName)
+                hideSelector(quotaName)
+                showDataByName()
             }
             BY_TYPE -> {
                 hideCharts(byCategory, byName)
                 hideSelector(typeName)
+                hideSelector(quotaName)
                 showDataByType()
             }
             else -> showDataByCategory()
@@ -277,10 +280,10 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
         quotaName!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
 
-                val selected = parent.getItemAtPosition(position) as Quota
-                byName!!.removeAllViews()
+                val selected = parent.getItemAtPosition(position) as Quota?
+                byName?.removeAllViews()
                 refreshReportsWithQuota(selected)
             }
 
@@ -306,10 +309,10 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
         typeName!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
 
                 val selected = parent.getItemAtPosition(position) as QuotaType
-                byType!!.removeAllViews()
+                byType?.removeAllViews()
                 refreshReportsForType(selected)
             }
 
@@ -451,7 +454,7 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
             if (values[it]!! > 0.0) {
                 entries = ArrayList()
                 entries.add(it.let { BarEntry(i * spaceForBar, values[it]!!) })
-                val d = BarDataSet(entries, type)
+                val d = BarDataSet(entries, it)
                 d.setDrawIcons(false)
                 d.color = Utils.randomColors[i]
                 data.addDataSet(d)
