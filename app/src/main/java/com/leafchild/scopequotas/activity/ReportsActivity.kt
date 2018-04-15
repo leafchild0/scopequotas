@@ -114,7 +114,7 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         toDate = findViewById(R.id.reports_to)
         toDate!!.text = Utils.getDayMonthYearFormatter().format(to.time)
 
-        from.add(Calendar.WEEK_OF_MONTH, -1)
+        calculateFromDate()
         fromDate = findViewById(R.id.reports_from)
         fromDate!!.text = Utils.getDayMonthYearFormatter().format(from.time)
 
@@ -126,6 +126,12 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
         getPassedType()
         refreshReports()
+    }
+
+    private fun calculateFromDate() {
+
+        from.add(Calendar.WEEK_OF_MONTH, -1)
+        from.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
     }
 
     override fun onNewIntent(intent: Intent) {
