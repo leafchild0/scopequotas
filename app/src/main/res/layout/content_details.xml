@@ -1,137 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.leafchild.scopequotas.activity.DetailsActivity"
-    tools:showIn="@layout/activity_details">
+											xmlns:app="http://schemas.android.com/apk/res-auto"
+											xmlns:tools="http://schemas.android.com/tools"
+											android:layout_width="match_parent"
+											android:layout_height="match_parent"
+											app:layout_behavior="@string/appbar_scrolling_view_behavior"
+											tools:context="com.leafchild.scopequotas.activity.DetailsActivity"
+											tools:showIn="@layout/activity_details">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/text_margin" >
+  <RelativeLayout
+		  android:layout_width="match_parent"
+		  android:layout_height="match_parent"
+		  android:padding="@dimen/text_margin">
 
-        <EditText
-            android:id="@+id/quota_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/text_margin"
-            android:layout_marginTop="40dp"
-            android:ems="10"
-            android:hint="@string/name"
-            android:inputType="textPersonName" />
+	<EditText
+			android:id="@+id/quota_name"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_centerHorizontal="true"
+			android:layout_margin="@dimen/text_margin"
+			android:layout_marginTop="40dp"
+			android:ems="10"
+			android:hint="@string/name"
+			android:inputType="textPersonName"/>
 
-        <EditText
-            android:id="@+id/quota_goal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/quota_name"
-            android:hint="@string/goal"
-            android:layout_margin="@dimen/text_margin"
-            android:inputType="textMultiLine"
-            android:lines="2" />
+	<EditText
+			android:id="@+id/quota_goal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/quota_name"
+			android:hint="@string/goal"
+			android:layout_margin="@dimen/text_margin"
+			android:inputType="textMultiLine"
+			android:lines="2"/>
 
-        <LinearLayout
-            android:id="@+id/quota_values"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/quota_goal">
+	<LinearLayout
+			android:id="@+id/quota_values"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/quota_goal">
 
-            <EditText
-                android:id="@+id/quota_min"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:ems="10"
-                android:layout_weight="0.5"
-                android:hint="@string/min_amount"
-                android:inputType="numberDecimal" />
+	  <EditText
+			  android:id="@+id/quota_min"
+			  android:layout_width="wrap_content"
+			  android:layout_height="wrap_content"
+			  android:layout_margin="@dimen/text_margin"
+			  android:ems="10"
+			  android:layout_weight="0.5"
+			  android:hint="@string/min_amount"
+			  android:inputType="numberDecimal"/>
 
-            <EditText
-                android:id="@+id/quota_max"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:ems="10"
-                android:layout_weight="0.5"
-                android:hint="@string/max_amount"
-                android:inputType="numberDecimal" />
+	  <EditText
+			  android:id="@+id/quota_max"
+			  android:layout_width="wrap_content"
+			  android:layout_height="wrap_content"
+			  android:layout_margin="@dimen/text_margin"
+			  android:ems="10"
+			  android:layout_weight="0.5"
+			  android:hint="@string/max_amount"
+			  android:inputType="numberDecimal"/>
 
-        </LinearLayout>
+	</LinearLayout>
 
-        <Spinner
-            android:id="@+id/category_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/quota_values"
-            android:layout_marginTop="30dp"
-            android:layout_margin="@dimen/text_margin"
-            android:spinnerMode="dropdown"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+	<Spinner
+			android:id="@+id/category_list"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentStart="true"
+			android:layout_below="@+id/quota_values"
+			android:layout_marginTop="30dp"
+			android:layout_margin="@dimen/text_margin"
+			android:spinnerMode="dropdown"
+			style="@style/Base.Widget.AppCompat.Spinner.Underlined"/>
 
-        <LinearLayout
-            android:id="@+id/quota_amount_name"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/category_list"
-            android:layout_margin="32dp"
-            android:layout_height="wrap_content">
+	<LinearLayout
+			android:id="@+id/quota_amount_name"
+			android:layout_width="match_parent"
+			android:layout_below="@+id/category_list"
+			android:layout_margin="32dp"
+			android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@string/worklog_amount" />
+	  <TextView
+			  android:layout_width="wrap_content"
+			  android:layout_height="wrap_content"
+			  android:layout_weight="0.5"
+			  android:text="@string/worklog_amount"/>
 
-            <TextView
-                android:id="@+id/quota_amount_value"
-                android:layout_width="wrap_content"
-                android:layout_weight="0.5"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+	  <TextView
+			  android:id="@+id/quota_amount_value"
+			  android:layout_width="wrap_content"
+			  android:layout_weight="0.5"
+			  android:layout_height="wrap_content"/>
+	</LinearLayout>
 
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/worklog_chart"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="@dimen/text_margin"
-            android:layout_below="@+id/quota_amount_name" />
+	<com.github.mikephil.charting.charts.BarChart
+			android:id="@+id/worklog_chart"
+			android:layout_width="match_parent"
+			android:layout_height="200dp"
+			android:layout_margin="@dimen/text_margin"
+			android:layout_below="@+id/quota_amount_name"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:attr/buttonBarStyle"
-            android:layout_below="@id/worklog_chart"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true">
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="?android:attr/buttonBarStyle"
+			android:layout_below="@id/worklog_chart"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentStart="true">
 
-            <Button
-                android:id="@+id/button_delete"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:text="@string/archive"
-                android:onClick="archiveQuota"
-                android:layout_margin="@dimen/activity_vertical_margin"
-                android:textColor="@color/colorPrimary"
-                style="?android:attr/buttonBarButtonStyle"/>
+	  <Button
+			  android:id="@+id/button_delete"
+			  android:layout_height="wrap_content"
+			  android:layout_width="0dp"
+			  android:layout_weight="0.5"
+			  android:text="@string/archive"
+			  android:onClick="archiveQuota"
+			  android:layout_margin="@dimen/activity_vertical_margin"
+			  android:background="@color/colorPrimary"
+			  android:textColor="@color/colorWhite"
+			  style="?android:attr/buttonBarButtonStyle"/>
 
-            <Button
-                android:id="@+id/button_save"
-                android:layout_width="0dp"
-                android:layout_weight="0.5"
-                android:layout_height="wrap_content"
-                android:text="@string/save"
-                android:onClick="saveQuota"
-                android:textColor="@color/colorPrimary"
-                android:layout_margin="@dimen/activity_vertical_margin"
-                style="?android:attr/buttonBarButtonStyle"/>
-        </LinearLayout>
+	  <Button
+			  android:id="@+id/button_save"
+			  android:layout_width="0dp"
+			  android:layout_weight="0.5"
+			  android:layout_height="wrap_content"
+			  android:text="@string/save"
+			  android:onClick="saveQuota"
+			  android:textColor="@color/colorWhite"
+			  android:background="@color/colorPrimary"
+			  android:layout_margin="@dimen/activity_vertical_margin"
+			  style="?android:attr/buttonBarButtonStyle"/>
+	</LinearLayout>
 
-    </RelativeLayout>
+  </RelativeLayout>
 
 </android.support.v4.widget.NestedScrollView>
