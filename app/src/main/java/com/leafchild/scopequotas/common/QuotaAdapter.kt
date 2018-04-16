@@ -1,17 +1,16 @@
 package com.leafchild.scopequotas.common
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ProgressBar
 import android.widget.TextView
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+import com.github.mikephil.charting.utils.ColorTemplate
 import com.leafchild.scopequotas.R
 import com.leafchild.scopequotas.data.Quota
 import com.leafchild.scopequotas.settings.SettingsActivity.QUOTA_INDICATOR
-import java.security.SecureRandom
 
 /**
  * Created by: leafchild
@@ -23,15 +22,13 @@ class QuotaAdapter : ArrayAdapter<Quota> {
 
     private var showWorklog = true
     private var showProgress = true
-    private val random = SecureRandom()
-    private val colors = Utils.randomColors
 
     // View lookup cache
     private class ViewHolder {
 
         internal var name: TextView? = null
         internal var amount: TextView? = null
-        internal var progress: ProgressBar? = null
+        internal var progressBar: RoundCornerProgressBar? = null
     }
 
     constructor(context: Context, quotas: List<Quota>) : super(context, R.layout.quota_item, quotas)
@@ -51,11 +48,11 @@ class QuotaAdapter : ArrayAdapter<Quota> {
             viewHolder = ViewHolder()
             val inflater = LayoutInflater.from(context)
             updated = inflater.inflate(R.layout.quota_item, parent, false)
-            viewHolder.name = updated.findViewById(R.id.qName)
+            viewHolder.name = updated!!.findViewById(R.id.qName)
 
-            viewHolder.progress = updated.findViewById(R.id.quota_progress)
+            viewHolder.progressBar = updated.findViewById(R.id.quota_progress_bar)
             if (showWorklog) viewHolder.amount = updated.findViewById(R.id.qAmount)
-            else viewHolder.progress!!.visibility = View.GONE
+            else viewHolder.progressBar!!.visibility = View.GONE
 
             // Cache the viewHolder object inside the fresh view
             updated.tag = viewHolder
@@ -66,7 +63,7 @@ class QuotaAdapter : ArrayAdapter<Quota> {
 
         updateValues(position, viewHolder, updated)
 
-        return updated!!
+        return updated
     }
 
     private fun updateValues(position: Int, viewHolder: ViewHolder, updated: View?) {
@@ -84,9 +81,10 @@ class QuotaAdapter : ArrayAdapter<Quota> {
                 viewHolder.name!!.text = quota.name + " [" + quota.min + "-" + quota.max + "]"
                 viewHolder.amount!!.text = String.format(quota.workFlowByLastPeriod.toString() + "%s", "h")
                 if (showProgress) {
-                    viewHolder.progress!!.progress = Utils.calculateQuotaProgress(quota.workFlowByLastPeriod, quota.max)
-                    viewHolder.progress!!.progressTintList = ColorStateList.valueOf(
-                            colors[random.nextInt(colors.size)])
+
+                    viewHolder.progressBar!!.secondaryProgress = Utils.calculateQuotaProgress(quota.min!!.toFloat(), quota.max)
+                    viewHolder.progressBar!!.progress = Utils.calculateQuotaProgress(quota.workFlowByLastPeriod, quota.max)
+                    viewHolder.progressBar!!.progressColor = Utils.nextColor()
                 }
             }
         }

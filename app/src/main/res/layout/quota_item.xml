@@ -1,42 +1,48 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
 <LinearLayout
-    android:id="@+id/quota_entry"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp" >
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/qName"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:ems="10"
-        android:textAppearance="@android:style/TextAppearance.Material.Large" />
+  <LinearLayout
+		  android:id="@+id/quota_entry"
+		  android:layout_width="match_parent"
+		  android:layout_height="wrap_content"
+		  android:padding="8dp">
 
-    <TextView
-        android:id="@+id/qAmount"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginStart="8dp"
-        android:paddingTop="8dp"
-        android:ems="10"
-        android:maxLines="1"
-        android:textAlignment="viewEnd"
-        android:textAppearance="@android:style/TextAppearance.Material.Body1" />
+	<TextView
+			android:id="@+id/qName"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="wrap_content"
+			android:layout_gravity="start"
+			android:ems="10"
+			android:textAppearance="@android:style/TextAppearance.Material.Large"/>
 
+	<TextView
+			android:id="@+id/qAmount"
+			android:layout_width="80dp"
+			android:layout_height="wrap_content"
+			android:layout_gravity="end"
+			android:layout_marginStart="8dp"
+			android:paddingTop="8dp"
+			android:ems="10"
+			android:maxLines="1"
+			android:textAlignment="viewEnd"
+			android:textAppearance="@android:style/TextAppearance.Material.Body1"/>
+
+  </LinearLayout>
+
+  <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+		  android:id="@+id/quota_progress_bar"
+		  android:layout_width="match_parent"
+		  android:layout_marginBottom="8dp"
+		  android:layout_height="26dp"
+		  app:rcRadius="4dp"
+		  app:rcMax="100"
+		  app:rcBackgroundPadding="2dp"
+		  app:rcReverse="false"
+		  app:rcSecondaryProgressColor="@color/light_grey"
+		  app:rcBackgroundColor="@color/light_grey2" />
 </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/quota_progress"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/quota_entry"
-        android:progressTint="@color/blue_semi_transparent"
-        style="?android:attr/progressBarStyleHorizontal" />
-</RelativeLayout>

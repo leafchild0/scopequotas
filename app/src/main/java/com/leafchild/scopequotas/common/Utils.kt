@@ -24,6 +24,7 @@ object Utils {
     private val dayMonthFormatter = SimpleDateFormat("dd-MM", Locale.US)
     private val dayMonthYearFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.US)
     private val exportHeaders = arrayOf("Id", "Name", "Description", "Min", "Max", "Last modified", "Category", "Logged", "Archived")
+    private var iterator = randomColors.listIterator()
 
     fun getDayMonthFormatter(): SimpleDateFormat {
 
@@ -38,6 +39,13 @@ object Utils {
     fun getExportHeaders(): Array<String> {
 
         return exportHeaders
+    }
+
+    fun nextColor(): Int {
+
+        if (!iterator.hasNext()) iterator = randomColors.listIterator()
+
+        return iterator.next()
     }
 
     val randomColors: List<Int>
@@ -65,9 +73,9 @@ object Utils {
         return field != null && field.text.toString().isEmpty()
     }
 
-    fun calculateQuotaProgress(amount: Float?, max: Int?): Int {
+    fun calculateQuotaProgress(amount: Float?, max: Int?): Float {
 
-        return (amount!! * 100 / max!!).toInt()
+        return amount!! * 100 / max!!
     }
 
     fun calculateAmount(logged: ForeignCollection<Worklog>, from: Date, to: Date): Float {
