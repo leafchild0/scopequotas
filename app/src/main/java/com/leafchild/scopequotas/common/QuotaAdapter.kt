@@ -28,6 +28,7 @@ class QuotaAdapter : ArrayAdapter<Quota> {
 
         internal var name: TextView? = null
         internal var amount: TextView? = null
+        internal var range: TextView? = null
         internal var progressBar: RoundCornerProgressBar? = null
     }
 
@@ -49,6 +50,7 @@ class QuotaAdapter : ArrayAdapter<Quota> {
             val inflater = LayoutInflater.from(context)
             updated = inflater.inflate(R.layout.quota_item, parent, false)
             viewHolder.name = updated!!.findViewById(R.id.qName)
+            viewHolder.range = updated!!.findViewById(R.id.qRange)
 
             viewHolder.progressBar = updated.findViewById(R.id.quota_progress_bar)
             if (showWorklog) viewHolder.amount = updated.findViewById(R.id.qAmount)
@@ -78,7 +80,7 @@ class QuotaAdapter : ArrayAdapter<Quota> {
 
             if (showWorklog) {
 
-                viewHolder.name!!.text = quota.name + " [" + quota.min + "-" + quota.max + "]"
+                viewHolder.range!!.text = quota.min?.toString() + "-" + quota.max?.toString()
                 viewHolder.amount!!.text = String.format(quota.workFlowByLastPeriod.toString() + "%s", "h")
                 if (showProgress) {
 

@@ -9,28 +9,40 @@
 		  android:id="@+id/quota_entry"
 		  android:layout_width="match_parent"
 		  android:layout_height="wrap_content"
-		  android:padding="8dp">
+		  android:padding="16dp">
 
 	<TextView
 			android:id="@+id/qName"
 			android:layout_width="0dp"
-			android:layout_weight="1"
+			android:layout_weight="0.6"
 			android:layout_height="wrap_content"
-			android:layout_gravity="start"
+			android:maxWidth="168dp"
 			android:ems="10"
+			android:textAllCaps="true"
+			android:paddingRight="@dimen/activity_horizontal_margin"
+			android:paddingLeft="@dimen/activity_horizontal_margin"
 			android:textAppearance="@android:style/TextAppearance.Material.Large"/>
 
 	<TextView
-			android:id="@+id/qAmount"
-			android:layout_width="80dp"
-			android:layout_height="wrap_content"
-			android:layout_gravity="end"
+			android:id="@+id/qRange"
+			android:layout_width="0dp"
+			android:layout_weight="1"
 			android:layout_marginStart="8dp"
-			android:paddingTop="8dp"
+			android:layout_height="wrap_content"
+			android:ems="10"
+			android:textColor="@color/colorPrimary"
+			android:textAppearance="@android:style/TextAppearance.Material.Subhead"/>
+
+	<TextView
+			android:id="@+id/qAmount"
+			android:layout_width="0dp"
+			android:layout_weight="0.4"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="8dp"
 			android:ems="10"
 			android:maxLines="1"
-			android:textAlignment="viewEnd"
-			android:textAppearance="@android:style/TextAppearance.Material.Body1"/>
+			android:textStyle="bold"
+			android:textAppearance="@android:style/TextAppearance.Material.Medium"/>
 
   </LinearLayout>
 
@@ -41,7 +53,7 @@
 		  android:layout_height="26dp"
 		  app:rcRadius="4dp"
 		  app:rcMax="100"
-		  app:rcBackgroundPadding="2dp"
+		  app:rcBackgroundPadding="0dp"
 		  app:rcReverse="false"
 		  app:rcSecondaryProgressColor="@color/light_grey"
 		  app:rcBackgroundColor="@color/light_grey2" />
