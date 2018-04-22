@@ -114,10 +114,17 @@ class DatabaseService(context: Context) {
     fun addWorklog(worklog: Worklog) {
 
         try {
-            if (worklog.createdDate == null) {
-                worklog.createdDate = Date()
-            }
             dbManager.getWorklogDao()!!.create(worklog)
+        } catch (e: SQLException) {
+            Log.e("DB", e.message)
+        }
+
+    }
+
+    fun addWorklogs(worklogs: List<Worklog>) {
+
+        try {
+            dbManager.getWorklogDao()!!.create(worklogs)
         } catch (e: SQLException) {
             Log.e("DB", e.message)
         }

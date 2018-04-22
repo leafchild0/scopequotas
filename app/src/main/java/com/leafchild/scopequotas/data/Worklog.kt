@@ -18,20 +18,21 @@ class Worklog {
     @DatabaseField(generatedId = true)
     var id: Long? = null
     @DatabaseField(columnName = "createdDate")
-    var createdDate: Date? = null
+    var createdDate: Date = Date()
     @DatabaseField(columnName = "amount", canBeNull = false)
     var amount: Double? = null
     @DatabaseField(columnName = "amount_type", canBeNull = false)
-    var type: WorklogType? = null
+    var type: WorklogType = WorklogType.HOURS
     @DatabaseField(columnName = "quota", foreign = true, foreignAutoRefresh = true)
     var quota: Quota? = null
 
     constructor() {}
 
-    constructor(quota: Quota, amount: Double?) {
+    constructor(quota: Quota, amount: Double?, createdDate: Date = Date()) {
 
         this.quota = quota
         this.amount = amount
+        this.createdDate = createdDate
     }
 
     override fun toString(): String {

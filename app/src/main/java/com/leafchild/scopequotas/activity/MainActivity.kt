@@ -165,15 +165,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 NavUtils.navigateUpFromSameTask(this)
                 return true
             }
-            R.id.action_settings -> {
-                val intent = Intent(self, SettingsActivity::class.java)
-                startActivity(intent)
-                return true
-            }
             R.id.show_report -> {
                 val showReport = Intent(self, ReportsActivity::class.java)
                 showReport.putExtra(AppContants.TYPE, currentType.value)
                 startActivity(showReport)
+                return true
+            }
+            R.id.bulk_worklog -> {
+                val intent = Intent(self, BulkWorklogActivity::class.java)
+                intent.putExtra(AppContants.TYPE, currentType.value)
+                startActivity(intent)
                 return true
             }
             R.id.export_data -> {

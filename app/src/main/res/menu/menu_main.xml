@@ -4,11 +4,17 @@
 	  tools:context="com.leafchild.scopequotas.activity.MainActivity">
   <item
 		  android:id="@+id/show_archieved"
-		  android:orderInCategory="98"
+		  android:orderInCategory="97"
 		  android:checkable="true"
 		  android:title="@string/show_archieved"
 		  app:actionViewClass="android.widget.CheckBox"
 		  app:showAsAction="withText"/>
+
+  <item
+		  android:id="@+id/bulk_worklog"
+		  android:orderInCategory="98"
+		  android:title="@string/bulk_worklog"
+		  app:showAsAction="never"/>
 
   <item
 		  android:id="@+id/show_report"

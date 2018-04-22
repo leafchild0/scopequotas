@@ -13,10 +13,8 @@ import com.leafchild.scopequotas.common.Utils
 import com.leafchild.scopequotas.data.DatabaseService
 import com.leafchild.scopequotas.data.Quota
 import com.leafchild.scopequotas.data.Worklog
-import com.leafchild.scopequotas.data.WorklogType
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
-
-import java.util.Calendar
+import java.util.*
 
 class WorklogActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
@@ -47,20 +45,18 @@ class WorklogActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
     fun addWorklog(view: View) {
 
         initQuota()
-        val worklog = Worklog(picked!!, addedAmount)
-        worklog.type = WorklogType.HOURS
-        setWorklogDate(worklog)
-        service!!.addWorklog(worklog)
+        service!!.addWorklog(Worklog(picked!!, addedAmount, getWorklogDate()))
 
         Toast.makeText(this@WorklogActivity, "Worklog was added", Toast.LENGTH_SHORT).show()
         Handler().postDelayed({ this@WorklogActivity.onBackPressed() }, 1000)
     }
 
-    private fun setWorklogDate(worklog: Worklog) {
+    private fun getWorklogDate(): Date {
 
         if (worklogDate!!.text != "Today") {
-            worklog.createdDate = calendar!!.time
+            return calendar!!.time
         }
+        return Date()
     }
 
     fun cancel(view: View?) {

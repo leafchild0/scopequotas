@@ -23,9 +23,9 @@
 	</activity>
 	<activity
 			android:name=".settings.SettingsActivity"
-			android:theme="@style/QSwitch"
 			android:label="@string/settings"
-			android:parentActivityName=".activity.MainActivity">
+			android:parentActivityName=".activity.MainActivity"
+			android:theme="@style/QSwitch">
 	  <meta-data
 			  android:name="android.support.PARENT_ACTIVITY"
 			  android:value="com.leafchild.scopequotas.activity.MainActivity"/>
@@ -55,8 +55,7 @@
 			  android:name="android.support.PARENT_ACTIVITY"
 			  android:value="com.leafchild.scopequotas.activity.MainActivity"/>
 	</activity>
-	<activity
-			android:name=".activity.WorklogActivity"/>
+	<activity android:name=".activity.WorklogActivity"/>
 	<activity
 			android:name=".activity.CategoryActivity"
 			android:label="@string/categories"
@@ -67,7 +66,10 @@
 			  android:value="com.leafchild.scopequotas.activity.MainActivity"/>
 	</activity>
 
-	<receiver android:name="com.leafchild.scopequotas.common.NotificationsReciever"/>
+	<receiver android:name=".common.NotificationsReciever"/>
+
+	<activity android:name=".activity.BulkWorklogActivity">
+	</activity>
   </application>
 
 </manifest>

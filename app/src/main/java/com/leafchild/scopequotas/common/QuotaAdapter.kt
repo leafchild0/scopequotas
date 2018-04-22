@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.leafchild.scopequotas.R
 import com.leafchild.scopequotas.data.Quota
 import com.leafchild.scopequotas.settings.SettingsActivity.QUOTA_INDICATOR
@@ -50,7 +49,7 @@ class QuotaAdapter : ArrayAdapter<Quota> {
             val inflater = LayoutInflater.from(context)
             updated = inflater.inflate(R.layout.quota_item, parent, false)
             viewHolder.name = updated!!.findViewById(R.id.qName)
-            viewHolder.range = updated!!.findViewById(R.id.qRange)
+            viewHolder.range = updated.findViewById(R.id.qRange)
 
             viewHolder.progressBar = updated.findViewById(R.id.quota_progress_bar)
             if (showWorklog) viewHolder.amount = updated.findViewById(R.id.qAmount)
@@ -75,7 +74,7 @@ class QuotaAdapter : ArrayAdapter<Quota> {
             viewHolder.name!!.text = quota.name
 
             if (quota.archived!!) {
-                updated!!.setBackgroundColor(updated.resources.getColor(R.color.light_grey))
+                updated!!.setBackgroundColor(updated.resources.getColor(R.color.light_grey, context.theme))
             }
 
             if (showWorklog) {

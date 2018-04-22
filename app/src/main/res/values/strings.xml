@@ -1,130 +1,132 @@
 <resources>
-    <string name="app_name">Scope Quotas</string>
+  <string name="app_name">Scope Quotas</string>
 
-    <!-- Strings related to Settings -->
+  <!-- Strings related to Settings -->
 
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
+  <!-- Example General settings -->
+  <string name="pref_header_general">General</string>
+  <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+  <string-array name="pref_example_list_titles">
+	<item>Always</item>
+	<item>When possible</item>
+	<item>Never</item>
+  </string-array>
+  <string-array name="pref_example_list_values">
+	<item>1</item>
+	<item>0</item>
+	<item>-1</item>
+  </string-array>
 
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
+  <!-- Example settings for Data & Sync -->
+  <string name="pref_header_data_sync">Data &amp; sync</string>
 
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
+  <string name="pref_title_sync_frequency">Sync frequency</string>
+  <string-array name="pref_sync_frequency_titles">
+	<item>15 minutes</item>
+	<item>30 minutes</item>
+	<item>1 hour</item>
+	<item>3 hours</item>
+	<item>6 hours</item>
+	<item>Never</item>
+  </string-array>
+  <string-array name="pref_sync_frequency_values">
+	<item>15</item>
+	<item>30</item>
+	<item>60</item>
+	<item>180</item>
+	<item>360</item>
+	<item>-1</item>
+  </string-array>
 
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
+  <string-array name="list_preference_entries">
+	<item>Entry 1</item>
+	<item>Entry 2</item>
+	<item>Entry 3</item>
+  </string-array>
 
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
+  <string-array name="list_preference_entry_values">
+	<item>1</item>
+	<item>2</item>
+	<item>3</item>
+  </string-array>
 
-    <string-array name="multi_select_list_preference_default_value" />
+  <string-array name="multi_select_list_preference_default_value"/>
 
-    <string name="pref_title_system_sync_settings">System sync settings</string>
+  <string name="pref_title_system_sync_settings">System sync settings</string>
 
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
+  <!-- Example settings for Notifications -->
+  <string name="pref_header_notifications">Notifications</string>
 
-    <string name="pref_title_new_message_notifications">New message notifications</string>
+  <string name="pref_title_new_message_notifications">New message notifications</string>
 
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
+  <string name="pref_title_ringtone">Ringtone</string>
+  <string name="pref_ringtone_silent">Silent</string>
 
-    <string name="pref_title_vibrate">Vibrate</string>
-    <string name="details">Details</string>
-    <string name="menu">Menu</string>
-    <string name="categories">Categories</string>
+  <string name="pref_title_vibrate">Vibrate</string>
+  <string name="details">Details</string>
+  <string name="menu">Menu</string>
+  <string name="categories">Categories</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="empty_quotas">There is no quotas yet</string>
-    <string name="reports">Reports</string>
-    <string name="settings">Settings</string>
-    <string name="tools">Tools</string>
-    <string name="daily">Daily</string>
-    <string name="weekly">Weekly</string>
-    <string name="monthly">Monthly</string>
-    <string name="about">About</string>
-    <string name="name">Name</string>
-    <string name="amount">Amount in hours</string>
-    <string name="goal">Goal</string>
-    <string name="worklog_amount">Worklog amount by last period</string>
-    <string name="add_worklog">Add worklog</string>
-    <string name="cancel">Cancel</string>
-    <string name="add">Add</string>
-    <string name="manage_your_time_better">Manage your time better</string>
-    <string name="select_a_quota">All Quotas</string>
-    <string name="max_amount">Max</string>
-    <string name="min_amount">Min</string>
-    <string name="report_by">Report by</string>
-    <string name="choose_dates">Choose dates</string>
-    <string name="app_about">
-        Small app that allows to track and manage time.
-        Original idea is in setting a quotas per period of time (weekly, as an example).
-        Then, allow app to notify you and log used time each day.
-        Notifications will help to stay in the loop.
-        App has Reports feature which allow to understand what may be improved.
-        Let the force be with you!
-    </string>
-    <string name="app_author">Developed by Victor Malyshev (aka leafchild)</string>
-    <string name="pref_quota_indicator">Show quotas indicator</string>
-    <string name="pref_description_quota_indicator">Show quotas progress indicator under each quota</string>
-    <string name="pref_quotas_quantity">Show quotas badges</string>
-    <string name="pref_description_quotas_quantity">Show quotas badges per each section (Daily, Weekly, Monthly)</string>
-    <string name="pref_daily_notifications">Daily Notifications</string>
-    <string name="notification_time">Notifications time</string>
-    <string name="set">Set</string>
-    <string name="choose_time">Choose time</string>
-    <string name="save">Save</string>
-    <string name="archive">Archive</string>
-    <string name="choose_date">Choose date</string>
-    <string name="show_archieved">Show archived</string>
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
+  <string name="empty_quotas">There is no quotas yet</string>
+  <string name="reports">Reports</string>
+  <string name="settings">Settings</string>
+  <string name="tools">Tools</string>
+  <string name="daily">Daily</string>
+  <string name="weekly">Weekly</string>
+  <string name="monthly">Monthly</string>
+  <string name="about">About</string>
+  <string name="name">Name</string>
+  <string name="amount">Amount in hours</string>
+  <string name="goal">Goal</string>
+  <string name="worklog_amount">Worklog amount by last period</string>
+  <string name="add_worklog">Add worklog</string>
+  <string name="cancel">Cancel</string>
+  <string name="add">Add</string>
+  <string name="manage_your_time_better">Manage your time better</string>
+  <string name="select_a_quota">All Quotas</string>
+  <string name="max_amount">Max</string>
+  <string name="min_amount">Min</string>
+  <string name="report_by">Report by</string>
+  <string name="choose_dates">Choose dates</string>
+  <string name="app_about">
+	Small app that allows to track and manage time.
+	Original idea is in setting a quotas per period of time (weekly, as an example).
+	Then, allow app to notify you and log used time each day.
+	Notifications will help to stay in the loop.
+	App has Reports feature which allow to understand what may be improved.
+	Let the force be with you!
+  </string>
+  <string name="app_author">Developed by Victor Malyshev (aka leafchild)</string>
+  <string name="pref_quota_indicator">Show quotas indicator</string>
+  <string name="pref_description_quota_indicator">Show quotas progress indicator under each quota</string>
+  <string name="pref_quotas_quantity">Show quotas badges</string>
+  <string name="pref_description_quotas_quantity">Show quotas badges per each section (Daily, Weekly, Monthly)</string>
+  <string name="pref_daily_notifications">Daily Notifications</string>
+  <string name="notification_time">Notifications time</string>
+  <string name="set">Set</string>
+  <string name="choose_time">Choose time</string>
+  <string name="save">Save</string>
+  <string name="archive">Archive</string>
+  <string name="choose_date">Choose date</string>
+  <string name="show_archieved">Show archived</string>
   <string name="show_report">Show report</string>
   <string name="export_data">Export Data</string>
   <string name="pref_weekly_notifications">Weekly Notifications</string>
   <string name="weekly_notifications_summary">Receive Weekly notifications each Sat 11.00</string>
+  <string name="add_worklog_in_bulk">Add worklog in bulk</string>
+  <string name="bulk_worklog">Bulk worklog</string>
 
   <string-array name="worklog_array">
-        <item>hours</item>
-        <item>days</item>
-        <item>minutes</item>
-    </string-array>
+	<item>hours</item>
+	<item>days</item>
+	<item>minutes</item>
+  </string-array>
 
-    <string-array name="reports_category">
-        <item>By Category</item>
-        <item>By Name</item>
-        <item>By Type</item>
-    </string-array>
+  <string-array name="reports_category">
+	<item>By Category</item>
+	<item>By Name</item>
+	<item>By Type</item>
+  </string-array>
 </resources>
