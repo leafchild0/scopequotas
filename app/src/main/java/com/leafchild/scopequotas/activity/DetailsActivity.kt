@@ -9,14 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -29,8 +22,7 @@ import com.leafchild.scopequotas.common.Utils
 import com.leafchild.scopequotas.data.DatabaseService
 import com.leafchild.scopequotas.data.Quota
 import com.leafchild.scopequotas.data.QuotaType
-
-import java.util.ArrayList
+import java.util.*
 import java.util.stream.Collectors
 
 class DetailsActivity : AppCompatActivity() {
@@ -178,7 +170,7 @@ class DetailsActivity : AppCompatActivity() {
             chart!!.visibility = View.GONE
         } else {
 
-            for (worklog in editingBean!!.logged!!) {
+            for (worklog in service!!.getLoggedDataByQuota(editingBean!!, getFromDate(), Date())) {
                 // turn your data into Entry objects
                 entries.add(BarEntry(amount++.toFloat(), worklog.amount!!.toFloat()))
                 labels.add(Utils.getDayMonthFormatter().format(worklog.createdDate))
@@ -209,6 +201,15 @@ class DetailsActivity : AppCompatActivity() {
             yr.setDrawGridLines(false)
             yr.axisMinimum = 0f
         }
+    }
+
+    private fun getFromDate(): Date {
+
+        val cal = Calendar.getInstance()
+        cal.time = Date()
+        cal.add(Calendar.MONTH, -3)
+
+        return cal.time
     }
 
     override fun onBackPressed() {

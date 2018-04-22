@@ -124,22 +124,6 @@ class DatabaseService(context: Context) {
 
     }
 
-    fun getByQuotaId(quotaId: Long?): List<Worklog> {
-
-        var byQuota: List<Worklog> = ArrayList()
-        if (quotaId == null) {
-            return byQuota
-        }
-
-        try {
-            byQuota = dbManager.getWorklogDao()!!.queryForEq("quota", quotaId)
-        } catch (e: SQLException) {
-            Log.e("DB", e.message)
-        }
-
-        return byQuota
-    }
-
     fun createCategory(category: QuotaCategory) {
 
         try {
