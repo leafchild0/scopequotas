@@ -23,36 +23,35 @@ import com.leafchild.scopequotas.data.DatabaseService
 import com.leafchild.scopequotas.data.Quota
 import com.leafchild.scopequotas.data.QuotaType
 import java.util.*
-import java.util.stream.Collectors
 
 class DetailsActivity : AppCompatActivity() {
 
-    private var name: EditText? = null
-    private var goal: EditText? = null
-    private var min: EditText? = null
-    private var max: EditText? = null
-    private var categories: Spinner? = null
-    private var worklogAmount: TextView? = null
-    private var chart: BarChart? = null
+    private lateinit var name: EditText
+    private lateinit var goal: EditText
+    private lateinit var min: EditText
+    private lateinit var max: EditText
+    private lateinit var categories: Spinner
+    private lateinit var worklogAmount: TextView
+    private lateinit var chart: BarChart
 
-    private var service: DatabaseService? = null
+    private lateinit var service: DatabaseService
     private var editingBean: Quota? = null
     private var pickedCategory: String? = null
     private var type: Int = 0
-    private var catAdapter: ArrayAdapter<String>? = null
+    private lateinit var catAdapter: ArrayAdapter<String>
 
     private val isQuotaValid: Boolean
         get() {
 
             var isMinMax = false
-            val isAllFilled = ((name!!.visibility == View.VISIBLE) or Utils.isFieldEmpty(name)
+            val isAllFilled = ((name.visibility == View.VISIBLE) or Utils.isFieldEmpty(name)
                     && !Utils.isFieldEmpty(goal)
                     && !Utils.isFieldEmpty(min)
                     && !Utils.isFieldEmpty(max))
 
             if (isAllFilled) {
-                val minValue = Integer.valueOf(min!!.text.toString())
-                val maxValue = Integer.valueOf(max!!.text.toString())
+                val minValue = Integer.valueOf(min.text.toString())
+                val maxValue = Integer.valueOf(max.text.toString())
 
                 isMinMax = Integer.compare(minValue, maxValue) < 0
 
@@ -105,13 +104,13 @@ class DetailsActivity : AppCompatActivity() {
             startActivity(addWorklog)
         }
 
-        val categoryData = service!!.findAllCategories()
-        val existing = categoryData.stream().map { it.name!! }.collect(Collectors.toList())
+        val categoryData = service.findAllCategories()
+        val existing = categoryData.map { it.name!! }
 
         categories = findViewById(R.id.category_list)
         catAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, existing)
-        categories!!.adapter = catAdapter
-        categories!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        categories.adapter = catAdapter
+        categories.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
@@ -122,7 +121,7 @@ class DetailsActivity : AppCompatActivity() {
                 // Do not do anything
             }
         }
-        categories!!.prompt = "Select query"
+        categories.prompt = "Select query"
 
         if (isExistingQuota()) {
             //Existing entity
@@ -133,7 +132,7 @@ class DetailsActivity : AppCompatActivity() {
             //New entity
             worklogLayout.visibility = View.GONE
             deleteButton.visibility = View.GONE
-            chart!!.visibility = View.GONE
+            chart.visibility = View.GONE
             title = "Add new Quota"
         }
     }
@@ -142,21 +141,21 @@ class DetailsActivity : AppCompatActivity() {
 
         val existinQuotaId = quotaId
         //Get item from DB
-        editingBean = service!!.getQuota(existinQuotaId)
+        editingBean = service.getQuota(existinQuotaId)
 
         //Perform any validations, etc
         //Preset values in the fields
         if (editingBean != null) {
             //Prevent from editing quota name once it was saved
-            name!!.visibility = View.GONE
+            name.visibility = View.GONE
 
-            min!!.setText(editingBean!!.min.toString())
-            max!!.setText(editingBean!!.max.toString())
+            min.setText(editingBean!!.min.toString())
+            max.setText(editingBean!!.max.toString())
 
-            categories!!.setSelection(catAdapter!!.getPosition(editingBean!!.category!!.name))
+            categories.setSelection(catAdapter.getPosition(editingBean!!.category!!.name))
 
-            goal!!.setText(editingBean!!.description)
-            worklogAmount!!.text = String.format(editingBean!!.workFlowByLastPeriod!!.toString() + "%s", HOURS)
+            goal.setText(editingBean!!.description)
+            worklogAmount.text = String.format(editingBean!!.workFlowByLastPeriod!!.toString() + "%s", HOURS)
         }
     }
 
@@ -167,10 +166,10 @@ class DetailsActivity : AppCompatActivity() {
         var amount = 0
 
         if (editingBean!!.isNew || editingBean!!.logged!!.isEmpty()) {
-            chart!!.visibility = View.GONE
+            chart.visibility = View.GONE
         } else {
 
-            for (worklog in service!!.getLoggedDataByQuota(editingBean!!, getFromDate(), Date())) {
+            for (worklog in service.getLoggedDataByQuota(editingBean!!, getFromDate(), Date())) {
                 // turn your data into Entry objects
                 entries.add(BarEntry(amount++.toFloat(), worklog.amount!!.toFloat()))
                 labels.add(Utils.getDayMonthFormatter().format(worklog.createdDate))
@@ -178,11 +177,11 @@ class DetailsActivity : AppCompatActivity() {
 
             val dataSet = BarDataSet(entries, "")
             val lineData = BarData(dataSet)
-            chart!!.data = lineData
-            chart!!.description.isEnabled = false
-            chart!!.legend.isEnabled = false
+            chart.data = lineData
+            chart.description.isEnabled = false
+            chart.legend.isEnabled = false
 
-            val xl = chart!!.xAxis
+            val xl = chart.xAxis
             xl.position = XAxis.XAxisPosition.BOTTOM
             xl.setDrawAxisLine(true)
             xl.setDrawGridLines(false)
@@ -191,12 +190,12 @@ class DetailsActivity : AppCompatActivity() {
             xl.setDrawLabels(true)
             xl.valueFormatter = IndexAxisValueFormatter(labels)
 
-            val yl = chart!!.axisLeft
+            val yl = chart.axisLeft
             yl.setDrawAxisLine(true)
             yl.setDrawGridLines(true)
             yl.axisMinimum = 0f
 
-            val yr = chart!!.axisRight
+            val yr = chart.axisRight
             yr.setDrawAxisLine(true)
             yr.setDrawGridLines(false)
             yr.axisMinimum = 0f
@@ -220,7 +219,7 @@ class DetailsActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        if (item.itemId == android.R.id.home) {
+        if (item.itemId == R.id.home) {
             onBackPressed()
             return true
         }
@@ -232,20 +231,20 @@ class DetailsActivity : AppCompatActivity() {
         if (isQuotaValid) {
             if (editingBean == null) {
                 editingBean = Quota(
-                        name!!.text.toString(),
-                        goal!!.text.toString(),
+                        name.text.toString(),
+                        goal.text.toString(),
                         QuotaType.fromOrdinal(type)
                 )
-                editingBean!!.category = service!!.getCategoryByName(pickedCategory!!)
-                editingBean!!.min = Integer.valueOf(min!!.text.toString())
-                editingBean!!.max = Integer.valueOf(max!!.text.toString())
+                editingBean!!.category = service.getCategoryByName(pickedCategory!!)
+                editingBean!!.min = Integer.valueOf(min.text.toString())
+                editingBean!!.max = Integer.valueOf(max.text.toString())
             } else {
-                editingBean!!.category = service!!.getCategoryByName(pickedCategory!!)
-                editingBean!!.min = Integer.valueOf(min!!.text.toString())
-                editingBean!!.max = Integer.valueOf(max!!.text.toString())
-                editingBean!!.description = goal!!.text.toString()
+                editingBean!!.category = service.getCategoryByName(pickedCategory!!)
+                editingBean!!.min = Integer.valueOf(min.text.toString())
+                editingBean!!.max = Integer.valueOf(max.text.toString())
+                editingBean!!.description = goal.text.toString()
             }
-            service!!.persistQuota(editingBean!!)
+            service.persistQuota(editingBean!!)
 
             Toast.makeText(this@DetailsActivity, "Quota " + editingBean!!.name + " was saved", Toast.LENGTH_SHORT)
                     .show()
@@ -262,7 +261,7 @@ class DetailsActivity : AppCompatActivity() {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton(android.R.string.yes) { _, _ ->
                         //Then remove
-                        val result = service!!.archiveQuota(quotaId)
+                        val result = service.archiveQuota(quotaId)
                         if (result) {
                             Toast.makeText(this@DetailsActivity, "Quota " + editingBean!!.name + " was successfully "
                                     + "archived",

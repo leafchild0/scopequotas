@@ -16,10 +16,9 @@ import com.leafchild.scopequotas.data.QuotaCategory
 
 class CategoryActivity : AppCompatActivity() {
 
-    private var categoryName: EditText? = null
-    private var addCategory: Button? = null
-    private var catAdapter: ArrayAdapter<String?>? = null
-    private var newCategory: FloatingActionButton? = null
+    private lateinit var categoryName: EditText
+    private lateinit var addCategory: Button
+    private lateinit var newCategory: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -30,28 +29,28 @@ class CategoryActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         val service = DatabaseService(this)
+        val data = service.findAllCategories().map( { it.name })
+        val catAdapter = ArrayAdapter(applicationContext, R.layout.category_item, data)
 
         categoryName = findViewById(R.id.category_name)
         addCategory = findViewById(R.id.add_category)
-        addCategory!!.setOnClickListener {
-            if (categoryName!!.text.isNotEmpty()) {
-                val toAdd = categoryName!!.text.toString()
+        addCategory.setOnClickListener {
+            if (categoryName.text.isNotEmpty()) {
+                val toAdd = categoryName.text.toString()
                 //Then store it in the db
                 service.createCategory(QuotaCategory(toAdd))
 
-                catAdapter!!.add(toAdd)
+                catAdapter.add(toAdd)
                 toggleCategoryButtons(false)
-                categoryName!!.setText("")
+                categoryName.setText("")
             }
         }
-        val data = service.findAllCategories().map( { it.name })
 
-        catAdapter = ArrayAdapter(applicationContext, R.layout.category_item, data)
         val categories = findViewById<ListView>(R.id.categories_list)
         categories.adapter = catAdapter
 
         newCategory = findViewById(R.id.new_category)
-        newCategory!!.setOnClickListener { toggleCategoryButtons(true) }
+        newCategory.setOnClickListener { toggleCategoryButtons(true) }
 
         toggleCategoryButtons(false)
     }
@@ -59,19 +58,19 @@ class CategoryActivity : AppCompatActivity() {
     private fun toggleCategoryButtons(isAdding: Boolean) {
 
         if (isAdding) {
-            newCategory!!.visibility = View.GONE
-            categoryName!!.visibility = View.VISIBLE
-            addCategory!!.visibility = View.VISIBLE
+            newCategory.visibility = View.GONE
+            categoryName.visibility = View.VISIBLE
+            addCategory.visibility = View.VISIBLE
         } else {
-            newCategory!!.visibility = View.VISIBLE
-            categoryName!!.visibility = View.GONE
-            addCategory!!.visibility = View.GONE
+            newCategory.visibility = View.VISIBLE
+            categoryName.visibility = View.GONE
+            addCategory.visibility = View.GONE
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        if (item.itemId == android.R.id.home) {
+        if (item.itemId == R.id.home) {
             onBackPressed()
             return true
         }

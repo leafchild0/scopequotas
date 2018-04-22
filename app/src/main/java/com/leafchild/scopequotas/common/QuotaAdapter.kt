@@ -25,9 +25,9 @@ class QuotaAdapter : ArrayAdapter<Quota> {
     // View lookup cache
     private class ViewHolder {
 
-        internal var name: TextView? = null
+        internal lateinit var name: TextView
+        internal lateinit var range: TextView
         internal var amount: TextView? = null
-        internal var range: TextView? = null
         internal var progressBar: RoundCornerProgressBar? = null
     }
 
@@ -51,9 +51,8 @@ class QuotaAdapter : ArrayAdapter<Quota> {
             viewHolder.name = updated!!.findViewById(R.id.qName)
             viewHolder.range = updated.findViewById(R.id.qRange)
 
-            viewHolder.progressBar = updated.findViewById(R.id.quota_progress_bar)
             if (showWorklog) viewHolder.amount = updated.findViewById(R.id.qAmount)
-            else viewHolder.progressBar!!.visibility = View.GONE
+            if (showProgress) viewHolder.progressBar = updated.findViewById(R.id.quota_progress_bar)
 
             // Cache the viewHolder object inside the fresh view
             updated.tag = viewHolder
@@ -70,24 +69,16 @@ class QuotaAdapter : ArrayAdapter<Quota> {
     private fun updateValues(position: Int, viewHolder: ViewHolder, updated: View?) {
 
         val quota = getItem(position)
-        if (quota != null) {
-            viewHolder.name!!.text = quota.name
 
-            if (quota.archived!!) {
-                updated!!.setBackgroundColor(updated.resources.getColor(R.color.light_grey, context.theme))
-            }
-
-            if (showWorklog) {
-
-                viewHolder.range!!.text = quota.min?.toString() + "-" + quota.max?.toString()
-                viewHolder.amount!!.text = String.format(quota.workFlowByLastPeriod.toString() + "%s", "h")
-                if (showProgress) {
-
-                    viewHolder.progressBar!!.secondaryProgress = Utils.calculateQuotaProgress(quota.min!!.toFloat(), quota.max)
-                    viewHolder.progressBar!!.progress = Utils.calculateQuotaProgress(quota.workFlowByLastPeriod, quota.max)
-                    viewHolder.progressBar!!.progressColor = Utils.nextColor()
-                }
-            }
+        if (quota.archived!!) {
+            updated!!.setBackgroundColor(updated.resources.getColor(R.color.light_grey2, context.theme))
         }
+
+        viewHolder.name.text = quota.name
+        viewHolder.range.text = quota.min!!.toString() + "-" + quota.max!!.toString()
+        viewHolder.amount?.text = String.format(quota.workFlowByLastPeriod.toString() + "%s", "h")
+        viewHolder.progressBar?.secondaryProgress = Utils.calculateQuotaProgress(quota.min!!.toFloat(), quota.max)
+        viewHolder.progressBar?.progress = Utils.calculateQuotaProgress(quota.workFlowByLastPeriod, quota.max)
+        viewHolder.progressBar?.progressColor = Utils.nextColor()
     }
 }

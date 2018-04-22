@@ -10,7 +10,6 @@ import com.leafchild.scopequotas.data.Worklog
 import com.leafchild.scopequotas.data.WorklogType
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.stream.Collectors
 import kotlin.collections.ArrayList
 
 /**
@@ -60,7 +59,7 @@ object Utils {
             colors.addAll(ColorTemplate.PASTEL_COLORS.asList())
             colors.add(ColorTemplate.getHoloBlue())
 
-            return colors.stream().distinct().collect(Collectors.toList())
+            return colors.distinct()
         }
 
     fun getDefaultSharedPrefs(context: Context): SharedPreferences {

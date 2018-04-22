@@ -39,13 +39,13 @@ import java.io.IOException
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val self = this
-    private var service: DatabaseService? = null
-    private var type: TextView? = null
+    private lateinit var service: DatabaseService
+    private lateinit var type: TextView
 
-    private var quotaAdapter: ArrayAdapter<Quota>? = null
+    private lateinit var quotaAdapter: ArrayAdapter<Quota>
     private var currentType = QuotaType.WEEKLY
     private var showArchieved = false
-    private var toggle: ActionBarDrawerToggle? = null
+    private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -63,13 +63,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         drawer.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-            if (!quotaAdapter!!.isEmpty) type!!.visibility = View.GONE
-            else type!!.visibility = View.VISIBLE
+            if (!quotaAdapter.isEmpty) type.visibility = View.GONE
+            else type.visibility = View.VISIBLE
         }
         toggle = ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer.addDrawerListener(toggle!!)
-        toggle!!.syncState()
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
@@ -83,25 +83,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onPostResume()
         updateAppTitle()
         reloadData(currentType)
-        toggle!!.syncState()
+        toggle.syncState()
     }
 
     private fun initMenuBadges(navigationView: NavigationView) {
 
-        val daily = navigationView.menu.findItem(R.id.nav_daily).actionView as TextView
+        initMenuBadge(navigationView, R.id.nav_daily, QuotaType.DAILY)
+        initMenuBadge(navigationView, R.id.nav_weekly, QuotaType.WEEKLY)
+        initMenuBadge(navigationView, R.id.nav_monthly, QuotaType.MONTHLY)
+    }
+
+    private fun initMenuBadge(navigationView: NavigationView, resId: Int, type: QuotaType) {
+
+        val daily = navigationView.menu.findItem(resId).actionView as TextView
         daily.gravity = Gravity.CENTER_VERTICAL
         daily.setTypeface(null, Typeface.BOLD)
-        daily.text = Integer.toString(service!!.findQuotasByType(QuotaType.DAILY, showArchieved).size)
-
-        val weekly = navigationView.menu.findItem(R.id.nav_weekly).actionView as TextView
-        weekly.gravity = Gravity.CENTER_VERTICAL
-        weekly.setTypeface(null, Typeface.BOLD)
-        weekly.text = Integer.toString(service!!.findQuotasByType(QuotaType.WEEKLY, showArchieved).size)
-
-        val monthly = navigationView.menu.findItem(R.id.nav_monthly).actionView as TextView
-        monthly.gravity = Gravity.CENTER_VERTICAL
-        monthly.setTypeface(null, Typeface.BOLD)
-        monthly.text = Integer.toString(service!!.findQuotasByType(QuotaType.MONTHLY, showArchieved).size)
+        daily.text = Integer.toString(service.findQuotasByType(type, showArchieved).size)
     }
 
     private fun initFabMenu() {
@@ -121,7 +118,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         type = findViewById(R.id.no_quotas)
         val listView = findViewById<ListView>(R.id.quotas_list)
 
-        val quotas = service!!.findQuotasByType(currentType, showArchieved)
+        val quotas = service.findQuotasByType(currentType, showArchieved)
         quotaAdapter = QuotaAdapter(this, quotas)
 
         // Assign adapter to ListView
@@ -137,15 +134,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(details)
         }
 
-        if (!quotaAdapter!!.isEmpty) {
-            type!!.visibility = View.GONE
+        if (!quotaAdapter.isEmpty) {
+            type.visibility = View.GONE
         }
     }
 
     private fun reloadData(type: QuotaType) {
 
-        quotaAdapter!!.clear()
-        quotaAdapter!!.addAll(service!!.findQuotasByType(type, showArchieved))
+        quotaAdapter.clear()
+        quotaAdapter.addAll(service.findQuotasByType(type, showArchieved))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -197,7 +194,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
         } else {
-            quotaAdapter!!.notifyDataSetInvalidated()
+            quotaAdapter.notifyDataSetInvalidated()
             super.onBackPressed()
         }
     }
@@ -234,8 +231,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer.closeDrawer(GravityCompat.START)
 
         if (intent != null) startActivity(intent)
-        else quotaAdapter!!.notifyDataSetChanged()
-        toggle!!.syncState()
+        else quotaAdapter.notifyDataSetChanged()
+        toggle.syncState()
 
         return true
     }
@@ -262,9 +259,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // You are allowed to write external storage:
         var message = "Data has been seccessfully exported"
         try {
-            ExportUtils.exportData(Utils.getExportHeaders(), service!!.findQuotasByType(currentType, true))
+            ExportUtils.exportData(Utils.getExportHeaders(), service.findQuotasByType(currentType, true))
         } catch (e: IOException) {
-            Log.e("Main Activity", "Exporting Data")
+            Log.e("Main Activity", e.localizedMessage)
             message = "Something wrong happended during exporting"
         }
 

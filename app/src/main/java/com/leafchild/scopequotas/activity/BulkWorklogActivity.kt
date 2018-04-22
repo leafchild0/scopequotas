@@ -54,9 +54,7 @@ class BulkWorklogActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     private fun populateType() {
 
         val passed = intent.getStringExtra(AppContants.TYPE)
-        if (passed != null) {
-            type = QuotaType.fromString(passed)!!
-        }
+        type = QuotaType.fromString(passed)!!
     }
 
     fun showDatePicker(view: View) {

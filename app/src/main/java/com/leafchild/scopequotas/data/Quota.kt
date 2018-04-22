@@ -31,9 +31,9 @@ class Quota {
     @DatabaseField(columnName = "max")
     var max: Int? = null
     @DatabaseField(columnName = "createdDate")
-    var createdDate: Date? = null
+    var createdDate: Date? = Date()
     @DatabaseField(columnName = "modifiedDate")
-    var modifiedDate: Date? = null
+    var modifiedDate: Date? = Date()
     @DatabaseField(dataType = DataType.BOOLEAN_OBJ, columnName = "archived", defaultValue = "false")
     var archived: Boolean? = null
     @DatabaseField(columnName = "category", foreign = true, foreignAutoRefresh = true)

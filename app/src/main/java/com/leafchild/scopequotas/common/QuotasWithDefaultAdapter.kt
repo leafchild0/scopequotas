@@ -15,19 +15,6 @@ import android.widget.SpinnerAdapter
  */
 
 open class QuotasWithDefaultAdapter
-/**
- * Use this constructor to Define your 'Select One...' layout as the first
- * row in the returned choices.
- * If you do this, you probably don't want a prompt on your spinner or it'll
- * have two 'Select' rows.
- *
- * @param spinnerAdapter                wrapped Adapter. Should probably return false for isEnabled(0)
- * @param nothingSelectedLayout         layout for nothing selected, perhaps you want
- * text grayed out like a prompt...
- * @param nothingSelectedDropdownLayout layout for your 'Select an Item...' in
- * the dropdown.
- * @param context                       object where adapter is used
- */
 (private val adapter: SpinnerAdapter,
  private val nothingSelectedLayout: Int,
  private val nothingSelectedDropdownLayout: Int,

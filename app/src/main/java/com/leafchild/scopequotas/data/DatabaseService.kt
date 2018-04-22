@@ -5,7 +5,6 @@ import android.util.Log
 import com.leafchild.scopequotas.common.Utils
 import java.sql.SQLException
 import java.util.*
-import java.util.stream.Collectors
 
 /**
  * Created by: leafchild
@@ -57,10 +56,6 @@ class DatabaseService(context: Context) {
     private fun createQuota(quota: Quota) {
 
         try {
-            val date = Date()
-            quota.createdDate = date
-            quota.modifiedDate = date
-
             dbManager.getQuotaDao()!!.create(quota)
         } catch (e: SQLException) {
             Log.e("DB", e.message)
@@ -81,7 +76,7 @@ class DatabaseService(context: Context) {
 
     fun findAllQuotas(): List<Quota> {
 
-        var allQuotas: List<Quota> = ArrayList()
+        var allQuotas: List<Quota> = listOf()
 
         try {
             allQuotas = dbManager.getQuotaDao()!!.queryForAll()
@@ -94,7 +89,7 @@ class DatabaseService(context: Context) {
 
     fun findQuotasByType(type: QuotaType?, showArchieved: Boolean): List<Quota> {
 
-        var byType: List<Quota> = ArrayList()
+        var byType: List<Quota> = listOf()
         if (type == null) return byType
 
         try {
@@ -134,9 +129,6 @@ class DatabaseService(context: Context) {
     fun createCategory(category: QuotaCategory) {
 
         try {
-            val date = Date()
-            category.createdDate = date
-
             dbManager.getCategoryDao()!!.create(category)
         } catch (e: SQLException) {
             Log.e("DB", e.message)
@@ -175,7 +167,7 @@ class DatabaseService(context: Context) {
 
     fun findAllCategories(): List<QuotaCategory> {
 
-        var allCategories: List<QuotaCategory> = ArrayList()
+        var allCategories: List<QuotaCategory> = listOf()
 
         try {
             allCategories = dbManager.getCategoryDao()!!.queryForAll()
@@ -266,9 +258,9 @@ class DatabaseService(context: Context) {
 
     fun getLoggedDataByQuota(quota: Quota, from: Date, to: Date): List<Worklog> {
 
-        return quota.logged!!.stream()
-                .filter({ it.createdDate!!.before(to) && it.createdDate!!.after(from) })
-                .collect(Collectors.toList())
+        return quota.logged!!
+                .filter({ it.createdDate.before(to) && it.createdDate.after(from) })
+                .sortedBy { it.createdDate }
 
     }
 }

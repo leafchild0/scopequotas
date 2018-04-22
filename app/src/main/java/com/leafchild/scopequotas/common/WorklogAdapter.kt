@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.leafchild.scopequotas.R
 import com.leafchild.scopequotas.data.Quota
-import com.leafchild.scopequotas.data.Worklog
 import com.shawnlin.numberpicker.NumberPicker
 
 /**
@@ -25,8 +24,8 @@ class WorklogAdapter(context: Context, private val quotas: List<Quota>)
     // View lookup cache
     private class ViewHolder {
 
-        internal var name: TextView? = null
-        internal var numberPicker: NumberPicker? = null
+        internal lateinit var name: TextView
+        internal lateinit var numberPicker: NumberPicker
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -40,9 +39,9 @@ class WorklogAdapter(context: Context, private val quotas: List<Quota>)
             val inflater = LayoutInflater.from(context)
             updated = inflater.inflate(R.layout.worklog_quota_item, parent, false)
             viewHolder.name = updated!!.findViewById(R.id.qName)
-            viewHolder.numberPicker = updated.findViewById(R.id.number_picker)
 
-            viewHolder.numberPicker!!.setOnValueChangedListener { _, _, newVal ->
+            viewHolder.numberPicker = updated.findViewById(R.id.number_picker)
+            viewHolder.numberPicker.setOnValueChangedListener { _, _, newVal ->
                 data[quotas[position]] = newVal
             }
 
@@ -61,11 +60,9 @@ class WorklogAdapter(context: Context, private val quotas: List<Quota>)
     private fun updateValues(position: Int, viewHolder: ViewHolder, updated: View?) {
 
         val quota = getItem(position)
-        if (quota != null) {
-            viewHolder.name!!.text = quota.name
 
-            viewHolder.numberPicker!!.maxValue = quota.max!!
-        }
+        viewHolder.name.text = quota.name
+        viewHolder.numberPicker.maxValue = quota.max!!
     }
 
     fun getFilledWorklogs(): Map<Quota, Int> {

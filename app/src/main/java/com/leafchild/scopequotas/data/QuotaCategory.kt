@@ -22,7 +22,7 @@ class QuotaCategory {
     @DatabaseField(columnName = "name", canBeNull = false, unique = true)
     var name: String? = null
     @DatabaseField(columnName = "createdDate")
-    var createdDate: Date? = null
+    var createdDate: Date? = Date()
 
     @ForeignCollectionField(columnName = "quotas", eager = true)
     var quotas: ForeignCollection<Quota>? = null

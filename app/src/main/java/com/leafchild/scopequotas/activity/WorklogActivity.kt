@@ -18,17 +18,17 @@ import java.util.*
 
 class WorklogActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
-    private var worklogDate: Button? = null
+    private lateinit var worklogDate: Button
 
-    private var service: DatabaseService? = null
-    private var calendar: Calendar? = null
+    private lateinit var service: DatabaseService
+    private lateinit var calendar: Calendar
     private var picked: Quota? = null
 
     private val addedAmount: Double?
         get() {
 
             val amount = findViewById<EditText>(R.id.quota_amount)
-            return java.lang.Double.valueOf(amount.text.toString())
+            return amount.text.toString().toDouble()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +39,13 @@ class WorklogActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         service = DatabaseService(this)
 
         worklogDate = findViewById(R.id.worklog_date)
-        worklogDate!!.text = "Today"
+        worklogDate.text = "Today"
     }
 
     fun addWorklog(view: View) {
 
         initQuota()
-        service!!.addWorklog(Worklog(picked!!, addedAmount, getWorklogDate()))
+        service.addWorklog(Worklog(picked!!, addedAmount, getWorklogDate()))
 
         Toast.makeText(this@WorklogActivity, "Worklog was added", Toast.LENGTH_SHORT).show()
         Handler().postDelayed({ this@WorklogActivity.onBackPressed() }, 1000)
@@ -53,8 +53,8 @@ class WorklogActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
     private fun getWorklogDate(): Date {
 
-        if (worklogDate!!.text != "Today") {
-            return calendar!!.time
+        if (worklogDate.text != "Today") {
+            return calendar.time
         }
         return Date()
     }
@@ -69,9 +69,9 @@ class WorklogActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         calendar = Calendar.getInstance()
         val pickerDialog = DatePickerDialog.newInstance(
                 this@WorklogActivity,
-                calendar!!.get(Calendar.YEAR),
-                calendar!!.get(Calendar.MONTH),
-                calendar!!.get(Calendar.DAY_OF_MONTH)
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
         )
 
         pickerDialog.firstDayOfWeek = Calendar.MONDAY
@@ -81,13 +81,13 @@ class WorklogActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
     override fun onDateSet(view: DatePickerDialog, year: Int, monthOfYear: Int, dayOfMonth: Int) {
 
-        calendar!!.set(year, monthOfYear, dayOfMonth)
-        worklogDate!!.text = Utils.getDayMonthYearFormatter().format(calendar!!.time)
+        calendar.set(year, monthOfYear, dayOfMonth)
+        worklogDate.text = Utils.getDayMonthYearFormatter().format(calendar.time)
     }
 
     private fun initQuota() {
 
         val activeQuota = intent.getLongExtra(AppContants.ACTIVE_QUOTA, -1)
-        picked = service!!.getQuota(activeQuota)
+        picked = service.getQuota(activeQuota)
     }
 }

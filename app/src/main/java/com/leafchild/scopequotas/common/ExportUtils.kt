@@ -16,6 +16,7 @@ import java.io.IOException
 
 object ExportUtils {
 
+    //TODO: Remove this?
     /* Checks if external storage is available for read and write */
     /*val isExternalStorageWritable: Boolean
         get() {

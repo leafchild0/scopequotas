@@ -40,23 +40,23 @@ import java.util.Calendar
 
 class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
-    private var fromD: DatePickerDialog? = null
-    private var quotaName: Spinner? = null
-    private var typeName: Spinner? = null
-    private var fromDate: Button? = null
-    private var toDate: Button? = null
-    private var reportBy: Spinner? = null
+    private lateinit var fromD: DatePickerDialog
+    private lateinit var quotaName: Spinner
+    private lateinit var typeName: Spinner
+    private lateinit var fromDate: Button
+    private lateinit var toDate: Button
+    private lateinit var reportBy: Spinner
 
-    private var byCategory: PieChart? = null
-    private var byName: BarChart? = null
-    private var byType: HorizontalBarChart? = null
+    private lateinit var byCategory: PieChart
+    private lateinit var byName: BarChart
+    private lateinit var byType: HorizontalBarChart
 
     private var type = BY_CATEGORY
     private val from = Calendar.getInstance()
     private val to = Calendar.getInstance()
     private var passedType: QuotaType? = null
 
-    private var service: DatabaseService? = null
+    private lateinit var service: DatabaseService
 
     private val categoryChartData: PieData
         get() {
@@ -65,7 +65,7 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
             val dataSet = PieDataSet(entries, "Logged by category")
             val data = PieData(dataSet)
 
-            val categories = service!!.getLoggedDataByCategory(from.time, to.time)
+            val categories = service.getLoggedDataByCategory(from.time, to.time)
 
             categories.keys.forEach( {
                 if (categories[it]!! > 0.0) {
@@ -99,8 +99,8 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         reportBy = findViewById(R.id.report_by)
         val staticAdapter = ArrayAdapter
                 .createFromResource(this, R.array.reports_category, android.R.layout.simple_spinner_item)
-        reportBy!!.adapter = staticAdapter
-        reportBy!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        reportBy.adapter = staticAdapter
+        reportBy.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
 
@@ -112,11 +112,11 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         }
 
         toDate = findViewById(R.id.reports_to)
-        toDate!!.text = Utils.getDayMonthYearFormatter().format(to.time)
+        toDate.text = Utils.getDayMonthYearFormatter().format(to.time)
 
         calculateFromDate()
         fromDate = findViewById(R.id.reports_from)
-        fromDate!!.text = Utils.getDayMonthYearFormatter().format(from.time)
+        fromDate.text = Utils.getDayMonthYearFormatter().format(from.time)
 
         byCategory = findViewById(R.id.category_chart)
         byName = findViewById(R.id.name_chart)
@@ -145,7 +145,7 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
         val passed = intent.getStringExtra(AppContants.TYPE)
         if (passed != null) {
-            reportBy!!.setSelection(2)
+            reportBy.setSelection(2)
             type = BY_TYPE
             passedType = QuotaType.fromString(passed)
         }
@@ -160,9 +160,9 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
                 from.get(Calendar.DAY_OF_MONTH)
         )
 
-        fromD!!.firstDayOfWeek = Calendar.MONDAY
-        fromD!!.accentColor = AppContants.ACCENT_COLOR
-        fromD!!.show(fragmentManager, "Choose From Date")
+        fromD.firstDayOfWeek = Calendar.MONDAY
+        fromD.accentColor = AppContants.ACCENT_COLOR
+        fromD.show(fragmentManager, "Choose From Date")
     }
 
     fun showToDatePicker(view: View) {
@@ -181,14 +181,14 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
     override fun onDateSet(view: DatePickerDialog, year: Int, month: Int, dayOfMonth: Int) {
 
-        if (view.tag == fromD!!.tag) {
+        if (view.tag == fromD.tag) {
             //From date
             from.set(year, month, dayOfMonth)
-            fromDate!!.text = Utils.getDayMonthYearFormatter().format(from.time)
+            fromDate.text = Utils.getDayMonthYearFormatter().format(from.time)
         } else {
             //To date
             to.set(year, month, dayOfMonth)
-            toDate!!.text = Utils.getDayMonthYearFormatter().format(to.time)
+            toDate.text = Utils.getDayMonthYearFormatter().format(to.time)
         }
 
         refreshReports()
@@ -226,38 +226,38 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
     private fun showDataByName() {
 
-        if (quotaName!!.visibility == View.VISIBLE && quotaName!!.selectedItem != null) {
-            refreshReportsWithQuota(quotaName!!.selectedItem as Quota)
+        if (quotaName.visibility == View.VISIBLE && quotaName.selectedItem != null) {
+            refreshReportsWithQuota(quotaName.selectedItem as Quota)
         } else {
             initQueryAdapterForNameReports()
 
-            byName!!.setDrawBarShadow(false)
-            byName!!.setDrawValueAboveBar(true)
-            byName!!.description.isEnabled = false
+            byName.setDrawBarShadow(false)
+            byName.setDrawValueAboveBar(true)
+            byName.description.isEnabled = false
             // scaling can now only be done on x- and y-axis separately
-            byName!!.setPinchZoom(false)
-            byName!!.setDrawGridBackground(false)
+            byName.setPinchZoom(false)
+            byName.setDrawGridBackground(false)
 
-            byName!!.xAxis.isEnabled = false
+            byName.xAxis.isEnabled = false
 
-            val yl = byName!!.axisLeft
+            val yl = byName.axisLeft
             yl.setDrawAxisLine(true)
             yl.setDrawGridLines(true)
             yl.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
             yl.axisMinimum = 0f
 
-            val yr = byName!!.axisRight
+            val yr = byName.axisRight
             yr.setDrawAxisLine(true)
             yr.setDrawGridLines(false)
             yr.axisMinimum = 0f
 
-            byName!!.data = getChartData(service!!.getLoggedDataByName(from.time, to.time))
+            byName.data = getChartData(service.getLoggedDataByName(from.time, to.time))
 
-            byName!!.setFitBars(true)
-            byName!!.animateY(1500)
-            byName!!.setMaxVisibleValueCount(20)
+            byName.setFitBars(true)
+            byName.animateY(1500)
+            byName.setMaxVisibleValueCount(20)
 
-            val l = byName!!.legend
+            val l = byName.legend
             l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
             l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
             l.orientation = Legend.LegendOrientation.VERTICAL
@@ -266,12 +266,12 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
             l.xEntrySpace = 4f
         }
 
-        byName!!.visibility = View.VISIBLE
+        byName.visibility = View.VISIBLE
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        if (item.itemId == android.R.id.home) {
+        if (item.itemId == R.id.home) {
             onBackPressed()
             return true
         }
@@ -281,25 +281,25 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
     private fun initQueryAdapterForNameReports() {
 
         val adapter = QuotaAdapter(this, android.R.layout.simple_spinner_dropdown_item,
-                service!!.findAllQuotas(), false)
-        quotaName!!.adapter = QuotasWithDefaultAdapter(adapter, R.layout.spinner_row_nothing_selected, this)
+                service.findAllQuotas(), false)
+        quotaName.adapter = QuotasWithDefaultAdapter(adapter, R.layout.spinner_row_nothing_selected, this)
 
-        quotaName!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        quotaName.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
 
                 val selected = parent.getItemAtPosition(position) as Quota?
-                byName?.removeAllViews()
+                byName.removeAllViews()
                 refreshReportsWithQuota(selected)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
 
-                quotaName!!.setSelection(-1)
+                quotaName.setSelection(-1)
             }
         }
 
-        quotaName!!.visibility = View.VISIBLE
+        quotaName.visibility = View.VISIBLE
     }
 
     private fun initTypeAdapterForNameReports() {
@@ -309,35 +309,34 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         staticAdapter.add(QuotaType.DAILY)
         staticAdapter.add(QuotaType.WEEKLY)
         staticAdapter.add(QuotaType.MONTHLY)
-        typeName!!.adapter = staticAdapter
+        typeName.adapter = staticAdapter
 
-        if (passedType != null) typeName!!.setSelection(passedType!!.ordinal)
+        if (passedType != null) typeName.setSelection(passedType!!.ordinal)
 
-        typeName!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        typeName.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
 
                 val selected = parent.getItemAtPosition(position) as QuotaType
-                byType?.removeAllViews()
+                byType.removeAllViews()
                 refreshReportsForType(selected)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
 
-                typeName!!.setSelection(-1)
+                typeName.setSelection(-1)
             }
         }
 
-        typeName!!.visibility = View.VISIBLE
+        typeName.visibility = View.VISIBLE
     }
 
     private fun refreshReportsForType(selected: QuotaType?) {
 
-        if (selected == null) {
-            return
-        }
-        byType!!.data = getChartData(service!!.getLoggedDataByType(selected, from.time, to.time))
-        byName!!.refreshDrawableState()
+        if (selected == null) return
+
+        byType.data = getChartData(service.getLoggedDataByType(selected, from.time, to.time))
+        byName.refreshDrawableState()
 
     }
 
@@ -347,15 +346,15 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
         val entries = ArrayList<BarEntry>()
 
-        for ((amount, worklog) in service!!.getLoggedDataByQuota(selected, from.time, to.time).withIndex()) {
+        for ((amount, worklog) in service.getLoggedDataByQuota(selected, from.time, to.time).withIndex()) {
             // turn your data into Entry objects
             entries.add(BarEntry(amount.toFloat(), worklog.amount!!.toFloat()))
         }
 
         val dataSet = BarDataSet(entries, "")
-        byName!!.data = BarData(dataSet)
+        byName.data = BarData(dataSet)
 
-        byName!!.refreshDrawableState()
+        byName.refreshDrawableState()
     }
 
     private fun hideCharts(vararg charts: Chart<*>?) {
@@ -365,40 +364,40 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
     private fun showDataByType() {
 
-        if (typeName!!.visibility == View.VISIBLE && typeName!!.selectedItem != null) {
-            refreshReportsForType(typeName!!.selectedItem as QuotaType)
+        if (typeName.visibility == View.VISIBLE && typeName.selectedItem != null) {
+            refreshReportsForType(typeName.selectedItem as QuotaType)
         } else {
 
             initTypeAdapterForNameReports()
 
-            byType!!.visibility = View.VISIBLE
+            byType.visibility = View.VISIBLE
 
-            byType!!.setDrawBarShadow(false)
-            byType!!.setDrawValueAboveBar(true)
-            byType!!.description.isEnabled = false
+            byType.setDrawBarShadow(false)
+            byType.setDrawValueAboveBar(true)
+            byType.description.isEnabled = false
             // scaling can now only be done on x- and y-axis separately
-            byType!!.setPinchZoom(false)
-            byType!!.setDrawGridBackground(false)
+            byType.setPinchZoom(false)
+            byType.setDrawGridBackground(false)
 
-            byType!!.xAxis.isEnabled = false
+            byType.xAxis.isEnabled = false
 
-            val yl = byType!!.axisLeft
+            val yl = byType.axisLeft
             yl.setDrawAxisLine(true)
             yl.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
             yl.setDrawGridLines(true)
             yl.axisMinimum = 0f
 
-            val yr = byType!!.axisRight
+            val yr = byType.axisRight
             yr.setDrawAxisLine(true)
             yr.setDrawGridLines(false)
             yr.axisMinimum = 0f
 
-            byType!!.data = getChartData(service!!.getAllLoggedDataByType(from.time, to.time))
+            byType.data = getChartData(service.getAllLoggedDataByType(from.time, to.time))
 
-            byType!!.setFitBars(true)
-            byType!!.animateY(1500)
+            byType.setFitBars(true)
+            byType.animateY(1500)
 
-            val l = byType!!.legend
+            val l = byType.legend
             l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
             l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
             l.orientation = Legend.LegendOrientation.VERTICAL
@@ -410,32 +409,32 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
     private fun showDataByCategory() {
 
-        byCategory!!.visibility = View.VISIBLE
+        byCategory.visibility = View.VISIBLE
 
-        byCategory!!.setUsePercentValues(true)
-        byCategory!!.description.isEnabled = false
-        byCategory!!.setExtraOffsets(5f, 10f, 5f, 5f)
-        byCategory!!.dragDecelerationFrictionCoef = 0.95f
+        byCategory.setUsePercentValues(true)
+        byCategory.description.isEnabled = false
+        byCategory.setExtraOffsets(5f, 10f, 5f, 5f)
+        byCategory.dragDecelerationFrictionCoef = 0.95f
 
-        byCategory!!.isDrawHoleEnabled = true
-        byCategory!!.setHoleColor(Color.WHITE)
-        byCategory!!.setTransparentCircleColor(Color.WHITE)
-        byCategory!!.setTransparentCircleAlpha(50)
-        byCategory!!.holeRadius = 10f
-        byCategory!!.transparentCircleRadius = 5f
-        byCategory!!.setDrawCenterText(true)
-        byCategory!!.rotationAngle = 0f
+        byCategory.isDrawHoleEnabled = true
+        byCategory.setHoleColor(Color.WHITE)
+        byCategory.setTransparentCircleColor(Color.WHITE)
+        byCategory.setTransparentCircleAlpha(50)
+        byCategory.holeRadius = 10f
+        byCategory.transparentCircleRadius = 5f
+        byCategory.setDrawCenterText(true)
+        byCategory.rotationAngle = 0f
         // enable rotation of the chart by touch
-        byCategory!!.isRotationEnabled = true
-        byCategory!!.isHighlightPerTapEnabled = true
+        byCategory.isRotationEnabled = true
+        byCategory.isHighlightPerTapEnabled = true
 
-        byCategory!!.data = categoryChartData
-        byCategory!!.highlightValues(null)
-        byCategory!!.invalidate()
+        byCategory.data = categoryChartData
+        byCategory.highlightValues(null)
+        byCategory.invalidate()
 
-        byCategory!!.animateY(1500, Easing.EasingOption.EaseInOutQuad)
+        byCategory.animateY(1500, Easing.EasingOption.EaseInOutQuad)
 
-        val l = byCategory!!.legend
+        val l = byCategory.legend
         l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         l.orientation = Legend.LegendOrientation.VERTICAL
@@ -444,8 +443,8 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
         l.yEntrySpace = 0f
         l.yOffset = 0f
 
-        byCategory!!.setEntryLabelColor(Color.BLACK)
-        byCategory!!.setEntryLabelTextSize(12f)
+        byCategory.setEntryLabelColor(Color.BLACK)
+        byCategory.setEntryLabelTextSize(12f)
     }
 
     private fun getChartData(values: Map<String, Float>): BarData {
