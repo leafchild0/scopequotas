@@ -4,8 +4,6 @@ import android.os.Environment
 import android.util.Log
 import com.leafchild.scopequotas.data.Quota
 import com.opencsv.CSVWriter
-
-import java.io.File
 import java.io.FileWriter
 import java.io.IOException
 
@@ -16,26 +14,12 @@ import java.io.IOException
 
 object ExportUtils {
 
-    //TODO: Remove this?
-    /* Checks if external storage is available for read and write */
-    /*val isExternalStorageWritable: Boolean
-        get() {
-            val state = Environment.getExternalStorageState()
-            return Environment.MEDIA_MOUNTED == state
-        }*/
-
-    /* Checks if external storage is available to at least read */
-    /*val isExternalStorageReadable: Boolean
-        get() {
-            val state = Environment.getExternalStorageState()
-            return Environment.MEDIA_MOUNTED == state || Environment.MEDIA_MOUNTED_READ_ONLY == state
-        }*/
-
     private fun getExportFileName(name: String): String {
         return Environment.DIRECTORY_DOWNLOADS +
         "scopes_quotas_" + name + "_" + System.currentTimeMillis() + ".csv"
     }
 
+    //TODO: Export is not working due to permissions checks
     @Throws(IOException::class)
     fun exportData(headers: Array<String>, quotes: List<Quota>) {
 
