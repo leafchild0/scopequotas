@@ -46,43 +46,48 @@
 		  android:layout_height="1dp"
 		  android:background="@color/half_black"/>
 
-  <ListView
-		  android:id="@+id/quotas_list"
-		  android:layout_marginTop="@dimen/activity_horizontal_margin"
-		  android:layout_width="match_parent"
-		  android:layout_height="wrap_content"
-		  android:layout_centerVertical="true"
-		  android:layout_below="@+id/date_layout"/>
-
   <LinearLayout
 		  android:layout_width="match_parent"
-		  android:layout_height="wrap_content"
-		  style="?android:attr/buttonBarStyle"
-		  android:layout_alignParentBottom="true">
+		  android:layout_height="match_parent"
+		  android:layout_below="@+id/date_layout"
+		  android:orientation="vertical">
 
-	<Button
-			android:id="@+id/button_cancel"
-			android:layout_height="wrap_content"
-			android:layout_width="0dp"
-			android:layout_weight="0.5"
-			android:text="@string/cancel"
-			android:onClick="cancel"
-			android:layout_margin="@dimen/activity_vertical_margin"
-			android:background="@color/colorAccent"
-			android:textColor="@color/colorWhite"
-			style="?android:attr/buttonBarButtonStyle"/>
+	<ListView
+			android:id="@+id/quotas_list"
+			android:layout_marginTop="@dimen/activity_horizontal_margin"
+			android:layout_width="match_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1"/>
 
-	<Button
-			android:id="@+id/button_add"
-			android:layout_width="0dp"
-			android:layout_weight="0.5"
+	<LinearLayout
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/add"
-			android:onClick="addBulkWorklog"
-			android:background="@color/colorAccent"
-			android:textColor="@color/colorWhite"
-			android:layout_margin="@dimen/activity_vertical_margin"
-			style="?android:attr/buttonBarButtonStyle"/>
+			style="?android:attr/buttonBarStyle">
+
+	  <Button
+			  android:id="@+id/button_cancel"
+			  android:layout_height="wrap_content"
+			  android:layout_width="0dp"
+			  android:layout_weight="0.5"
+			  android:text="@string/cancel"
+			  android:onClick="cancel"
+			  android:layout_margin="@dimen/activity_vertical_margin"
+			  android:background="@color/colorAccent"
+			  android:textColor="@color/colorWhite"
+			  style="?android:attr/buttonBarButtonStyle"/>
+
+	  <Button
+			  android:id="@+id/button_add"
+			  android:layout_width="0dp"
+			  android:layout_weight="0.5"
+			  android:layout_height="wrap_content"
+			  android:text="@string/add"
+			  android:onClick="addBulkWorklog"
+			  android:background="@color/colorAccent"
+			  android:textColor="@color/colorWhite"
+			  android:layout_margin="@dimen/activity_vertical_margin"
+			  style="?android:attr/buttonBarButtonStyle"/>
+	</LinearLayout>
   </LinearLayout>
 
 </android.widget.RelativeLayout>
