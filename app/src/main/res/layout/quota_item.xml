@@ -5,49 +5,49 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
-  <LinearLayout
+  <TextView
+		  android:id="@+id/qName"
+		  android:layout_width="match_parent"
+		  android:layout_height="wrap_content"
+		  android:ems="10"
+		  android:maxLines="1"
+		  android:textAllCaps="true"
+		  android:layout_gravity="start"
+		  android:padding="8dp"
+		  android:textAppearance="@android:style/TextAppearance.Material.Title"/>
+
+  <RelativeLayout
 		  android:id="@+id/quota_entry"
 		  android:layout_width="match_parent"
 		  android:layout_height="wrap_content"
-		  android:padding="16dp">
-
-	<TextView
-			android:id="@+id/qName"
-			android:layout_width="0dp"
-			android:layout_weight="0.6"
-			android:layout_height="match_parent"
-			android:maxWidth="168dp"
-			android:ems="10"
-			android:textAllCaps="true"
-			android:layout_gravity="start"
-			android:paddingRight="@dimen/activity_horizontal_margin"
-			android:paddingLeft="@dimen/activity_horizontal_margin"
-			android:textAppearance="@android:style/TextAppearance.Material.Large"/>
+		  android:padding="8dp">
 
 	<TextView
 			android:id="@+id/qRange"
-			android:layout_width="0dp"
-			android:layout_weight="1"
-			android:layout_marginStart="8dp"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_gravity="start"
-			android:ems="1"
+			android:layout_marginStart="8dp"
+			android:maxLines="1"
+			android:ems="3"
+			android:textAlignment="viewStart"
+			android:layout_toEndOf="@id/qAmount"
+			android:layout_alignParentStart="true"
 			android:textColor="@color/colorPrimary"
-			android:textAppearance="@android:style/TextAppearance.Material.Subhead"/>
+			android:textAppearance="@android:style/TextAppearance.Material.Medium"/>
 
 	<TextView
 			android:id="@+id/qAmount"
-			android:layout_width="0dp"
-			android:layout_weight="0.4"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="8dp"
-			android:ems="10"
+			android:ems="3"
 			android:maxLines="1"
 			android:textStyle="bold"
-			android:layout_gravity="end|top"
+			android:textAlignment="viewEnd"
+			android:layout_alignParentEnd="true"
 			android:textAppearance="@android:style/TextAppearance.Material.Medium"/>
 
-  </LinearLayout>
+  </RelativeLayout>
 
   <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
 		  android:id="@+id/quota_progress_bar"

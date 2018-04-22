@@ -1,37 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_nav"
-    tools:context="com.leafchild.scopequotas.activity.MainActivity">
+							   xmlns:app="http://schemas.android.com/apk/res-auto"
+							   xmlns:tools="http://schemas.android.com/tools"
+							   android:layout_width="match_parent"
+							   android:layout_height="match_parent"
+							   app:layout_behavior="@string/appbar_scrolling_view_behavior"
+							   tools:showIn="@layout/activity_nav"
+							   tools:context="com.leafchild.scopequotas.activity.MainActivity">
 
-    <include layout="@layout/activity_base" />
+  <include layout="@layout/app_bar_navigation"
+		   android:layout_width="match_parent"
+		   android:layout_height="?android:attr/actionBarSize"
+		   android:id="@+id/navbar"/>
 
-    <include layout="@layout/app_bar_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:id="@+id/navbar"/>
+  <TextView
+		  android:id="@+id/no_quotas"
+		  android:layout_width="match_parent"
+		  android:layout_height="match_parent"
+		  android:gravity="center"
+		  android:text="@string/empty_quotas"
+		  android:textAppearance="@android:style/TextAppearance.Material.Large"
+		  app:layout_constraintBottom_toBottomOf="parent"
+		  app:layout_constraintLeft_toLeftOf="parent"
+		  app:layout_constraintRight_toRightOf="parent"
+		  app:layout_constraintTop_toTopOf="parent"/>
 
+  <ListView
+		  android:id="@+id/quotas_list"
+		  android:layout_width="wrap_content"
+		  android:layout_height="wrap_content"
+		  android:layout_below="@+id/navbar"/>
 
-    <TextView
-        android:id="@+id/no_quotas"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/empty_quotas"
-        android:textAppearance="@android:style/TextAppearance.Material.Large"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ListView
-        android:id="@+id/quotas_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/navbar"/>
+  <include layout="@layout/activity_base"/>
 
 </android.widget.RelativeLayout>
