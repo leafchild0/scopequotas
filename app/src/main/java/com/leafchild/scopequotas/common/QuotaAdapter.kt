@@ -77,7 +77,6 @@ class QuotaAdapter : ArrayAdapter<Quota> {
         viewHolder.name.text = quota.name
         viewHolder.range.text = quota.min!!.toString() + "-" + quota.max!!.toString()
         viewHolder.amount?.text = String.format(quota.workFlowByLastPeriod.toString() + "%s", "h")
-        viewHolder.progressBar?.secondaryProgress = Utils.calculateQuotaProgress(quota.min!!.toFloat(), quota.max)
         viewHolder.progressBar?.progress = Utils.calculateQuotaProgress(quota.workFlowByLastPeriod, quota.max)
         viewHolder.progressBar?.progressColor = Utils.nextColor()
     }

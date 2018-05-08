@@ -58,6 +58,5 @@
 		  app:rcMax="100"
 		  app:rcBackgroundPadding="0dp"
 		  app:rcReverse="false"
-		  app:rcSecondaryProgressColor="@color/light_grey"
 		  app:rcBackgroundColor="@color/light_grey2"/>
 </LinearLayout>
