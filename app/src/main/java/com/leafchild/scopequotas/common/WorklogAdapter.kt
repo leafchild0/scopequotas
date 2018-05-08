@@ -1,5 +1,6 @@
 package com.leafchild.scopequotas.common
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -16,56 +17,41 @@ import com.shawnlin.numberpicker.NumberPicker
  * Project: ScopeQuotas
  */
 
-class WorklogAdapter(context: Context, private val quotas: List<Quota>)
+class WorklogAdapter(context: Context, quotas: List<Quota>)
     : ArrayAdapter<Quota>(context, R.layout.worklog_quota_item, quotas) {
 
     var data: MutableMap<Quota, Int> = mutableMapOf()
 
-    // View lookup cache
-    private class ViewHolder {
-
-        internal lateinit var name: TextView
-        internal lateinit var numberPicker: NumberPicker
-    }
-
+    @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
-        var updated = convertView
-        val viewHolder: ViewHolder
+        val updated: View?
+        val quota = getItem(position)
 
-        if (updated == null) {
-            // If there's no view to re-use, inflate a brand new view for row
-            viewHolder = ViewHolder()
-            val inflater = LayoutInflater.from(context)
-            updated = inflater.inflate(R.layout.worklog_quota_item, parent, false)
-            viewHolder.name = updated!!.findViewById(R.id.qName)
+        // If there's no view to re-use, inflate a brand new view for row
+        val inflater = LayoutInflater.from(context)
+        updated = inflater.inflate(R.layout.worklog_quota_item, parent, false)
+        val name = updated!!.findViewById(R.id.wName) as TextView
 
-            viewHolder.numberPicker = updated.findViewById(R.id.number_picker)
-            viewHolder.numberPicker.setOnValueChangedListener { _, _, newVal ->
-                data[quotas[position]] = newVal
-            }
-
-            // Cache the viewHolder object inside the fresh view
-            updated.tag = viewHolder
-        } else {
-            // View is being recycled, retrieve the viewHolder object from tag
-            viewHolder = updated.tag as ViewHolder
+        val numberPicker = updated.findViewById(R.id.number_picker) as NumberPicker
+        numberPicker.setOnValueChangedListener { _, _, newVal ->
+            data[quota] = newVal
         }
+        numberPicker.value = data[quota] ?: 0
 
-        updateValues(position, viewHolder, updated)
+        updateValues(quota, name, numberPicker)
 
         return updated
     }
 
-    private fun updateValues(position: Int, viewHolder: ViewHolder, updated: View?) {
+    private fun updateValues(quota: Quota, name: TextView, numberPicker: NumberPicker) {
 
-        val quota = getItem(position)
-
-        viewHolder.name.text = quota.name
-        viewHolder.numberPicker.maxValue = quota.max!!
+        name.text = quota.name
+        numberPicker.maxValue = quota.max!!
     }
 
     fun getFilledWorklogs(): Map<Quota, Int> {
+
         return data
     }
 }

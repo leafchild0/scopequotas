@@ -48,7 +48,7 @@ class QuotaAdapter : ArrayAdapter<Quota> {
             viewHolder = ViewHolder()
             val inflater = LayoutInflater.from(context)
             updated = inflater.inflate(R.layout.quota_item, parent, false)
-            viewHolder.name = updated!!.findViewById(R.id.qName)
+            viewHolder.name = updated!!.findViewById(R.id.wName)
             viewHolder.range = updated.findViewById(R.id.qRange)
 
             if (showWorklog) viewHolder.amount = updated.findViewById(R.id.qAmount)
