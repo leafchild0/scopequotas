@@ -82,8 +82,8 @@ class DetailsActivity : AppCompatActivity() {
         min = findViewById(R.id.quota_min)
         max = findViewById(R.id.quota_max)
         chart = findViewById(R.id.worklog_chart)
-
-        type = intent.getIntExtra(AppContants.TYPE, 1)
+        // Daily by default
+        type = intent.getIntExtra(AppContants.TYPE, 0)
 
         service = DatabaseService(this)
 

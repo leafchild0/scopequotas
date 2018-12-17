@@ -48,6 +48,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	public static final String NOTIFICATIONS_VIBRATE = "daily_notifications_vibrate";
 	public static final String SYNC_FREQUENCY = "sync_frequency";
 	public static final String WEEKLY_NOTIFICATIONS = "weekly_notifications";
+	// Quotas types
+	public static final String SHOW_WEEKLY_QUOTAS = "show_weekly_quotas";
+	public static final String SHOW_MONTHLY_QUOTAS = "show_monthly_quotas";
 
 	/**
 	 * A preference value change listener that updates the preference's summary

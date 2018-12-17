@@ -52,8 +52,8 @@ class BulkWorklogActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
     }
 
     private fun populateType() {
-
-        val passed = intent.getIntExtra(AppContants.TYPE, 1)
+        // Daily by default
+        val passed = intent.getIntExtra(AppContants.TYPE, 0)
         type = QuotaType.fromOrdinal(passed)
     }
 

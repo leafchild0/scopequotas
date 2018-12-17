@@ -46,13 +46,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var currentType = QuotaType.WEEKLY
     private var showArchieved = false
     private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var navigationView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nav)
         service = DatabaseService(this)
-        val sharedPref = Utils.getDefaultSharedPrefs(this)
 
         initComponents()
 
@@ -71,11 +71,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer.addDrawerListener(toggle)
         toggle.syncState()
 
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        navigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
 
+        applySettings()
+    }
+
+    private fun applySettings() {
+
+        val sharedPref = Utils.getDefaultSharedPrefs(this)
+
+        // Show quotas types
+        val showWeeklyQuotas = sharedPref.getBoolean(SettingsActivity.SHOW_WEEKLY_QUOTAS, false)
+        val showMonthlyQuotas = sharedPref.getBoolean(SettingsActivity.SHOW_MONTHLY_QUOTAS, false)
+        hideQuotasIfNeeded(navigationView, showWeeklyQuotas, R.id.nav_weekly)
+        hideQuotasIfNeeded(navigationView, showMonthlyQuotas, R.id.nav_monthly)
+
+        // Show badges
         val quotaBadges = sharedPref.getBoolean(SettingsActivity.QUOTA_BADGES, true)
-        if (quotaBadges) initMenuBadges(navigationView)
+        if (quotaBadges) initMenuBadges(navigationView, showWeeklyQuotas, showMonthlyQuotas)
     }
 
     override fun onPostResume() {
@@ -84,13 +98,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         updateAppTitle()
         reloadData(currentType)
         toggle.syncState()
+
+        applySettings()
     }
 
-    private fun initMenuBadges(navigationView: NavigationView) {
+    private fun hideQuotasIfNeeded(navigationView: NavigationView, shouldBeShown: Boolean, itemId: Int) {
+
+        if (!shouldBeShown) {
+            val toHide = navigationView.menu.findItem(itemId) as MenuItem
+            toHide.isVisible = false
+        }
+    }
+
+    private fun initMenuBadges(navigationView: NavigationView, hideWeekly: Boolean, hideMonthly: Boolean) {
 
         initMenuBadge(navigationView, R.id.nav_daily, QuotaType.DAILY)
-        //initMenuBadge(navigationView, R.id.nav_weekly, QuotaType.WEEKLY)
-        //initMenuBadge(navigationView, R.id.nav_monthly, QuotaType.MONTHLY)
+        if (!hideWeekly) initMenuBadge(navigationView, R.id.nav_weekly, QuotaType.WEEKLY)
+        if (!hideMonthly) initMenuBadge(navigationView, R.id.nav_monthly, QuotaType.MONTHLY)
     }
 
     private fun initMenuBadge(navigationView: NavigationView, resId: Int, type: QuotaType) {
@@ -143,6 +167,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         quotaAdapter.clear()
         quotaAdapter.addAll(service.findQuotasByType(type, showArchieved))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateAppTitle()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
