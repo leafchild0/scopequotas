@@ -11,9 +11,9 @@
 		  app:showAsAction="withText"/>
 
   <item
-		  android:id="@+id/bulk_worklog"
+		  android:id="@+id/add_quota"
 		  android:orderInCategory="98"
-		  android:title="@string/bulk_worklog"
+		  android:title="@string/add_quota"
 		  app:showAsAction="never"/>
 
   <item

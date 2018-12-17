@@ -67,11 +67,11 @@ class ReportsActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener 
 
             val categories = service.getLoggedDataByCategory(from.time, to.time)
 
-            categories.keys.forEach( {
+            categories.keys.forEach {
                 if (categories[it]!! > 0.0) {
                     entries.add(PieEntry(categories[it]!!, it))
                 }
-            })
+            }
 
             dataSet.setDrawIcons(false)
 

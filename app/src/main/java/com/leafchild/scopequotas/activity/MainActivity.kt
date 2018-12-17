@@ -89,8 +89,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun initMenuBadges(navigationView: NavigationView) {
 
         initMenuBadge(navigationView, R.id.nav_daily, QuotaType.DAILY)
-        initMenuBadge(navigationView, R.id.nav_weekly, QuotaType.WEEKLY)
-        initMenuBadge(navigationView, R.id.nav_monthly, QuotaType.MONTHLY)
+        //initMenuBadge(navigationView, R.id.nav_weekly, QuotaType.WEEKLY)
+        //initMenuBadge(navigationView, R.id.nav_monthly, QuotaType.MONTHLY)
     }
 
     private fun initMenuBadge(navigationView: NavigationView, resId: Int, type: QuotaType) {
@@ -106,10 +106,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val newQuota = findViewById<FloatingActionButton>(R.id.new_quota)
 
         newQuota.setOnClickListener {
-            val details = Intent(self, DetailsActivity::class.java)
-            details.putExtra(AppContants.TYPE, intent.getIntExtra(AppContants.TYPE, currentType.ordinal))
+            val bulkAdd = Intent(self, BulkWorklogActivity::class.java)
+            bulkAdd.putExtra(AppContants.TYPE, intent.getIntExtra(AppContants.TYPE, currentType.ordinal))
             //Do not add any data
-            startActivity(details)
+            startActivity(bulkAdd)
         }
     }
 
@@ -168,9 +168,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(showReport)
                 return true
             }
-            R.id.bulk_worklog -> {
-                val intent = Intent(self, BulkWorklogActivity::class.java)
-                intent.putExtra(AppContants.TYPE, currentType.value)
+            R.id.add_quota -> {
+                val intent = Intent(self, DetailsActivity::class.java)
+                intent.putExtra(AppContants.TYPE, intent.getIntExtra(AppContants.TYPE, currentType.ordinal))
                 startActivity(intent)
                 return true
             }
