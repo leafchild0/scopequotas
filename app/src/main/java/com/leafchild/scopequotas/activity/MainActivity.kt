@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var type: TextView
 
     private lateinit var quotaAdapter: ArrayAdapter<Quota>
-    private var currentType = QuotaType.WEEKLY
+    private var currentType = QuotaType.DAILY
     private var showArchieved = false
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var navigationView: NavigationView

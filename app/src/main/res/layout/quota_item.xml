@@ -12,9 +12,10 @@
 		  android:ems="10"
 		  android:maxLines="1"
 		  android:textAllCaps="true"
+		  android:textStyle="bold"
 		  android:layout_gravity="start"
 		  android:padding="8dp"
-		  android:textAppearance="@android:style/TextAppearance.Material.Title"/>
+		  android:textAppearance="@android:style/TextAppearance.Material.Medium"/>
 
   <RelativeLayout
 		  android:id="@+id/quota_entry"
@@ -32,8 +33,8 @@
 			android:textAlignment="viewStart"
 			android:layout_toEndOf="@id/qAmount"
 			android:layout_alignParentStart="true"
-			android:textColor="@color/colorPrimary"
-			android:textAppearance="@android:style/TextAppearance.Material.Medium"/>
+			android:textColor="@color/colorPrimaryDark"
+			android:textAppearance="@android:style/TextAppearance.Material.Body1"/>
 
 	<TextView
 			android:id="@+id/qAmount"
